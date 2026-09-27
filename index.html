@@ -6,6 +6,13 @@
 <title>RetroTube</title>
 <meta name="description" content="RetroTube: an unofficial fan project that recreates the 2008 YouTube look over the real YouTube.">
 <link rel="icon" href="favicon.ico">
+<script>
+/* Returning visitors who ticked "go straight in" skip this page (browser-only flag; ?aviso shows it anyway). */
+(function(){
+  var skip = false; try { skip = localStorage.getItem('rt:entered') === '1'; } catch(e){}
+  if(skip && !/[?&]aviso\b/.test(location.search)){ document.documentElement.style.visibility = 'hidden'; location.replace('https://puellaefan.duckdns.org/'); }
+})();
+</script>
 <style>
   body{margin:0;background:#fff;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333;}
   a{color:#0033cc;text-decoration:none;} a:hover{text-decoration:underline;}
@@ -25,6 +32,8 @@
   .enter a{display:inline-block;padding:10px 26px;font-size:16px;font-weight:bold;color:#000;background:#fed81c;background-image:linear-gradient(#fff3a6,#fec10a);border:1px solid #e0a800;border-radius:4px;}
   .enter a:hover{text-decoration:none;background-image:linear-gradient(#fff8c4,#ffcf2e);}
   .addr{text-align:center;color:#888;font-size:12px;}
+  .remember{text-align:center;margin:10px 0 0;font-size:12px;color:#555;} .remember input{vertical-align:-2px;margin-right:5px;}
+  .again{text-align:center;color:#999;font-size:11px;margin-top:6px;}
   .foot{margin-top:26px;border-top:1px solid #eee;padding-top:10px;text-align:center;color:#999;font-size:11px;line-height:1.6;}
 </style>
 </head>
@@ -43,6 +52,8 @@
 
   <div class="enter"><a id="go" href="https://puellaefan.duckdns.org/" data-t="enter"></a></div>
   <div class="addr">puellaefan.duckdns.org</div>
+  <div class="remember"><label><input type="checkbox" id="remember" checked><span data-t="remember"></span></label></div>
+  <div class="again" data-t="again"></div>
 
   <div class="foot" data-t="foot"></div>
 </div>
@@ -61,6 +72,8 @@ var T = {
          '<li><b>Sem</b> anúncios, sem login, sem contas, sem downloads, sem rastreadores.</li>' +
          '<li>Seus favoritos ficam salvos <b>só no seu navegador</b>. Detalhes completos na página <b>Sobre</b> do site.</li></ul>',
     enter: 'Entrar no RetroTube →',
+    remember: 'Ir direto para o RetroTube da próxima vez',
+    again: 'Isso fica salvo só no seu navegador. Para ver este aviso de novo: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Projeto de fã não oficial · não afiliado ao YouTube nem ao Google.<br>YouTube e o logotipo do YouTube são marcas do Google.'
   },
   en: {
@@ -75,6 +88,8 @@ var T = {
          '<li><b>No</b> ads, no login, no accounts, no downloads, no trackers.</li>' +
          '<li>Your favorites are saved <b>only in your browser</b>. Full details on the site\'s <b>About</b> page.</li></ul>',
     enter: 'Enter RetroTube →',
+    remember: 'Go straight to RetroTube next time',
+    again: 'This is saved only in your browser. To see this notice again: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Unofficial fan project · not affiliated with YouTube or Google.<br>YouTube and the YouTube logo are trademarks of Google.'
   },
   es: {
@@ -89,6 +104,8 @@ var T = {
          '<li><b>Sin</b> anuncios, sin inicio de sesión, sin cuentas, sin descargas, sin rastreadores.</li>' +
          '<li>Tus favoritos se guardan <b>solo en tu navegador</b>. Todos los detalles en la página <b>Acerca de</b> del sitio.</li></ul>',
     enter: 'Entrar a RetroTube →',
+    remember: 'Ir directo a RetroTube la próxima vez',
+    again: 'Esto se guarda solo en tu navegador. Para ver este aviso otra vez: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Proyecto de fans no oficial · no afiliado a YouTube ni a Google.<br>YouTube y el logotipo de YouTube son marcas de Google.'
   }
 };
@@ -100,7 +117,11 @@ function apply(l){
   document.title = d.title;
 }
 [].forEach.call(document.querySelectorAll('.langs a'), function(a){ a.onclick = function(e){ e.preventDefault(); apply(a.getAttribute('data-l')); }; });
-document.getElementById('go').href = SITE;
+var go = document.getElementById('go');
+go.href = SITE;
+go.onclick = function(){   // remember the choice (or forget it, if unticked); the link then navigates normally
+  try { if(document.getElementById('remember').checked) localStorage.setItem('rt:entered', '1'); else localStorage.removeItem('rt:entered'); } catch(e){}
+};
 apply(pick());
 </script>
 </body>

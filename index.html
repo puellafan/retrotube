@@ -1,0 +1,107 @@
+<!DOCTYPE html>
+<html lang="pt">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>RetroTube</title>
+<meta name="description" content="RetroTube: an unofficial fan project that recreates the 2008 YouTube look over the real YouTube.">
+<link rel="icon" href="favicon.ico">
+<style>
+  body{margin:0;background:#fff;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333;}
+  a{color:#0033cc;text-decoration:none;} a:hover{text-decoration:underline;}
+  #page{max-width:680px;margin:0 auto;padding:18px 16px 30px;}
+  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:1px solid #ccc;padding-bottom:10px;}
+  .top img{height:52px;display:block;}
+  .langs{font-size:12px;color:#666;} .langs a.on{color:#333;font-weight:bold;}
+  h1{font-size:20px;color:#000;margin:18px 0 6px;}
+  .lead{font-size:14px;color:#444;margin:0 0 16px;line-height:1.5;}
+  .box{border:1px solid #ccc;margin-bottom:12px;}
+  .box h2{margin:0;font-size:14px;color:#333;background:#eee;background-image:linear-gradient(#f6f6f6,#e4e4e4);border-bottom:1px solid #ccc;padding:6px 10px;}
+  .box p,.box ul{margin:10px 12px;line-height:1.55;}
+  .box li{margin-bottom:4px;}
+  .warn{background:#fff8d5;border-color:#e6d97a;} .warn h2{background:#fff3b5;background-image:none;border-color:#e6d97a;color:#665c00;}
+  code{background:#f3f3f3;border:1px solid #ddd;padding:0 3px;font-size:12px;}
+  .enter{text-align:center;margin:22px 0 10px;}
+  .enter a{display:inline-block;padding:10px 26px;font-size:16px;font-weight:bold;color:#000;background:#fed81c;background-image:linear-gradient(#fff3a6,#fec10a);border:1px solid #e0a800;border-radius:4px;}
+  .enter a:hover{text-decoration:none;background-image:linear-gradient(#fff8c4,#ffcf2e);}
+  .addr{text-align:center;color:#888;font-size:12px;}
+  .foot{margin-top:26px;border-top:1px solid #eee;padding-top:10px;text-align:center;color:#999;font-size:11px;line-height:1.6;}
+</style>
+</head>
+<body>
+<div id="page">
+  <div class="top">
+    <img src="logo.png" alt="RetroTube">
+    <div class="langs"><a href="#" data-l="pt">Português</a> | <a href="#" data-l="en">English</a> | <a href="#" data-l="es">Español</a></div>
+  </div>
+
+  <h1 data-t="title"></h1>
+  <p class="lead" data-t="lead"></p>
+
+  <div class="box warn"><h2 data-t="w_h"></h2><div data-t="w_b"></div></div>
+  <div class="box"><h2 data-t="a_h"></h2><div data-t="a_b"></div></div>
+
+  <div class="enter"><a id="go" href="https://puellaefan.duckdns.org/" data-t="enter"></a></div>
+  <div class="addr">puellaefan.duckdns.org</div>
+
+  <div class="foot" data-t="foot"></div>
+</div>
+<script>
+var SITE = 'https://puellaefan.duckdns.org/';
+var T = {
+  pt: {
+    title: 'RetroTube — o YouTube de 2008, de volta',
+    lead: 'Um projeto de fã que recria a aparência do YouTube por volta de 2008, usando os vídeos do YouTube de verdade.',
+    w_h: 'Antes de entrar: seu bloqueador de anúncios pode mostrar um aviso',
+    w_b: '<p>O RetroTube usa um <b>endereço gratuito</b> do serviço DuckDNS (<code>puellaefan.duckdns.org</code>). Alguns bloqueadores, como o <b>AdGuard</b>, bloqueiam <b>todos</b> os sites com endereços desse tipo, sem olhar o conteúdo — porque endereços gratuitos às vezes são usados por golpistas.</p>' +
+         '<p>Se aparecer <b>"Acesso bloqueado"</b>, é só por causa do endereço, não do site. Você pode clicar em <b>"Continuar mesmo assim"</b> ou adicionar uma exceção para <code>puellaefan.duckdns.org</code> no seu bloqueador.</p>',
+    a_h: 'O que o RetroTube faz (e o que não faz)',
+    a_b: '<ul><li>Mostra buscas, canais e comentários do <b>YouTube real</b>, com visual de 2008.</li>' +
+         '<li>Os vídeos tocam no <b>player oficial do YouTube</b> — nada é baixado nem hospedado no site, e as visualizações contam para os criadores.</li>' +
+         '<li><b>Sem</b> anúncios, sem login, sem contas, sem downloads, sem rastreadores.</li>' +
+         '<li>Seus favoritos ficam salvos <b>só no seu navegador</b>. Detalhes completos na página <b>Sobre</b> do site.</li></ul>',
+    enter: 'Entrar no RetroTube →',
+    foot: 'Projeto de fã não oficial · não afiliado ao YouTube nem ao Google.<br>YouTube e o logotipo do YouTube são marcas do Google.'
+  },
+  en: {
+    title: 'RetroTube — 2008 YouTube, back again',
+    lead: 'A fan project that recreates how YouTube looked around 2008, using real YouTube videos.',
+    w_h: 'Before you enter: your ad blocker may show a warning',
+    w_b: '<p>RetroTube uses a <b>free address</b> from the DuckDNS service (<code>puellaefan.duckdns.org</code>). Some blockers, like <b>AdGuard</b>, block <b>every</b> site on addresses like this without looking at the content — because free addresses are sometimes used by scammers.</p>' +
+         '<p>If you see <b>"Access blocked"</b>, it is only because of the address, not the site. You can click <b>"Proceed anyway"</b> or add an exception for <code>puellaefan.duckdns.org</code> in your blocker.</p>',
+    a_h: 'What RetroTube does (and doesn\'t do)',
+    a_b: '<ul><li>Shows searches, channels and comments from the <b>real YouTube</b>, with a 2008 look.</li>' +
+         '<li>Videos play in the <b>official YouTube player</b> — nothing is downloaded or hosted on the site, and views count for the creators.</li>' +
+         '<li><b>No</b> ads, no login, no accounts, no downloads, no trackers.</li>' +
+         '<li>Your favorites are saved <b>only in your browser</b>. Full details on the site\'s <b>About</b> page.</li></ul>',
+    enter: 'Enter RetroTube →',
+    foot: 'Unofficial fan project · not affiliated with YouTube or Google.<br>YouTube and the YouTube logo are trademarks of Google.'
+  },
+  es: {
+    title: 'RetroTube — el YouTube de 2008, de vuelta',
+    lead: 'Un proyecto de fans que recrea el aspecto de YouTube alrededor de 2008, usando vídeos reales de YouTube.',
+    w_h: 'Antes de entrar: tu bloqueador de anuncios puede mostrar un aviso',
+    w_b: '<p>RetroTube usa una <b>dirección gratuita</b> del servicio DuckDNS (<code>puellaefan.duckdns.org</code>). Algunos bloqueadores, como <b>AdGuard</b>, bloquean <b>todos</b> los sitios con direcciones de este tipo sin mirar el contenido — porque las direcciones gratuitas a veces las usan estafadores.</p>' +
+         '<p>Si ves <b>"Acceso bloqueado"</b>, es solo por la dirección, no por el sitio. Puedes pulsar <b>"Continuar de todos modos"</b> o añadir una excepción para <code>puellaefan.duckdns.org</code> en tu bloqueador.</p>',
+    a_h: 'Qué hace RetroTube (y qué no)',
+    a_b: '<ul><li>Muestra búsquedas, canales y comentarios del <b>YouTube real</b>, con aspecto de 2008.</li>' +
+         '<li>Los vídeos se reproducen en el <b>reproductor oficial de YouTube</b> — no se descarga ni aloja nada en el sitio, y las visitas cuentan para los creadores.</li>' +
+         '<li><b>Sin</b> anuncios, sin inicio de sesión, sin cuentas, sin descargas, sin rastreadores.</li>' +
+         '<li>Tus favoritos se guardan <b>solo en tu navegador</b>. Todos los detalles en la página <b>Acerca de</b> del sitio.</li></ul>',
+    enter: 'Entrar a RetroTube →',
+    foot: 'Proyecto de fans no oficial · no afiliado a YouTube ni a Google.<br>YouTube y el logotipo de YouTube son marcas de Google.'
+  }
+};
+function pick(){ var l = (navigator.language || 'pt').slice(0, 2).toLowerCase(); return T[l] ? l : 'en'; }
+function apply(l){
+  var d = T[l]; document.documentElement.lang = l;
+  [].forEach.call(document.querySelectorAll('[data-t]'), function(el){ el.innerHTML = d[el.getAttribute('data-t')]; });
+  [].forEach.call(document.querySelectorAll('.langs a'), function(a){ a.className = a.getAttribute('data-l') === l ? 'on' : ''; });
+  document.title = d.title;
+}
+[].forEach.call(document.querySelectorAll('.langs a'), function(a){ a.onclick = function(e){ e.preventDefault(); apply(a.getAttribute('data-l')); }; });
+document.getElementById('go').href = SITE;
+apply(pick());
+</script>
+</body>
+</html>

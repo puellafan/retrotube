@@ -102,6 +102,7 @@
   .wmp-tabs{display:flex;gap:2px;margin-bottom:5px;}
   .wmp-tabs span{flex:1;text-align:center;padding:3px 0;font-size:10px;border-radius:3px 3px 0 0;background:linear-gradient(#3b5d9a,#26437a);color:#dbe7ff;}
   .wmp-tabs span.on{background:linear-gradient(#6f9be0,#3e6bbd);color:#fff;font-weight:bold;}
+  .wmp-station{font-size:10px;color:#9fc0f5;margin:0 1px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
   #viz{display:block;width:100%;height:190px;background:#000;border:1px solid #06102a;}
   .wmp-info{display:flex;justify-content:space-between;gap:8px;margin:5px 1px 4px;font-size:10px;white-space:nowrap;}
   .wmp-info span{overflow:hidden;text-overflow:ellipsis;} #wmp-viz{color:#8fb2ec;flex:none;}
@@ -141,14 +142,15 @@
     </div>
     <div class="wmp">
       <div class="wmp-tabs"><span class="on" data-t="w_now"></span><span data-t="w_lib"></span><span data-t="w_radio"></span></div>
+      <div class="wmp-station" id="wmp-station">📻 —</div>
       <canvas id="viz" width="326" height="190"></canvas>
       <div class="wmp-info"><span id="wmp-song"></span><span id="wmp-viz"></span></div>
       <div class="wmp-seek" id="wmp-seek"><div></div></div>
       <div class="wmp-ctl">
         <i id="wmp-stop"><svg viewBox="0 0 12 12"><rect x="2" y="2" width="8" height="8" fill="#fff"/></svg></i>
-        <i class="off"><svg viewBox="0 0 12 12"><path d="M1 2v8M11 2L4 6l7 4z" stroke="#fff" fill="#fff"/></svg></i>
+        <i id="wmp-prev"><svg viewBox="0 0 12 12"><path d="M1 2v8M11 2L4 6l7 4z" stroke="#fff" fill="#fff"/></svg></i>
         <i class="big" id="wmp-pp"><svg viewBox="0 0 14 14"><path id="wmp-play" d="M3 1.5v11L12.5 7z" fill="#fff"/><path id="wmp-pause" d="M3 2h3v10H3zM8 2h3v10H8z" fill="#fff" style="display:none"/></svg></i>
-        <i class="off"><svg viewBox="0 0 12 12"><path d="M11 2v8M1 2l7 4-7 4z" stroke="#fff" fill="#fff"/></svg></i>
+        <i id="wmp-next"><svg viewBox="0 0 12 12"><path d="M11 2v8M1 2l7 4-7 4z" stroke="#fff" fill="#fff"/></svg></i>
       </div>
     </div>
   </div>
@@ -210,9 +212,9 @@ var T = {
     enter: 'Entrar no RetroTube', details: 'Detalhes >>', less: '<< Detalhes',
     remember: 'Ir direto para o RetroTube da próxima vez',
     again: 'Isso fica salvo só no seu navegador. Para ver este aviso de novo: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
-    foot: 'Projeto de fã não oficial · não afiliado ao YouTube, ao Google nem à Microsoft. Rádio: The Mix Radio — "Best Hits From Generation 2K".',
+    foot: 'Projeto de fã não oficial · não afiliado ao YouTube, ao Google nem à Microsoft. Rádios de terceiros: The Mix Radio, 1.FM, Mix FM São Paulo e estações da Zeno.fm.',
     mute: 'Silenciar rádio', unmute: 'Tocar rádio',
-    w_now: 'Em execução', w_lib: 'Biblioteca', w_radio: 'Rádio', w_ready: 'Conectando…', b_title: 'Bem-vindo ao RetroTube', b_text: 'Clique duas vezes em <b>RetroTube</b> para entrar no site, ou em <b>Windows Media Player</b> para ouvir hits dos anos 2000.', b_text_touch: 'Toque em <b>RetroTube</b> para entrar no site, ou em <b>Windows Media Player</b> para ouvir hits dos anos 2000.', w_off: 'Rádio silenciado', w_paused: 'Pausado', viz: ['Alquimia : Aleatório', 'Barras e ondas : Espectro', 'Ambiente : Redemoinho']
+    w_now: 'Em execução', w_lib: 'Biblioteca', w_radio: 'Rádio', w_ready: 'Conectando…', w_tune: 'Sintonizando: %s…', w_skip: 'Estação fora do ar — pulando para a próxima…', w_dead: 'Nenhuma estação respondeu. Tente de novo mais tarde.', b_title: 'Bem-vindo ao RetroTube', b_text: 'Clique duas vezes em <b>RetroTube</b> para entrar no site, ou em <b>Windows Media Player</b> para ouvir hits dos anos 2000.', b_text_touch: 'Toque em <b>RetroTube</b> para entrar no site, ou em <b>Windows Media Player</b> para ouvir hits dos anos 2000.', w_off: 'Rádio silenciado', w_paused: 'Pausado', viz: ['Alquimia : Aleatório', 'Barras e ondas : Espectro', 'Ambiente : Redemoinho']
   },
   en: {
     dlg_title: 'RetroTube — Notice', start: 'start', i_pc: 'My Computer', i_bin: 'Recycle Bin',
@@ -226,9 +228,9 @@ var T = {
     enter: 'Enter RetroTube', details: 'Details >>', less: '<< Details',
     remember: 'Go straight to RetroTube next time',
     again: 'This is saved only in your browser. To see this notice again: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
-    foot: 'Unofficial fan project · not affiliated with YouTube, Google or Microsoft. Radio: The Mix Radio — "Best Hits From Generation 2K".',
+    foot: 'Unofficial fan project · not affiliated with YouTube, Google or Microsoft. Third-party radio stations: The Mix Radio, 1.FM, Mix FM São Paulo and Zeno.fm stations.',
     mute: 'Mute radio', unmute: 'Play radio',
-    w_now: 'Now Playing', w_lib: 'Library', w_radio: 'Radio Guide', w_ready: 'Connecting…', b_title: 'Welcome to RetroTube', b_text: 'Double-click <b>RetroTube</b> to enter the site, or <b>Windows Media Player</b> to listen to 2000s hits.', b_text_touch: 'Tap <b>RetroTube</b> to enter the site, or <b>Windows Media Player</b> to listen to 2000s hits.', w_off: 'Radio muted', w_paused: 'Paused', viz: ['Alchemy : Random', 'Bars and Waves : Bars', 'Ambience : Swirl']
+    w_now: 'Now Playing', w_lib: 'Library', w_radio: 'Radio Guide', w_ready: 'Connecting…', w_tune: 'Tuning: %s…', w_skip: 'Station is off the air — skipping to the next…', w_dead: 'No station answered. Try again later.', b_title: 'Welcome to RetroTube', b_text: 'Double-click <b>RetroTube</b> to enter the site, or <b>Windows Media Player</b> to listen to 2000s hits.', b_text_touch: 'Tap <b>RetroTube</b> to enter the site, or <b>Windows Media Player</b> to listen to 2000s hits.', w_off: 'Radio muted', w_paused: 'Paused', viz: ['Alchemy : Random', 'Bars and Waves : Bars', 'Ambience : Swirl']
   },
   es: {
     dlg_title: 'RetroTube — Aviso', start: 'inicio', i_pc: 'Mi PC', i_bin: 'Papelera de reciclaje',
@@ -242,9 +244,9 @@ var T = {
     enter: 'Entrar a RetroTube', details: 'Detalles >>', less: '<< Detalles',
     remember: 'Ir directo a RetroTube la próxima vez',
     again: 'Esto se guarda solo en tu navegador. Para ver este aviso otra vez: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
-    foot: 'Proyecto de fans no oficial · no afiliado a YouTube, Google ni Microsoft. Radio: The Mix Radio — "Best Hits From Generation 2K".',
+    foot: 'Proyecto de fans no oficial · no afiliado a YouTube, Google ni Microsoft. Radios de terceros: The Mix Radio, 1.FM, Mix FM São Paulo y emisoras de Zeno.fm.',
     mute: 'Silenciar radio', unmute: 'Reproducir radio',
-    w_now: 'Reproduciendo', w_lib: 'Biblioteca', w_radio: 'Radio', w_ready: 'Conectando…', b_title: 'Bienvenido a RetroTube', b_text: 'Haz doble clic en <b>RetroTube</b> para entrar al sitio, o en <b>Windows Media Player</b> para escuchar éxitos de los 2000.', b_text_touch: 'Toca <b>RetroTube</b> para entrar al sitio, o <b>Windows Media Player</b> para escuchar éxitos de los 2000.', w_off: 'Radio silenciada', w_paused: 'En pausa', viz: ['Alquimia : Aleatorio', 'Barras y ondas : Barras', 'Ambiente : Remolino']
+    w_now: 'Reproduciendo', w_lib: 'Biblioteca', w_radio: 'Radio', w_ready: 'Conectando…', w_tune: 'Sintonizando: %s…', w_skip: 'Emisora fuera del aire — pasando a la siguiente…', w_dead: 'Ninguna emisora respondió. Inténtalo más tarde.', b_title: 'Bienvenido a RetroTube', b_text: 'Haz doble clic en <b>RetroTube</b> para entrar al sitio, o en <b>Windows Media Player</b> para escuchar éxitos de los 2000.', b_text_touch: 'Toca <b>RetroTube</b> para entrar al sitio, o <b>Windows Media Player</b> para escuchar éxitos de los 2000.', w_off: 'Radio silenciada', w_paused: 'En pausa', viz: ['Alquimia : Aleatorio', 'Barras y ondas : Barras', 'Ambiente : Remolino']
   }
 };
 function $(id){ return document.getElementById(id); }
@@ -300,12 +302,54 @@ function ding(){
   (function blink(){ d.classList.toggle('flash'); if(++n < 6) setTimeout(blink, 70); else d.classList.remove('flash'); })();
 }
 
-/* ---------- radio: plays while Windows Media Player is open (opening it is a click, so browsers allow sound) ---------- */
-var radio = $('radio'), RADIO_SRC = radio.getAttribute('src');
+/* ---------- radio roulette: plays while Windows Media Player is open (opening it is a click, so browsers allow sound) ----------
+   np = where the current song title comes from: 'azura' (The Mix Radio's JSON API, polled) or 'zeno' (Zeno.fm live event feed). */
+var STATIONS = [
+  { name: 'The Mix Radio — Generation 2K', url: 'https://jupiter.themixradio.ca/listen/station15/radio.mp3', np: 'azura', id: 20 },
+  { name: 'The Mix Radio — Best Hits 2010s', url: 'https://jupiter.themixradio.ca/listen/station16/radio.mp3', np: 'azura', id: 21 },
+  { name: '1.FM — Y2K', url: 'https://strm112.1.fm/hits2000_mobile_mp3' },
+  { name: 'Mix FM São Paulo', url: 'https://playerservices.streamtheworld.com/api/livestream-redirect/MIXFM_SAOPAULO.mp3' },
+  { name: 'The Wild FM 2010s', url: 'https://stream.zeno.fm/ogq0zgko0jhtv', np: 'zeno', id: 'ogq0zgko0jhtv' },
+  { name: 'O Bar Rádio', url: 'https://stream.zeno.fm/gxe6ssh6fc9uv', np: 'zeno', id: 'gxe6ssh6fc9uv' },
+  { name: "Sadie's Y2K Playlist", url: 'https://stream.zeno.fm/kxp4m1xtxchvv', np: 'zeno', id: 'kxp4m1xtxchvv' }
+];
+var radio = $('radio'), st = -1, tuning = false, fails = 0, npTimer = null, npES = null, note = '';
+radio.removeAttribute('src');
 radio.volume = 0.35;
 radio.muted = lsGet('rt:radio-mute') === '1';
-function playRadio(){ if(!radio.getAttribute('src')) radio.src = RADIO_SRC; radio.play().catch(function(){}); }
-function stopRadio(){ radio.pause(); radio.removeAttribute('src'); radio.load(); }   // drop the live buffer
+function station(){ return STATIONS[st]; }
+function playRadio(){
+  if(st < 0) return tune(Math.floor(Math.random() * STATIONS.length));    // first open: spin the roulette
+  if(!radio.getAttribute('src')) radio.src = station().url;
+  radio.play().catch(function(){});
+  startNowPlaying();
+}
+function stopRadio(){ radio.pause(); radio.removeAttribute('src'); radio.load(); stopNowPlaying(); }   // drop the live buffer
+function tune(i){
+  st = (i + STATIONS.length) % STATIONS.length; songText = ''; tuning = true;
+  stopNowPlaying(); showSong(); staticBurst();
+  radio.src = station().url; radio.play().catch(function(){});
+  $('wmp-station').textContent = '📻 ' + station().name + ' (' + (st + 1) + '/' + STATIONS.length + ')';
+  startNowPlaying();
+}
+radio.addEventListener('playing', function(){ tuning = false; fails = 0; note = ''; });
+radio.addEventListener('error', function(){
+  if(!radio.getAttribute('src')) return;                               // our own stop, not a failure
+  if(++fails >= STATIONS.length){ tuning = false; note = T[L].w_dead; return; }
+  note = T[L].w_skip; setTimeout(function(){ note = ''; tune(st + 1); }, 900);   // station down: try the next one
+});
+/* a short burst of radio static while tuning (Web Audio noise; silent if muted) */
+function staticBurst(){
+  if(radio.muted) return;
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    var n = Math.floor(actx.sampleRate * 0.45), buf = actx.createBuffer(1, n, actx.sampleRate), d = buf.getChannelData(0);
+    for(var i = 0; i < n; i++) d[i] = (Math.random() * 2 - 1) * (1 - i / n);
+    var src = actx.createBufferSource(), g = actx.createGain(), f = actx.createBiquadFilter();
+    f.type = 'bandpass'; f.frequency.value = 2200; f.Q.value = 0.7; g.gain.value = 0.09;
+    src.buffer = buf; src.connect(f); f.connect(g); g.connect(actx.destination); src.start();
+  } catch(e){}
+}
 function setVolIcon(){
   $('waves').style.display = radio.muted ? 'none' : ''; $('mutex').style.display = radio.muted ? '' : 'none';
   $('vol').title = radio.muted ? T[L].unmute : T[L].mute;
@@ -315,15 +359,31 @@ $('vol').onclick = function(e){
   radio.muted = !radio.muted; lsSet('rt:radio-mute', radio.muted ? '1' : null);
   setVolIcon();
 };
-function nowPlaying(){
-  fetch(NOWPLAYING).then(function(r){ return r.json(); }).then(function(j){
-    var s = j && j.now_playing && j.now_playing.song; if(!s) return;
-    songText = (s.artist ? s.artist + ' – ' : '') + s.title;
-    $('np').textContent = '♫ ' + songText;
-    $('wmp').title = 'Windows Media Player — ' + $('np').textContent;
-  }).catch(function(){});
+/* current song, per station: The Mix Radio's API every 30s, or Zeno's live feed; others just show the station name */
+function showSong(){
+  var s = st < 0 ? '' : (songText ? '♫ ' + songText : '📻 ' + station().name);
+  $('np').textContent = s || 'Windows Media Player';
+  $('wmp').title = 'Windows Media Player' + (s ? ' — ' + s : '');
 }
-nowPlaying(); setInterval(nowPlaying, 30000);
+function stopNowPlaying(){ clearInterval(npTimer); npTimer = null; if(npES){ npES.close(); npES = null; } }
+function startNowPlaying(){
+  stopNowPlaying(); showSong();
+  var s = station(), mine = st; if(!s || !s.np) return;
+  if(s.np === 'azura'){
+    var poll = function(){
+      fetch('https://jupiter.themixradio.ca/api/nowplaying/' + s.id).then(function(r){ return r.json(); }).then(function(j){
+        var x = j && j.now_playing && j.now_playing.song; if(!x || st !== mine) return;
+        songText = (x.artist ? x.artist + ' – ' : '') + x.title; showSong();
+      }).catch(function(){});
+    };
+    poll(); npTimer = setInterval(poll, 30000);
+  } else if(s.np === 'zeno' && window.EventSource){
+    npES = new EventSource('https://api.zeno.fm/mounts/metadata/subscribe/' + s.id);
+    npES.onmessage = function(ev){
+      try { var t = JSON.parse(ev.data).streamTitle; if(t && st === mine){ songText = t.replace(/\s*[\(\[](official[^\)\]]*|lyrics?[^\)\]]*|audio|video|visualizer|hd|hq|4k)[\)\]]/gi, '').trim(); showSong(); } } catch(e){}
+    };
+  }
+}
 
 /* ---------- windows: opened from desktop icons, focus on click, minimize/restore from the taskbar, close ---------- */
 var dlg = $('dlg'), wmpWin = $('wmpwin'), TASK = { dlg: $('t-dlg'), wmpwin: $('wmp') };
@@ -338,7 +398,7 @@ function focusWin(w){   // w = window to bring to front, or null (none active)
 function nextShown(except){ return [dlg, wmpWin].filter(function(x){ return x !== except && isShown(x); })[0] || null; }
 function openWin(w){
   w.classList.remove('closed', 'min'); TASK[w.id].classList.remove('closed'); focusWin(w); hideBalloon();
-  if(w === wmpWin) playRadio();
+  if(w === wmpWin) spin();
 }
 function minimizeWin(w){ w.classList.add('min'); focusWin(nextShown(w)); }
 function closeWin(w){
@@ -357,6 +417,10 @@ $('wmp-pp').onclick = function(){
   if(!radio.getAttribute('src') || radio.paused) playRadio(); else radio.pause();
 };
 $('wmp-stop').onclick = function(){ radio.pause(); };
+$('wmp-prev').onclick = function(){ fails = 0; tune(st - 1); };
+$('wmp-next').onclick = function(){ fails = 0; tune(st + 1); };
+/* every time WMP opens: spin the roulette (never the same station twice in a row) */
+function spin(){ var i; do { i = Math.floor(Math.random() * STATIONS.length); } while(STATIONS.length > 1 && i === st); fails = 0; tune(i); }
 
 /* desktop icons: click selects, double-click opens (a single tap on touch screens) */
 function openIcon(ic){
@@ -450,11 +514,11 @@ function frame(ms){
   $('wmp-play').style.display = live ? 'none' : ''; $('wmp-pause').style.display = live ? '' : 'none';
   $('wmp-viz').textContent = live ? T[L].viz[vizIdx] : '';
   if(!live){
-    status(radio.muted ? T[L].w_off : radio.paused ? T[L].w_paused : T[L].w_ready);
+    status(note || (radio.muted ? T[L].w_off : tuning ? T[L].w_tune.replace('%s', station() ? station().name : '') : radio.paused ? T[L].w_paused : T[L].w_ready));
     cx.fillStyle = 'rgba(0,0,0,0.2)'; cx.fillRect(0, 0, W, H);
     return;
   }
-  status(songText ? '♫ ' + songText : 'The Mix Radio — Generation 2K');
+  status(songText ? '♫ ' + songText : station() ? station().name : '');
   var t = ms / 1000 * (calm ? 0.3 : 1);
   PRESETS[vizIdx](t, calm ? 0.8 : beatAt(t));
 }

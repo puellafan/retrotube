@@ -96,6 +96,43 @@
   #dlg{z-index:3;} #wmpwin{z-index:2;} #dlg.front,#wmpwin.front{z-index:5;}
   .window.back .title-bar{filter:saturate(.35) brightness(1.12);}
   #wmpwin{position:absolute;right:26px;top:34px;width:340px;}
+
+  /* ---------- fake Internet Explorer 6 ---------- */
+  #iewin,#pvwin{z-index:2;} #iewin.front,#pvwin.front{z-index:5;}
+  #iewin{position:absolute;left:120px;top:36px;width:min(600px,92vw);}
+  #iewin .title-bar-text,#pvwin .title-bar-text{display:flex;align-items:center;gap:5px;}
+  #iewin .title-bar-text svg,#pvwin .title-bar-text svg{width:14px;height:14px;flex:none;}
+  .ie{background:#ece9d8;padding:0 2px 2px;}
+  .ie-menu{display:flex;gap:2px;padding:2px 2px 3px;border-bottom:1px solid #fff;box-shadow:0 1px 0 #aca899;}
+  .ie-menu span{padding:1px 6px;cursor:default;} .ie-menu span:hover{background:#316ac5;color:#fff;}
+  .ie-tools{display:flex;align-items:center;gap:2px;padding:3px 2px;border-bottom:1px solid #fff;box-shadow:0 1px 0 #aca899;}
+  .ie-btn{display:flex;align-items:center;gap:4px;padding:2px 5px;border:1px solid transparent;border-radius:3px;cursor:default;}
+  .ie-btn:hover{border-color:#aca899;background:#f6f5ee;}
+  .ie-btn b{font-size:14px;line-height:1;} .ie-arrow{display:inline-flex;align-items:center;justify-content:center;width:20px;height:20px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#b8f0a0,#46a82e 60%,#256b17);color:#fff;font-size:10px !important;}
+  .ie-sep{width:1px;height:20px;background:#aca899;box-shadow:1px 0 #fff;margin:0 3px;}
+  .ie-addr{display:flex;align-items:center;gap:5px;padding:3px 2px;}
+  .ie-addr label{color:#555;}
+  .ie-url{flex:1;min-width:0;display:flex;align-items:center;gap:4px;background:#fff;border:1px solid #7f9db9;padding:2px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;user-select:text;}
+  .ie-url svg{width:14px;height:14px;flex:none;}
+  .ie-go{display:flex;align-items:center;gap:3px;padding:1px 6px;cursor:default;} .ie-go b{color:#2e8b2e;font-size:13px;}
+  .ie-page{background:#fff;border:1px solid #7f9db9;height:min(330px,48vh);overflow:auto;padding:8px;box-sizing:border-box;}
+  .ie-page img{display:block;max-width:none;}
+  #ie-err h2{font:bold 17px Tahoma,Arial,sans-serif;color:#000;margin:6px 0 10px;} #ie-err p{font-size:11px;line-height:1.5;margin:0 0 8px;} #ie-err hr{border:0;border-top:1px solid #ccc;}
+  .ie-status{display:flex;justify-content:space-between;align-items:center;padding:3px 4px 1px;color:#333;}
+  .ie-zone{display:flex;align-items:center;gap:4px;border-left:1px solid #aca899;padding-left:8px;} .ie-zone svg{width:14px;height:14px;}
+
+  /* ---------- fake Windows Picture and Fax Viewer ---------- */
+  #pvwin{position:absolute;left:170px;top:86px;width:min(540px,92vw);}
+  .pv{background:#fff;}
+  .pv-stage{height:min(330px,46vh);display:flex;align-items:center;justify-content:center;overflow:hidden;background:#fff;}
+  .pv-stage img{max-width:96%;max-height:96%;transition:transform .15s;}
+  .pv-stage.actual img{max-width:none;max-height:none;}
+  #pv-err{color:#555;font-size:12px;}
+  .pv-bar{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:3px;padding:5px 4px;background:linear-gradient(#f7f6f0,#e2dfd0);border-top:1px solid #c9c6b5;}
+  .pv-bar i{font-style:normal;display:flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;font-size:12px;font-weight:bold;color:#2d4f8a;cursor:default;
+    background:radial-gradient(circle at 35% 30%,#ffffff,#dbe6f5 55%,#b7c9e3);border:1px solid #8fa6c8;}
+  .pv-bar i:hover{border-color:#3d6ea8;} .pv-bar i.pv-del{color:#c62b1b;}
+  .pv-sep{width:1px;height:20px;background:#c9c6b5;margin:0 3px;}
   #wmpwin.min{display:none;}
   #wmpwin .title-bar-text{display:flex;align-items:center;gap:5px;} #wmpwin .title-bar-text svg{width:14px;height:14px;}
   .wmp{background:linear-gradient(#1e3a6e,#0f1f3f);padding:6px;border:1px solid #0a1630;color:#cfe0ff;}
@@ -103,7 +140,7 @@
   .wmp-tabs span{flex:1;text-align:center;padding:3px 0;font-size:10px;border-radius:3px 3px 0 0;background:linear-gradient(#3b5d9a,#26437a);color:#dbe7ff;}
   .wmp-tabs span.on{background:linear-gradient(#6f9be0,#3e6bbd);color:#fff;font-weight:bold;}
   .wmp-station{font-size:10px;color:#9fc0f5;margin:0 1px 4px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;}
-  #viz{display:block;width:100%;height:190px;background:#000;border:1px solid #06102a;}
+  #viz{display:block;width:100%;height:190px;background:#000;border:1px solid #06102a;cursor:pointer;}
   .wmp-info{display:flex;justify-content:space-between;gap:8px;margin:5px 1px 4px;font-size:10px;white-space:nowrap;}
   .wmp-info span{overflow:hidden;text-overflow:ellipsis;} #wmp-viz{color:#8fb2ec;flex:none;}
   .wmp-seek{height:5px;border-radius:3px;background:#0a1630;border:1px solid #3a5a90;margin:0 2px 6px;overflow:hidden;}
@@ -122,6 +159,8 @@
     #dlg{top:44%;}
     .task{flex-basis:44px;} .task .t{display:none;}
     #wmpwin{right:auto;left:50%;transform:translateX(-50%);bottom:8px;width:min(340px,94vw);}
+    #iewin,#pvwin{left:3vw;top:10px;width:94vw;}
+    .ie-tools span[data-t],.ie-menu span:nth-child(n+4){display:none;}
     #start{padding-right:12px;font-size:15px;}
   }
 </style>
@@ -129,8 +168,9 @@
 <body>
 <div id="desk">
   <div class="icons">
-    <div class="icon" tabindex="-1" data-open="none"><svg class="img" viewBox="0 0 32 32"><rect x="3" y="4" width="26" height="18" rx="2" fill="#dfe6ef" stroke="#5a6b80"/><rect x="5.5" y="6.5" width="21" height="13" fill="#3a8ee6"/><path d="M6 19.5l7-6 5 4 8.5-8V19.5z" fill="#6fbf3a"/><rect x="12" y="22" width="8" height="3" fill="#b9c2cd"/><rect x="8" y="25" width="16" height="3" rx="1" fill="#dfe6ef" stroke="#5a6b80"/></svg><span data-t="i_pc"></span></div>
-    <div class="icon" tabindex="-1" data-open="none"><svg class="img" viewBox="0 0 32 32"><path d="M8 9h16l-1.6 19H9.6z" fill="#cfe3f7" stroke="#4c6f96"/><rect x="6" y="6" width="20" height="3" rx="1" fill="#e8f1fb" stroke="#4c6f96"/><path d="M12 12v13M16 12v13M20 12v13" stroke="#7ea3c9" stroke-width="1.2"/><path d="M13 6V4.5h6V6" fill="none" stroke="#4c6f96"/></svg><span data-t="i_bin"></span></div>
+    <!-- image files: a .gif opens in Internet Explorer (as on XP), a .jpg in the Picture and Fax Viewer -->
+    <div class="icon" tabindex="-1" data-open="gif"><svg class="img" viewBox="0 0 32 32"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#7a8aa0"/><path d="M20 2v6h6" fill="#e3e9f2" stroke="#7a8aa0"/><rect x="9" y="11" width="14" height="10" fill="#fde28a"/><circle cx="13" cy="15" r="2.3" fill="#ff6b3d"/><path d="M9 21l5-4 3 2 3-3 3 5z" fill="#3aa845"/><text x="16" y="28.2" font-family="Tahoma,Arial" font-size="5.6" font-weight="bold" text-anchor="middle" fill="#1d4fa8">GIF</text><circle cx="25" cy="25" r="5.2" fill="#1e76d8" stroke="#fff" stroke-width=".8"/><text x="25" y="27.6" font-family="Georgia,serif" font-size="7.5" font-style="italic" font-weight="bold" text-anchor="middle" fill="#fff">e</text></svg><span>yipee.gif</span></div>
+    <div class="icon" tabindex="-1" data-open="jpg"><svg class="img" viewBox="0 0 32 32"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#7a8aa0"/><path d="M20 2v6h6" fill="#e3e9f2" stroke="#7a8aa0"/><rect x="9" y="11" width="14" height="12" fill="#8fc6f2"/><circle cx="19" cy="14.5" r="1.8" fill="#fff6b0"/><path d="M9 23l4.5-6 3 3.5 2.5-2.5 4 5z" fill="#4c8f33"/><text x="16" y="28.6" font-family="Tahoma,Arial" font-size="5.6" font-weight="bold" text-anchor="middle" fill="#6a3d9a">JPG</text></svg><span>stmonica.jpg</span></div>
     <div class="icon" tabindex="-1" data-open="rt"><img class="img" src="favicon.ico" alt=""><span>RetroTube</span></div>
     <div class="icon" tabindex="-1" data-open="wmp"><svg class="img" viewBox="0 0 32 32"><circle cx="16" cy="16" r="13.5" fill="#f5a623" stroke="#b36b00" stroke-width="1.5"/><circle cx="16" cy="16" r="10" fill="#ffc34d"/><path d="M12.5 9.5v13L23 16z" fill="#fff" stroke="#c77800" stroke-width=".8"/></svg><span>Windows Media Player</span></div>
   </div>
@@ -151,6 +191,50 @@
         <i id="wmp-prev"><svg viewBox="0 0 12 12"><path d="M1 2v8M11 2L4 6l7 4z" stroke="#fff" fill="#fff"/></svg></i>
         <i class="big" id="wmp-pp"><svg viewBox="0 0 14 14"><path id="wmp-play" d="M3 1.5v11L12.5 7z" fill="#fff"/><path id="wmp-pause" d="M3 2h3v10H3zM8 2h3v10H8z" fill="#fff" style="display:none"/></svg></i>
         <i id="wmp-next"><svg viewBox="0 0 12 12"><path d="M11 2v8M1 2l7 4-7 4z" stroke="#fff" fill="#fff"/></svg></i>
+      </div>
+    </div>
+  </div>
+
+  <!-- fake Internet Explorer 6 showing yipee.gif (the image loads only when the window is first opened) -->
+  <div class="window closed" id="iewin">
+    <div class="title-bar">
+      <div class="title-bar-text"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#1e76d8"/><text x="8" y="11.8" font-family="Georgia,serif" font-size="11" font-style="italic" font-weight="bold" text-anchor="middle" fill="#fff">e</text></svg><span data-t="ie_title"></span></div>
+      <div class="title-bar-controls"><button aria-label="Minimize"></button><button aria-label="Maximize" class="dis" aria-disabled="true" tabindex="-1"></button><button aria-label="Close"></button></div>
+    </div>
+    <div class="ie">
+      <div class="ie-menu nope" data-t="ie_menu"></div>
+      <div class="ie-tools">
+        <span class="ie-btn nope"><b class="ie-arrow">&#9664;</b><span data-t="ie_back"></span></span>
+        <span class="ie-btn nope"><b class="ie-arrow">&#9654;</b></span>
+        <span class="ie-sep"></span>
+        <span class="ie-btn nope" title="Stop"><b style="color:#c62b1b">&#10006;</b></span>
+        <span class="ie-btn nope" title="Refresh"><b style="color:#2e8b2e">&#10227;</b></span>
+        <span class="ie-btn nope" title="Home"><b style="color:#2d5fae">&#8962;</b></span>
+        <span class="ie-sep"></span>
+        <span class="ie-btn nope"><b style="color:#2d5fae">&#9906;</b><span data-t="ie_search"></span></span>
+        <span class="ie-btn nope"><b style="color:#e1a800">&#9733;</b><span data-t="ie_favs"></span></span>
+      </div>
+      <div class="ie-addr"><label data-t="ie_addr"></label><div class="ie-url"><svg viewBox="0 0 16 16"><path d="M3 1h7l3 3v11H3z" fill="#fff" stroke="#7a8aa0"/><rect x="5" y="6" width="6" height="5" fill="#fde28a"/></svg><span data-t="ie_path"></span></div><span class="ie-go nope"><b>&#10140;</b><span data-t="ie_go"></span></span></div>
+      <div class="ie-page"><img id="ie-img" data-src="yipee.gif" alt="yipee.gif"><div id="ie-err" class="closed" data-t="ie_err"></div></div>
+      <div class="ie-status"><span data-t="ie_done"></span><span class="ie-zone"><svg viewBox="0 0 16 16"><rect x="2" y="3" width="12" height="8" rx="1" fill="#dfe6ef" stroke="#5a6b80"/><rect x="5" y="12" width="6" height="2" fill="#9aa6b5"/></svg><span data-t="ie_zone"></span></span></div>
+    </div>
+  </div>
+
+  <!-- fake Windows Picture and Fax Viewer showing stmonica.jpg: zoom and rotate really work -->
+  <div class="window closed" id="pvwin">
+    <div class="title-bar">
+      <div class="title-bar-text"><svg viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" fill="#8fc6f2" stroke="#3d6ea8"/><path d="M1.5 13l4-5 3 3 2-2 4 4z" fill="#4c8f33"/></svg><span data-t="pv_title"></span></div>
+      <div class="title-bar-controls"><button aria-label="Minimize"></button><button aria-label="Maximize" class="dis" aria-disabled="true" tabindex="-1"></button><button aria-label="Close"></button></div>
+    </div>
+    <div class="pv">
+      <div class="pv-stage"><img id="pv-img" data-src="stmonica.jpg" alt="stmonica.jpg"><div id="pv-err" class="closed" data-t="pv_none"></div></div>
+      <div class="pv-bar">
+        <i class="nope" title="&#9664;">&#9664;</i><i class="nope" title="&#9654;">&#9654;</i><span class="pv-sep"></span>
+        <i id="pv-fit" title="Best fit">&#11036;</i><i id="pv-actual" title="1:1">1:1</i><span class="pv-sep"></span>
+        <i class="nope" title="Slide show">&#9655;</i><span class="pv-sep"></span>
+        <i id="pv-zin" title="+">&#43;</i><i id="pv-zout" title="&#8722;">&#8722;</i><span class="pv-sep"></span>
+        <i id="pv-rcw" title="&#8635;">&#8635;</i><i id="pv-rccw" title="&#8634;">&#8634;</i><span class="pv-sep"></span>
+        <i class="nope pv-del" title="Delete">&#10006;</i><i class="nope" title="Print">&#9113;</i><i class="nope" title="Copy">&#10697;</i>
       </div>
     </div>
   </div>
@@ -179,6 +263,8 @@
   <button id="start" class="nope"><span class="flag"><i></i><i></i><i></i><i></i></span><span data-t="start"></span></button>
   <div class="tasks">
     <button class="task closed" id="t-dlg"><img src="favicon.ico" alt=""><span class="t" data-t="dlg_title"></span></button>
+    <button class="task closed" id="t-ie"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#1e76d8"/><text x="8" y="11.8" font-family="Georgia,serif" font-size="11" font-style="italic" font-weight="bold" text-anchor="middle" fill="#fff">e</text></svg><span class="t" data-t="ie_title"></span></button>
+    <button class="task closed" id="t-pv"><svg viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" fill="#8fc6f2" stroke="#3d6ea8"/><path d="M1.5 13l4-5 3 3 2-2 4 4z" fill="#4c8f33"/></svg><span class="t" data-t="pv_title"></span></button>
     <button class="task closed" id="wmp"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#f5a623" stroke="#b36b00"/><path d="M6 4.5v7l5.5-3.5z" fill="#fff"/></svg><span class="t" id="np">Windows Media Player</span></button>
   </div>
   <div class="tray">
@@ -198,10 +284,14 @@
 
 <script>
 var SITE = 'https://puellaefan.duckdns.org/';
-var NOWPLAYING = 'https://jupiter.themixradio.ca/api/nowplaying/20';   // "Best Hits From Generation 2K"
 var T = {
   pt: {
-    dlg_title: 'RetroTube — Aviso', start: 'iniciar', i_pc: 'Meu computador', i_bin: 'Lixeira',
+    dlg_title: 'RetroTube — Aviso', start: 'iniciar',
+    ie_title: 'yipee.gif - Microsoft Internet Explorer', ie_menu: '<span>Arquivo</span><span>Editar</span><span>Exibir</span><span>Favoritos</span><span>Ferramentas</span><span>Ajuda</span>',
+    ie_back: 'Voltar', ie_search: 'Pesquisar', ie_favs: 'Favoritos', ie_addr: 'Endereço', ie_go: 'Ir', ie_done: 'Concluído', ie_zone: 'Meu computador',
+    ie_path: 'C:\\Documents and Settings\\Usuário\\Área de trabalho\\yipee.gif',
+    ie_err: '<h2>Não é possível exibir a página</h2><p>O arquivo <b>yipee.gif</b> não foi encontrado. Ele pode ter sido movido, renomeado ou excluído.</p><hr><p>Tente o seguinte:</p><ul><li>Se você digitou o endereço da página, verifique se ele está escrito corretamente.</li><li>Clique no botão <b>Atualizar</b> ou tente novamente mais tarde.</li></ul>',
+    pv_title: 'stmonica.jpg - Visualizador de imagens e fax do Windows', pv_none: 'Nenhuma visualização disponível',
     title: 'Seu bloqueador de anúncios pode mostrar um aviso',
     w_b: '<p>O RetroTube é um projeto de fã que recria o YouTube de 2008 usando os vídeos do YouTube de verdade. Ele usa um <b>endereço gratuito</b> do DuckDNS (<code>puellaefan.duckdns.org</code>).</p>' +
          '<p>Alguns bloqueadores, como o <b>AdGuard</b>, bloqueiam <b>todos</b> os sites com endereços desse tipo, sem olhar o conteúdo — porque endereços gratuitos às vezes são usados por golpistas. Se aparecer <b>"Acesso bloqueado"</b>, é só por causa do endereço: clique em <b>"Continuar mesmo assim"</b> ou adicione uma exceção para <code>puellaefan.duckdns.org</code>.</p>',
@@ -217,7 +307,12 @@ var T = {
     w_now: 'Em execução', w_lib: 'Biblioteca', w_radio: 'Rádio', w_ready: 'Conectando…', w_tune: 'Sintonizando: %s…', w_skip: 'Estação fora do ar — pulando para a próxima…', w_dead: 'Nenhuma estação respondeu. Tente de novo mais tarde.', b_title: 'Bem-vindo ao RetroTube', b_text: 'Clique duas vezes em <b>RetroTube</b> para entrar no site, ou em <b>Windows Media Player</b> para ouvir hits dos anos 2000.', b_text_touch: 'Toque em <b>RetroTube</b> para entrar no site, ou em <b>Windows Media Player</b> para ouvir hits dos anos 2000.', w_off: 'Rádio silenciado', w_paused: 'Pausado', viz: ['Alquimia : Aleatório', 'Barras e ondas : Espectro', 'Ambiente : Redemoinho']
   },
   en: {
-    dlg_title: 'RetroTube — Notice', start: 'start', i_pc: 'My Computer', i_bin: 'Recycle Bin',
+    dlg_title: 'RetroTube — Notice', start: 'start',
+    ie_title: 'yipee.gif - Microsoft Internet Explorer', ie_menu: '<span>File</span><span>Edit</span><span>View</span><span>Favorites</span><span>Tools</span><span>Help</span>',
+    ie_back: 'Back', ie_search: 'Search', ie_favs: 'Favorites', ie_addr: 'Address', ie_go: 'Go', ie_done: 'Done', ie_zone: 'My Computer',
+    ie_path: 'C:\\Documents and Settings\\User\\Desktop\\yipee.gif',
+    ie_err: '<h2>The page cannot be displayed</h2><p>The file <b>yipee.gif</b> could not be found. It may have been moved, renamed or deleted.</p><hr><p>Please try the following:</p><ul><li>If you typed the page address, make sure that it is spelled correctly.</li><li>Click the <b>Refresh</b> button, or try again later.</li></ul>',
+    pv_title: 'stmonica.jpg - Windows Picture and Fax Viewer', pv_none: 'No preview available',
     title: 'Your ad blocker may show a warning',
     w_b: '<p>RetroTube is a fan project that recreates 2008 YouTube using real YouTube videos. It uses a <b>free address</b> from DuckDNS (<code>puellaefan.duckdns.org</code>).</p>' +
          '<p>Some blockers, like <b>AdGuard</b>, block <b>every</b> site on addresses like this without looking at the content — because free addresses are sometimes used by scammers. If you see <b>"Access blocked"</b>, it is only because of the address: click <b>"Proceed anyway"</b> or add an exception for <code>puellaefan.duckdns.org</code>.</p>',
@@ -233,7 +328,12 @@ var T = {
     w_now: 'Now Playing', w_lib: 'Library', w_radio: 'Radio Guide', w_ready: 'Connecting…', w_tune: 'Tuning: %s…', w_skip: 'Station is off the air — skipping to the next…', w_dead: 'No station answered. Try again later.', b_title: 'Welcome to RetroTube', b_text: 'Double-click <b>RetroTube</b> to enter the site, or <b>Windows Media Player</b> to listen to 2000s hits.', b_text_touch: 'Tap <b>RetroTube</b> to enter the site, or <b>Windows Media Player</b> to listen to 2000s hits.', w_off: 'Radio muted', w_paused: 'Paused', viz: ['Alchemy : Random', 'Bars and Waves : Bars', 'Ambience : Swirl']
   },
   es: {
-    dlg_title: 'RetroTube — Aviso', start: 'inicio', i_pc: 'Mi PC', i_bin: 'Papelera de reciclaje',
+    dlg_title: 'RetroTube — Aviso', start: 'inicio',
+    ie_title: 'yipee.gif - Microsoft Internet Explorer', ie_menu: '<span>Archivo</span><span>Edición</span><span>Ver</span><span>Favoritos</span><span>Herramientas</span><span>Ayuda</span>',
+    ie_back: 'Atrás', ie_search: 'Búsqueda', ie_favs: 'Favoritos', ie_addr: 'Dirección', ie_go: 'Ir', ie_done: 'Listo', ie_zone: 'Mi PC',
+    ie_path: 'C:\\Documents and Settings\\Usuario\\Escritorio\\yipee.gif',
+    ie_err: '<h2>No se puede mostrar la página</h2><p>No se encontró el archivo <b>yipee.gif</b>. Puede que se haya movido, cambiado de nombre o eliminado.</p><hr><p>Intente lo siguiente:</p><ul><li>Si escribió la dirección de la página, compruebe que sea correcta.</li><li>Haga clic en el botón <b>Actualizar</b> o inténtelo más tarde.</li></ul>',
+    pv_title: 'stmonica.jpg - Visor de imágenes y fax de Windows', pv_none: 'No hay vista previa disponible',
     title: 'Tu bloqueador de anuncios puede mostrar un aviso',
     w_b: '<p>RetroTube es un proyecto de fans que recrea el YouTube de 2008 usando vídeos reales de YouTube. Usa una <b>dirección gratuita</b> de DuckDNS (<code>puellaefan.duckdns.org</code>).</p>' +
          '<p>Algunos bloqueadores, como <b>AdGuard</b>, bloquean <b>todos</b> los sitios con direcciones de este tipo sin mirar el contenido — porque las direcciones gratuitas a veces las usan estafadores. Si ves <b>"Acceso bloqueado"</b>, es solo por la dirección: pulsa <b>"Continuar de todos modos"</b> o añade una excepción para <code>puellaefan.duckdns.org</code>.</p>',
@@ -319,7 +419,7 @@ radio.volume = 0.35;
 radio.muted = lsGet('rt:radio-mute') === '1';
 function station(){ return STATIONS[st]; }
 function playRadio(){
-  if(st < 0) return tune(Math.floor(Math.random() * STATIONS.length));    // first open: spin the roulette
+  if(st < 0) return tune(0);                                            // default station: The Mix Radio — Generation 2K
   if(!radio.getAttribute('src')) radio.src = station().url;
   radio.play().catch(function(){});
   startNowPlaying();
@@ -386,20 +486,43 @@ function startNowPlaying(){
 }
 
 /* ---------- windows: opened from desktop icons, focus on click, minimize/restore from the taskbar, close ---------- */
-var dlg = $('dlg'), wmpWin = $('wmpwin'), TASK = { dlg: $('t-dlg'), wmpwin: $('wmp') };
+var dlg = $('dlg'), wmpWin = $('wmpwin'), ieWin = $('iewin'), pvWin = $('pvwin');
+var WINS = [dlg, wmpWin, ieWin, pvWin];
+var TASK = { dlg: $('t-dlg'), wmpwin: $('wmp'), iewin: $('t-ie'), pvwin: $('t-pv') };
+function winForTask(b){ for(var id in TASK){ if(TASK[id] === b) return $(id); } return null; }
 function isOpen(w){ return !w.classList.contains('closed'); }
 function isShown(w){ return isOpen(w) && !w.classList.contains('min'); }
 function focusWin(w){   // w = window to bring to front, or null (none active)
-  [dlg, wmpWin].forEach(function(x){
+  WINS.forEach(function(x){
     var f = x === w; x.classList.toggle('front', f); x.classList.toggle('back', !f);
     TASK[x.id].classList.toggle('on', f && isShown(x));
   });
 }
-function nextShown(except){ return [dlg, wmpWin].filter(function(x){ return x !== except && isShown(x); })[0] || null; }
+function nextShown(except){ return WINS.filter(function(x){ return x !== except && isShown(x); })[0] || null; }
 function openWin(w){
+  var wasOpen = isOpen(w);
   w.classList.remove('closed', 'min'); TASK[w.id].classList.remove('closed'); focusWin(w); hideBalloon();
-  if(w === wmpWin) spin();
+  if(w === wmpWin && !wasOpen) tune(st < 0 ? 0 : st);          // starts on Generation 2K, then remembers the last station
+  if(w === ieWin) loadImg($('ie-img'), $('ie-err'));
+  if(w === pvWin){ loadImg($('pv-img'), $('pv-err')); pvReset(); }
 }
+/* images load only when their window first opens; if the file is missing, show the program's own error */
+function loadImg(img, err){
+  if(img.getAttribute('src')) return;
+  img.onerror = function(){ img.classList.add('closed'); err.classList.remove('closed'); };
+  img.onload = function(){ img.classList.remove('closed'); err.classList.add('closed'); };
+  img.src = img.getAttribute('data-src');
+}
+/* Picture and Fax Viewer: best fit / actual size / zoom / rotate really work */
+var pvZoom = 1, pvRot = 0;
+function pvApply(){ $('pv-img').style.transform = 'scale(' + pvZoom + ') rotate(' + pvRot + 'deg)'; }
+function pvReset(){ pvZoom = 1; pvRot = 0; $('pvwin').querySelector('.pv-stage').classList.remove('actual'); pvApply(); }
+$('pv-fit').onclick = function(){ pvZoom = 1; $('pvwin').querySelector('.pv-stage').classList.remove('actual'); pvApply(); };
+$('pv-actual').onclick = function(){ pvZoom = 1; $('pvwin').querySelector('.pv-stage').classList.add('actual'); pvApply(); };
+$('pv-zin').onclick = function(){ pvZoom = Math.min(4, pvZoom * 1.25); pvApply(); };
+$('pv-zout').onclick = function(){ pvZoom = Math.max(0.25, pvZoom / 1.25); pvApply(); };
+$('pv-rcw').onclick = function(){ pvRot += 90; pvApply(); };
+$('pv-rccw').onclick = function(){ pvRot -= 90; pvApply(); };
 function minimizeWin(w){ w.classList.add('min'); focusWin(nextShown(w)); }
 function closeWin(w){
   w.classList.add('closed'); TASK[w.id].classList.add('closed'); focusWin(nextShown(w));
@@ -417,16 +540,15 @@ $('wmp-pp').onclick = function(){
   if(!radio.getAttribute('src') || radio.paused) playRadio(); else radio.pause();
 };
 $('wmp-stop').onclick = function(){ radio.pause(); };
-$('wmp-prev').onclick = function(){ fails = 0; tune(st - 1); };
-$('wmp-next').onclick = function(){ fails = 0; tune(st + 1); };
-/* every time WMP opens: spin the roulette (never the same station twice in a row) */
-function spin(){ var i; do { i = Math.floor(Math.random() * STATIONS.length); } while(STATIONS.length > 1 && i === st); fails = 0; tune(i); }
+/* previous/next change the station AND the visualization; clicking the visualizer screen changes only the visualization */
+function nextViz(){ vizIdx = (vizIdx + 1) % PRESETS.length; }
+$('wmp-prev').onclick = function(){ fails = 0; nextViz(); tune(st - 1); };
+$('wmp-next').onclick = function(){ fails = 0; nextViz(); tune(st + 1); };
+$('viz').onclick = nextViz;
 
 /* desktop icons: click selects, double-click opens (a single tap on touch screens) */
-function openIcon(ic){
-  var k = ic.getAttribute('data-open');
-  if(k === 'rt') openWin(dlg); else if(k === 'wmp') openWin(wmpWin); else ding();   // My Computer / Recycle Bin: "not allowed"
-}
+var OPENS = { rt: dlg, wmp: wmpWin, gif: ieWin, jpg: pvWin };
+function openIcon(ic){ var w = OPENS[ic.getAttribute('data-open')]; if(w) openWin(w); else ding(); }
 [].forEach.call(document.querySelectorAll('.icon'), function(ic){
   ic.addEventListener('dblclick', function(){ openIcon(ic); });
   ic.addEventListener('pointerup', function(e){ if(e.pointerType && e.pointerType !== 'mouse') openIcon(ic); });
@@ -437,12 +559,14 @@ document.addEventListener('pointerdown', function(e){
   var t = e.target;
   if(t.closest('.tray') || t.closest('#balloon')) return;
   if(t.closest('.dis')) return;                                 // greyed-out title-bar buttons: nothing happens, like XP
-  var tb = t.closest('.task'); if(tb){ taskClick(tb === TASK.dlg ? dlg : wmpWin); return; }
+  var tb = t.closest('.task'); if(tb){ var tw = winForTask(tb); if(tw) taskClick(tw); return; }
   var w = t.closest('.window');
   if(w){
     if(t.closest('[aria-label="Minimize"]')){ minimizeWin(w); return; }
     if(t.closest('[aria-label="Close"]')){ closeWin(w); return; }
-    focusWin(w); return;
+    focusWin(w);
+    if(t.closest('.nope')) ding();                                  // IE menus/toolbar, viewer's print/delete etc.: "not available"
+    return;
   }
   if(t.closest('#start')){ ding(); return; }
   var ic = t.closest('.icon');
@@ -503,7 +627,6 @@ var PRESETS = [
     cx.globalCompositeOperation = 'source-over';
   }
 ];
-setInterval(function(){ vizIdx = (vizIdx + 1) % PRESETS.length; }, 20000);
 var lastStatus = '';
 function status(txt){ if(txt !== lastStatus){ lastStatus = txt; $('wmp-song').textContent = txt; } }
 function frame(ms){

@@ -78,6 +78,26 @@
   #vol{all:unset;cursor:pointer;display:flex;} #vol svg{width:16px;height:16px;}
   #clock{min-width:34px;text-align:center;}
 
+  /* ---------- fake Windows Media Player (behind the modal dialog, so clicking it just dings) ---------- */
+  #wmpwin{position:absolute;right:26px;top:34px;width:340px;}
+  #wmpwin .title-bar{filter:saturate(.35) brightness(1.12);}          /* inactive window */
+  #wmpwin .title-bar-text{display:flex;align-items:center;gap:5px;} #wmpwin .title-bar-text svg{width:14px;height:14px;}
+  .wmp{background:linear-gradient(#1e3a6e,#0f1f3f);padding:6px;border:1px solid #0a1630;color:#cfe0ff;}
+  .wmp-tabs{display:flex;gap:2px;margin-bottom:5px;}
+  .wmp-tabs span{flex:1;text-align:center;padding:3px 0;font-size:10px;border-radius:3px 3px 0 0;background:linear-gradient(#3b5d9a,#26437a);color:#dbe7ff;}
+  .wmp-tabs span.on{background:linear-gradient(#6f9be0,#3e6bbd);color:#fff;font-weight:bold;}
+  #viz{display:block;width:100%;height:190px;background:#000;border:1px solid #06102a;}
+  .wmp-info{display:flex;justify-content:space-between;gap:8px;margin:5px 1px 4px;font-size:10px;white-space:nowrap;}
+  .wmp-info span{overflow:hidden;text-overflow:ellipsis;} #wmp-viz{color:#8fb2ec;flex:none;}
+  .wmp-seek{height:5px;border-radius:3px;background:#0a1630;border:1px solid #3a5a90;margin:0 2px 6px;overflow:hidden;}
+  .wmp-seek div{height:100%;width:0;background:linear-gradient(90deg,#4fb3ff,#b6e3ff);}
+  .wmp-seek.live div{width:100%;}
+  .wmp-ctl{display:flex;align-items:center;justify-content:center;gap:8px;}
+  .wmp-ctl i{display:flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;background:radial-gradient(circle at 35% 30%,#9cc2f5,#3d68b5 60%,#233f78);box-shadow:0 1px 2px #000;}
+  .wmp-ctl i.big{width:32px;height:32px;background:radial-gradient(circle at 35% 30%,#b8f0a0,#46a82e 60%,#256b17);}
+  .wmp-ctl svg{width:11px;height:11px;} .wmp-ctl i.big svg{width:14px;height:14px;}
+  @media (max-width:1180px){ #wmpwin{display:none;} }
+
   @media (max-width:640px){
     .icons{display:none;}
     #dlg{top:44%;}
@@ -92,6 +112,25 @@
     <div class="icon" tabindex="-1"><svg class="img" viewBox="0 0 32 32"><rect x="3" y="4" width="26" height="18" rx="2" fill="#dfe6ef" stroke="#5a6b80"/><rect x="5.5" y="6.5" width="21" height="13" fill="#3a8ee6"/><path d="M6 19.5l7-6 5 4 8.5-8V19.5z" fill="#6fbf3a"/><rect x="12" y="22" width="8" height="3" fill="#b9c2cd"/><rect x="8" y="25" width="16" height="3" rx="1" fill="#dfe6ef" stroke="#5a6b80"/></svg><span data-t="i_pc"></span></div>
     <div class="icon" tabindex="-1"><svg class="img" viewBox="0 0 32 32"><path d="M8 9h16l-1.6 19H9.6z" fill="#cfe3f7" stroke="#4c6f96"/><rect x="6" y="6" width="20" height="3" rx="1" fill="#e8f1fb" stroke="#4c6f96"/><path d="M12 12v13M16 12v13M20 12v13" stroke="#7ea3c9" stroke-width="1.2"/><path d="M13 6V4.5h6V6" fill="none" stroke="#4c6f96"/></svg><span data-t="i_bin"></span></div>
     <div class="icon" tabindex="-1"><img class="img" src="favicon.ico" alt=""><span>RetroTube</span></div>
+  </div>
+
+  <div class="window" id="wmpwin" aria-hidden="true">
+    <div class="title-bar">
+      <div class="title-bar-text"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#f5a623" stroke="#b36b00"/><path d="M6 4.5v7l5.5-3.5z" fill="#fff"/></svg>Windows Media Player</div>
+      <div class="title-bar-controls"><button aria-label="Minimize"></button><button aria-label="Maximize"></button><button aria-label="Close"></button></div>
+    </div>
+    <div class="wmp">
+      <div class="wmp-tabs"><span class="on" data-t="w_now"></span><span data-t="w_lib"></span><span data-t="w_radio"></span></div>
+      <canvas id="viz" width="326" height="190"></canvas>
+      <div class="wmp-info"><span id="wmp-song"></span><span id="wmp-viz"></span></div>
+      <div class="wmp-seek" id="wmp-seek"><div></div></div>
+      <div class="wmp-ctl">
+        <i><svg viewBox="0 0 12 12"><rect x="2" y="2" width="8" height="8" fill="#fff"/></svg></i>
+        <i><svg viewBox="0 0 12 12"><path d="M1 2v8M11 2L4 6l7 4z" stroke="#fff" fill="#fff"/></svg></i>
+        <i class="big"><svg viewBox="0 0 14 14"><path id="wmp-play" d="M3 1.5v11L12.5 7z" fill="#fff"/><path id="wmp-pause" d="M3 2h3v10H3zM8 2h3v10H8z" fill="#fff" style="display:none"/></svg></i>
+        <i><svg viewBox="0 0 12 12"><path d="M11 2v8M1 2l7 4-7 4z" stroke="#fff" fill="#fff"/></svg></i>
+      </div>
+    </div>
   </div>
 
   <div class="window" id="dlg" role="dialog" aria-labelledby="dlgtitle">
@@ -146,7 +185,8 @@ var T = {
     remember: 'Ir direto para o RetroTube da próxima vez',
     again: 'Isso fica salvo só no seu navegador. Para ver este aviso de novo: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Projeto de fã não oficial · não afiliado ao YouTube, ao Google nem à Microsoft. Rádio: The Mix Radio — "Best Hits From Generation 2K".',
-    mute: 'Silenciar rádio', unmute: 'Tocar rádio'
+    mute: 'Silenciar rádio', unmute: 'Tocar rádio',
+    w_now: 'Em execução', w_lib: 'Biblioteca', w_radio: 'Rádio', w_ready: 'Pronto — clique em qualquer lugar para tocar', w_off: 'Rádio silenciado', viz: ['Alquimia : Aleatório', 'Barras e ondas : Espectro', 'Ambiente : Redemoinho']
   },
   en: {
     dlg_title: 'RetroTube — Notice', start: 'start', i_pc: 'My Computer', i_bin: 'Recycle Bin',
@@ -161,7 +201,8 @@ var T = {
     remember: 'Go straight to RetroTube next time',
     again: 'This is saved only in your browser. To see this notice again: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Unofficial fan project · not affiliated with YouTube, Google or Microsoft. Radio: The Mix Radio — "Best Hits From Generation 2K".',
-    mute: 'Mute radio', unmute: 'Play radio'
+    mute: 'Mute radio', unmute: 'Play radio',
+    w_now: 'Now Playing', w_lib: 'Library', w_radio: 'Radio Guide', w_ready: 'Ready — click anywhere to play', w_off: 'Radio muted', viz: ['Alchemy : Random', 'Bars and Waves : Bars', 'Ambience : Swirl']
   },
   es: {
     dlg_title: 'RetroTube — Aviso', start: 'inicio', i_pc: 'Mi PC', i_bin: 'Papelera de reciclaje',
@@ -176,7 +217,8 @@ var T = {
     remember: 'Ir directo a RetroTube la próxima vez',
     again: 'Esto se guarda solo en tu navegador. Para ver este aviso otra vez: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Proyecto de fans no oficial · no afiliado a YouTube, Google ni Microsoft. Radio: The Mix Radio — "Best Hits From Generation 2K".',
-    mute: 'Silenciar radio', unmute: 'Reproducir radio'
+    mute: 'Silenciar radio', unmute: 'Reproducir radio',
+    w_now: 'Reproduciendo', w_lib: 'Biblioteca', w_radio: 'Radio', w_ready: 'Listo — haz clic en cualquier lugar para escuchar', w_off: 'Radio silenciada', viz: ['Alquimia : Aleatorio', 'Barras y ondas : Barras', 'Ambiente : Remolino']
   }
 };
 function $(id){ return document.getElementById(id); }
@@ -253,7 +295,8 @@ $('vol').onclick = function(e){
 function nowPlaying(){
   fetch(NOWPLAYING).then(function(r){ return r.json(); }).then(function(j){
     var s = j && j.now_playing && j.now_playing.song; if(!s) return;
-    $('np').textContent = '♫ ' + (s.artist ? s.artist + ' – ' : '') + s.title;
+    songText = (s.artist ? s.artist + ' – ' : '') + s.title;
+    $('np').textContent = '♫ ' + songText;
     $('wmp').title = 'Windows Media Player — ' + $('np').textContent;
   }).catch(function(){});
 }
@@ -272,6 +315,71 @@ document.addEventListener('pointerdown', function(e){
   ding();
 }, true);
 [].forEach.call(document.querySelectorAll('.nope'), function(b){ b.addEventListener('click', function(e){ e.preventDefault(); }); });
+
+/* ---------- WMP visualizer ----------
+   The stream sends no CORS headers, so the browser won't let us read the actual audio; these presets are
+   drawn procedurally and pulse to a steady ~120 BPM "beat" instead. Runs only while the radio is audible. */
+var songText = '', vizIdx = 0, cv = $('viz'), cx = cv.getContext('2d'), W = cv.width, H = cv.height;
+var calm = window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches;
+var parts = []; for(var i = 0; i < 90; i++) parts.push({ a: Math.random() * 6.283, r: 10 + Math.random() * 90, s: 0.3 + Math.random() * 1.2, h: Math.random() * 360 });
+function beatAt(t){ var p = (t * 2) % 1; return 0.55 + 0.45 * Math.pow(1 - p, 3); }        // 120 BPM kick envelope
+var PRESETS = [
+  function alchemy(t, b){                                                                       // rotating colour spirals
+    cx.fillStyle = 'rgba(0,0,0,0.14)'; cx.fillRect(0, 0, W, H);
+    var arms = 6;
+    for(var k = 0; k < arms; k++){
+      for(var i = 0; i < 70; i++){
+        var ang = i * 0.17 + t * 1.25 + k * 6.283 / arms, r = i * 1.45 * (0.75 + 0.45 * b);
+        cx.fillStyle = 'hsl(' + ((t * 45 + i * 4 + k * 40) % 360) + ',95%,' + (45 + 15 * b) + '%)';
+        cx.beginPath(); cx.arc(W / 2 + Math.cos(ang) * r, H / 2 + Math.sin(ang) * r * 0.82, 0.8 + i * 0.035 * b, 0, 6.283); cx.fill();
+      }
+    }
+  },
+  function bars(t, b){                                                                          // fake spectrum + wave
+    cx.fillStyle = '#000'; cx.fillRect(0, 0, W, H);
+    var n = 28, bw = W / n;
+    for(var i = 0; i < n; i++){
+      var v = 0.15 + 0.85 * Math.abs(Math.sin(t * 2.6 + i * 0.62) * Math.sin(t * 1.3 + i * 1.7)) * (1 - i / n * 0.55) * b;
+      var h = v * (H - 30), g = cx.createLinearGradient(0, H, 0, H - h);
+      g.addColorStop(0, '#1fd11f'); g.addColorStop(0.6, '#f2e21b'); g.addColorStop(1, '#ff3b1f');
+      cx.fillStyle = g; cx.fillRect(i * bw + 1, H - h, bw - 2, h);
+    }
+    cx.strokeStyle = 'rgba(120,200,255,.9)'; cx.lineWidth = 1.5; cx.beginPath();
+    for(var x = 0; x <= W; x += 4){ var y = 34 + Math.sin(x * 0.045 + t * 5) * 14 * b + Math.sin(x * 0.11 - t * 3) * 6; if(x) cx.lineTo(x, y); else cx.moveTo(x, y); }
+    cx.stroke();
+  },
+  function ambience(t, b){                                                                      // swirling particles
+    cx.fillStyle = 'rgba(0,0,10,0.18)'; cx.fillRect(0, 0, W, H);
+    cx.globalCompositeOperation = 'lighter';
+    parts.forEach(function(p){
+      p.a += 0.012 * p.s * (0.6 + b); var r = p.r * (0.85 + 0.3 * b);
+      var x = W / 2 + Math.cos(p.a) * r * 1.5, y = H / 2 + Math.sin(p.a * 1.3) * r * 0.8;
+      cx.fillStyle = 'hsla(' + ((p.h + t * 30) % 360) + ',90%,60%,0.55)';
+      cx.beginPath(); cx.arc(x, y, 1.5 + 2.5 * b * p.s, 0, 6.283); cx.fill();
+    });
+    cx.globalCompositeOperation = 'source-over';
+  }
+];
+setInterval(function(){ vizIdx = (vizIdx + 1) % PRESETS.length; }, 20000);
+var lastStatus = '';
+function status(txt){ if(txt !== lastStatus){ lastStatus = txt; $('wmp-song').textContent = txt; } }
+function frame(ms){
+  requestAnimationFrame(frame);
+  if(document.hidden || cv.offsetParent === null) return;             // hidden tab or small screen: skip drawing
+  var live = started && !radio.paused && !radio.muted && radio.readyState >= 3;
+  $('wmp-seek').className = live ? 'wmp-seek live' : 'wmp-seek';
+  $('wmp-play').style.display = live ? 'none' : ''; $('wmp-pause').style.display = live ? '' : 'none';
+  $('wmp-viz').textContent = live ? T[L].viz[vizIdx] : '';
+  if(!live){
+    status(radio.muted ? T[L].w_off : T[L].w_ready);
+    cx.fillStyle = 'rgba(0,0,0,0.2)'; cx.fillRect(0, 0, W, H);
+    return;
+  }
+  status(songText ? '♫ ' + songText : 'The Mix Radio — Generation 2K');
+  var t = ms / 1000 * (calm ? 0.3 : 1);
+  PRESETS[vizIdx](t, calm ? 0.8 : beatAt(t));
+}
+requestAnimationFrame(frame);
 
 /* ---------- clock ---------- */
 function tick(){ $('clock').textContent = new Date().toLocaleTimeString(L === 'en' ? 'en-US' : L, { hour: '2-digit', minute: '2-digit' }); }

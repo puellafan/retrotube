@@ -13,115 +13,270 @@
   if(skip && !/[?&]aviso\b/.test(location.search)){ document.documentElement.style.visibility = 'hidden'; location.replace('https://puellaefan.duckdns.org/'); }
 })();
 </script>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/xp.css@0.2.6/dist/XP.css">
 <style>
-  body{margin:0;background:#fff;font-family:Arial,Helvetica,sans-serif;font-size:13px;color:#333;}
-  a{color:#0033cc;text-decoration:none;} a:hover{text-decoration:underline;}
-  #page{max-width:680px;margin:0 auto;padding:18px 16px 30px;}
-  .top{display:flex;align-items:flex-end;justify-content:space-between;gap:12px;border-bottom:1px solid #ccc;padding-bottom:10px;}
-  .top img{height:52px;display:block;}
-  .langs{font-size:12px;color:#666;} .langs a.on{color:#333;font-weight:bold;}
-  h1{font-size:20px;color:#000;margin:18px 0 6px;}
-  .lead{font-size:14px;color:#444;margin:0 0 16px;line-height:1.5;}
-  .box{border:1px solid #ccc;margin-bottom:12px;}
-  .box h2{margin:0;font-size:14px;color:#333;background:#eee;background-image:linear-gradient(#f6f6f6,#e4e4e4);border-bottom:1px solid #ccc;padding:6px 10px;}
-  .box p,.box ul{margin:10px 12px;line-height:1.55;}
-  .box li{margin-bottom:4px;}
-  .warn{background:#fff8d5;border-color:#e6d97a;} .warn h2{background:#fff3b5;background-image:none;border-color:#e6d97a;color:#665c00;}
-  code{background:#f3f3f3;border:1px solid #ddd;padding:0 3px;font-size:12px;}
-  .enter{text-align:center;margin:22px 0 10px;}
-  .enter a{display:inline-block;padding:10px 26px;font-size:16px;font-weight:bold;color:#000;background:#fed81c;background-image:linear-gradient(#fff3a6,#fec10a);border:1px solid #e0a800;border-radius:4px;}
-  .enter a:hover{text-decoration:none;background-image:linear-gradient(#fff8c4,#ffcf2e);}
-  .addr{text-align:center;color:#888;font-size:12px;}
-  .remember{text-align:center;margin:10px 0 0;font-size:12px;color:#555;} .remember input{vertical-align:-2px;margin-right:5px;}
-  .again{text-align:center;color:#999;font-size:11px;margin-top:6px;}
-  .foot{margin-top:26px;border-top:1px solid #eee;padding-top:10px;text-align:center;color:#999;font-size:11px;line-height:1.6;}
+  html,body{margin:0;height:100%;overflow:hidden;}
+  body{font-family:Tahoma,"Segoe UI",Arial,sans-serif;font-size:11px;user-select:none;}
+
+  /* ---------- desktop: a hand-drawn nod to the classic green hill + blue sky (not Microsoft's photo) ---------- */
+  #desk{position:fixed;left:0;top:0;right:0;bottom:30px;overflow:hidden;
+    background:
+      radial-gradient(18% 7% at 22% 20%, rgba(255,255,255,.85), rgba(255,255,255,0) 70%),
+      radial-gradient(14% 5% at 30% 17%, rgba(255,255,255,.7), rgba(255,255,255,0) 70%),
+      radial-gradient(22% 8% at 68% 14%, rgba(255,255,255,.75), rgba(255,255,255,0) 70%),
+      radial-gradient(12% 4% at 80% 24%, rgba(255,255,255,.6), rgba(255,255,255,0) 70%),
+      radial-gradient(120% 60% at 38% 108%, #9ad14f 0%, #6fb52f 38%, #4f9722 58%, rgba(79,151,34,0) 58.4%),
+      radial-gradient(90% 45% at 88% 110%, #7fbf3d 0%, #5aa327 50%, rgba(90,163,39,0) 50.5%),
+      linear-gradient(#1f5fd0 0%, #3d86e6 35%, #87bdf2 62%, #c9e2f8 78%, #d8ecfa 100%);}
+
+  /* desktop icons */
+  .icons{position:absolute;left:10px;top:10px;display:flex;flex-direction:column;gap:14px;}
+  .icon{width:76px;text-align:center;color:#fff;text-shadow:1px 1px 2px #000,0 0 3px #000;cursor:default;}
+  .icon .img{width:34px;height:34px;margin:0 auto 4px;display:block;}
+  .icon span{display:inline-block;padding:1px 3px;line-height:1.25;}
+  .icon.sel span{background:#316ac5;text-shadow:none;}
+  .icon.sel .img{filter:brightness(.75) sepia(1) hue-rotate(180deg) saturate(3);}
+
+  /* the dialog */
+  #dlg{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:470px;max-width:94vw;user-select:text;}
+  #dlg .title-bar-text{display:flex;align-items:center;gap:5px;}
+  #dlg .title-bar-text img{width:14px;height:14px;}
+  #dlg.flash .title-bar{filter:saturate(.25) brightness(1.25);}
+  .msg{display:flex;gap:12px;align-items:flex-start;padding:4px 2px 0;}
+  .msg svg{flex:none;width:34px;height:34px;}
+  .msg h1{font-size:13px;margin:0 0 6px;font-weight:bold;}
+  .msg p{margin:0 0 7px;line-height:1.45;font-size:11px;}
+  .msg code{font-family:Tahoma,Arial,sans-serif;background:#fff;border:1px solid #c5c5c5;padding:0 3px;}
+  #details{margin:4px 2px 8px 48px;padding:6px 10px;background:#fff;border:1px solid #7f9db9;max-height:150px;overflow:auto;}
+  #details ul{margin:2px 0;padding-left:16px;line-height:1.45;} #details li{margin-bottom:3px;}
+  .remember{margin:6px 0 0 48px;}
+  .btns{display:flex;justify-content:flex-end;gap:6px;margin-top:10px;}
+  .btns button{min-width:86px;}
+  #go{font-weight:bold;}
+  .again,.fine{margin:8px 0 0 48px;color:#555;font-size:10px;line-height:1.4;}
+  .fine{color:#777;border-top:1px solid #d7d4c8;padding-top:6px;}
+
+  /* ---------- taskbar ---------- */
+  #taskbar{position:fixed;left:0;right:0;bottom:0;height:30px;display:flex;align-items:stretch;
+    background:linear-gradient(#3168d5 0%, #4993e6 8%, #2157d7 40%, #2663e0 88%, #1941a5 100%);}
+  #start{all:unset;display:flex;align-items:center;gap:5px;padding:0 20px 0 10px;margin-right:8px;color:#fff;font:italic bold 17px "Franklin Gothic Medium",Tahoma,Arial,sans-serif;
+    text-shadow:1px 1px 1px #1a4a10;border-radius:0 12px 12px 0;cursor:default;
+    background:linear-gradient(#5eac56 0%, #3c9e33 12%, #2f8f25 50%, #3aa031 85%, #2b7a24 100%);box-shadow:inset -2px 0 4px rgba(0,0,0,.25);}
+  #start:active{filter:brightness(.85);}
+  .flag{width:18px;height:18px;display:grid;grid-template-columns:1fr 1fr;gap:1px;transform:skewY(-6deg) rotate(-4deg);}
+  .flag i{display:block;border-radius:2px 5px 2px 5px;} .flag i:nth-child(1){background:#f65314;} .flag i:nth-child(2){background:#7cbb00;} .flag i:nth-child(3){background:#00a1f1;} .flag i:nth-child(4){background:#ffbb00;}
+  .tasks{flex:1;display:flex;gap:3px;align-items:center;min-width:0;overflow:hidden;}
+  .task{all:unset;box-sizing:border-box;height:24px;width:190px;min-width:60px;flex:0 1 190px;padding:0 8px;display:flex;align-items:center;gap:5px;
+    color:#fff;font:11px Tahoma,Arial,sans-serif;border-radius:3px;cursor:default;white-space:nowrap;overflow:hidden;
+    background:linear-gradient(#3c81f3,#2663e0);box-shadow:inset 0 0 0 1px rgba(0,0,0,.25), inset 1px 1px 0 rgba(255,255,255,.3);}
+  .task.on{background:linear-gradient(#1e4fc0,#1a48b3);box-shadow:inset 1px 1px 2px rgba(0,0,0,.45);}
+  .task img,.task svg{width:16px;height:16px;flex:none;}
+  .task .t{overflow:hidden;text-overflow:ellipsis;}
+  .tray{display:flex;align-items:center;gap:8px;padding:0 10px 0 12px;color:#fff;font:11px Tahoma,Arial,sans-serif;
+    background:linear-gradient(#0c8dea,#14a0f0 10%,#1290e9 50%,#0f7fd9);border-left:1px solid #0b5fb5;box-shadow:inset 1px 0 1px rgba(255,255,255,.35);}
+  .langs a{color:#fff;text-decoration:none;opacity:.75;} .langs a.on{opacity:1;font-weight:bold;text-decoration:underline;}
+  #vol{all:unset;cursor:pointer;display:flex;} #vol svg{width:16px;height:16px;}
+  #clock{min-width:34px;text-align:center;}
+
+  @media (max-width:640px){
+    .icons{display:none;}
+    #dlg{top:44%;}
+    .task{flex-basis:44px;} .task .t{display:none;}
+    #start{padding-right:12px;font-size:15px;}
+  }
 </style>
 </head>
 <body>
-<div id="page">
-  <div class="top">
-    <img src="logo.png" alt="RetroTube">
-    <div class="langs"><a href="#" data-l="pt">Português</a> | <a href="#" data-l="en">English</a> | <a href="#" data-l="es">Español</a></div>
+<div id="desk">
+  <div class="icons">
+    <div class="icon" tabindex="-1"><svg class="img" viewBox="0 0 32 32"><rect x="3" y="4" width="26" height="18" rx="2" fill="#dfe6ef" stroke="#5a6b80"/><rect x="5.5" y="6.5" width="21" height="13" fill="#3a8ee6"/><path d="M6 19.5l7-6 5 4 8.5-8V19.5z" fill="#6fbf3a"/><rect x="12" y="22" width="8" height="3" fill="#b9c2cd"/><rect x="8" y="25" width="16" height="3" rx="1" fill="#dfe6ef" stroke="#5a6b80"/></svg><span data-t="i_pc"></span></div>
+    <div class="icon" tabindex="-1"><svg class="img" viewBox="0 0 32 32"><path d="M8 9h16l-1.6 19H9.6z" fill="#cfe3f7" stroke="#4c6f96"/><rect x="6" y="6" width="20" height="3" rx="1" fill="#e8f1fb" stroke="#4c6f96"/><path d="M12 12v13M16 12v13M20 12v13" stroke="#7ea3c9" stroke-width="1.2"/><path d="M13 6V4.5h6V6" fill="none" stroke="#4c6f96"/></svg><span data-t="i_bin"></span></div>
+    <div class="icon" tabindex="-1"><img class="img" src="favicon.ico" alt=""><span>RetroTube</span></div>
   </div>
 
-  <h1 data-t="title"></h1>
-  <p class="lead" data-t="lead"></p>
-
-  <div class="box warn"><h2 data-t="w_h"></h2><div data-t="w_b"></div></div>
-  <div class="box"><h2 data-t="a_h"></h2><div data-t="a_b"></div></div>
-
-  <div class="enter"><a id="go" href="https://puellaefan.duckdns.org/" data-t="enter"></a></div>
-  <div class="addr">puellaefan.duckdns.org</div>
-  <div class="remember"><label><input type="checkbox" id="remember" checked><span data-t="remember"></span></label></div>
-  <div class="again" data-t="again"></div>
-
-  <div class="foot" data-t="foot"></div>
+  <div class="window" id="dlg" role="dialog" aria-labelledby="dlgtitle">
+    <div class="title-bar">
+      <div class="title-bar-text" id="dlgtitle"><img src="favicon.ico" alt=""><span data-t="dlg_title"></span></div>
+      <div class="title-bar-controls"><button aria-label="Help" class="nope"></button><button aria-label="Close" class="nope"></button></div>
+    </div>
+    <div class="window-body">
+      <div class="msg">
+        <svg viewBox="0 0 34 34" aria-hidden="true"><path d="M17 2L32 30H2z" fill="#fcd116" stroke="#8a6d00" stroke-width="1.2" stroke-linejoin="round"/><rect x="15.4" y="11" width="3.2" height="11" rx="1.2" fill="#222"/><circle cx="17" cy="25.6" r="1.9" fill="#222"/></svg>
+        <div><h1 data-t="title"></h1><div data-t="w_b"></div></div>
+      </div>
+      <div id="details" hidden data-t="a_b"></div>
+      <div class="field-row remember"><input type="checkbox" id="remember" checked><label for="remember" data-t="remember"></label></div>
+      <section class="btns"><button id="go" data-t="enter"></button><button id="det"></button></section>
+      <p class="again" data-t="again"></p>
+      <p class="fine" data-t="foot"></p>
+      <noscript><p><a href="https://puellaefan.duckdns.org/">puellaefan.duckdns.org</a></p></noscript>
+    </div>
+  </div>
 </div>
+
+<div id="taskbar">
+  <button id="start" class="nope"><span class="flag"><i></i><i></i><i></i><i></i></span><span data-t="start"></span></button>
+  <div class="tasks">
+    <button class="task on" id="t-dlg"><img src="favicon.ico" alt=""><span class="t" data-t="dlg_title"></span></button>
+    <button class="task nope" id="wmp"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#f5a623" stroke="#b36b00"/><path d="M6 4.5v7l5.5-3.5z" fill="#fff"/></svg><span class="t" id="np">Windows Media Player</span></button>
+  </div>
+  <div class="tray">
+    <span class="langs"><a href="#" data-l="pt">PT</a> <a href="#" data-l="en">EN</a> <a href="#" data-l="es">ES</a></span>
+    <button id="vol" title=""><svg viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="#fff"/><path id="waves" d="M11 5.5a3.5 3.5 0 010 5M12.8 3.8a6 6 0 010 8.4" fill="none" stroke="#fff" stroke-width="1.3"/><path id="mutex" d="M11 5.5l4 5M15 5.5l-4 5" stroke="#ff5a5a" stroke-width="1.6" style="display:none"/></svg></button>
+    <span id="clock"></span>
+  </div>
+</div>
+
+<audio id="radio" preload="none" src="https://jupiter.themixradio.ca/listen/station15/radio.mp3"></audio>
+
 <script>
 var SITE = 'https://puellaefan.duckdns.org/';
+var NOWPLAYING = 'https://jupiter.themixradio.ca/api/nowplaying/20';   // "Best Hits From Generation 2K"
 var T = {
   pt: {
-    title: 'RetroTube — o YouTube de 2008, de volta',
-    lead: 'Um projeto de fã que recria a aparência do YouTube por volta de 2008, usando os vídeos do YouTube de verdade.',
-    w_h: 'Antes de entrar: seu bloqueador de anúncios pode mostrar um aviso',
-    w_b: '<p>O RetroTube usa um <b>endereço gratuito</b> do serviço DuckDNS (<code>puellaefan.duckdns.org</code>). Alguns bloqueadores, como o <b>AdGuard</b>, bloqueiam <b>todos</b> os sites com endereços desse tipo, sem olhar o conteúdo — porque endereços gratuitos às vezes são usados por golpistas.</p>' +
-         '<p>Se aparecer <b>"Acesso bloqueado"</b>, é só por causa do endereço, não do site. Você pode clicar em <b>"Continuar mesmo assim"</b> ou adicionar uma exceção para <code>puellaefan.duckdns.org</code> no seu bloqueador.</p>',
-    a_h: 'O que o RetroTube faz (e o que não faz)',
+    dlg_title: 'RetroTube — Aviso', start: 'iniciar', i_pc: 'Meu computador', i_bin: 'Lixeira',
+    title: 'Seu bloqueador de anúncios pode mostrar um aviso',
+    w_b: '<p>O RetroTube é um projeto de fã que recria o YouTube de 2008 usando os vídeos do YouTube de verdade. Ele usa um <b>endereço gratuito</b> do DuckDNS (<code>puellaefan.duckdns.org</code>).</p>' +
+         '<p>Alguns bloqueadores, como o <b>AdGuard</b>, bloqueiam <b>todos</b> os sites com endereços desse tipo, sem olhar o conteúdo — porque endereços gratuitos às vezes são usados por golpistas. Se aparecer <b>"Acesso bloqueado"</b>, é só por causa do endereço: clique em <b>"Continuar mesmo assim"</b> ou adicione uma exceção para <code>puellaefan.duckdns.org</code>.</p>',
     a_b: '<ul><li>Mostra buscas, canais e comentários do <b>YouTube real</b>, com visual de 2008.</li>' +
          '<li>Os vídeos tocam no <b>player oficial do YouTube</b> — nada é baixado nem hospedado no site, e as visualizações contam para os criadores.</li>' +
          '<li><b>Sem</b> anúncios, sem login, sem contas, sem downloads, sem rastreadores.</li>' +
          '<li>Seus favoritos ficam salvos <b>só no seu navegador</b>. Detalhes completos na página <b>Sobre</b> do site.</li></ul>',
-    enter: 'Entrar no RetroTube →',
+    enter: 'Entrar no RetroTube', details: 'Detalhes >>', less: '<< Detalhes',
     remember: 'Ir direto para o RetroTube da próxima vez',
     again: 'Isso fica salvo só no seu navegador. Para ver este aviso de novo: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
-    foot: 'Projeto de fã não oficial · não afiliado ao YouTube nem ao Google.<br>YouTube e o logotipo do YouTube são marcas do Google.'
+    foot: 'Projeto de fã não oficial · não afiliado ao YouTube, ao Google nem à Microsoft. Rádio: The Mix Radio — "Best Hits From Generation 2K".',
+    mute: 'Silenciar rádio', unmute: 'Tocar rádio'
   },
   en: {
-    title: 'RetroTube — 2008 YouTube, back again',
-    lead: 'A fan project that recreates how YouTube looked around 2008, using real YouTube videos.',
-    w_h: 'Before you enter: your ad blocker may show a warning',
-    w_b: '<p>RetroTube uses a <b>free address</b> from the DuckDNS service (<code>puellaefan.duckdns.org</code>). Some blockers, like <b>AdGuard</b>, block <b>every</b> site on addresses like this without looking at the content — because free addresses are sometimes used by scammers.</p>' +
-         '<p>If you see <b>"Access blocked"</b>, it is only because of the address, not the site. You can click <b>"Proceed anyway"</b> or add an exception for <code>puellaefan.duckdns.org</code> in your blocker.</p>',
-    a_h: 'What RetroTube does (and doesn\'t do)',
+    dlg_title: 'RetroTube — Notice', start: 'start', i_pc: 'My Computer', i_bin: 'Recycle Bin',
+    title: 'Your ad blocker may show a warning',
+    w_b: '<p>RetroTube is a fan project that recreates 2008 YouTube using real YouTube videos. It uses a <b>free address</b> from DuckDNS (<code>puellaefan.duckdns.org</code>).</p>' +
+         '<p>Some blockers, like <b>AdGuard</b>, block <b>every</b> site on addresses like this without looking at the content — because free addresses are sometimes used by scammers. If you see <b>"Access blocked"</b>, it is only because of the address: click <b>"Proceed anyway"</b> or add an exception for <code>puellaefan.duckdns.org</code>.</p>',
     a_b: '<ul><li>Shows searches, channels and comments from the <b>real YouTube</b>, with a 2008 look.</li>' +
          '<li>Videos play in the <b>official YouTube player</b> — nothing is downloaded or hosted on the site, and views count for the creators.</li>' +
          '<li><b>No</b> ads, no login, no accounts, no downloads, no trackers.</li>' +
          '<li>Your favorites are saved <b>only in your browser</b>. Full details on the site\'s <b>About</b> page.</li></ul>',
-    enter: 'Enter RetroTube →',
+    enter: 'Enter RetroTube', details: 'Details >>', less: '<< Details',
     remember: 'Go straight to RetroTube next time',
     again: 'This is saved only in your browser. To see this notice again: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
-    foot: 'Unofficial fan project · not affiliated with YouTube or Google.<br>YouTube and the YouTube logo are trademarks of Google.'
+    foot: 'Unofficial fan project · not affiliated with YouTube, Google or Microsoft. Radio: The Mix Radio — "Best Hits From Generation 2K".',
+    mute: 'Mute radio', unmute: 'Play radio'
   },
   es: {
-    title: 'RetroTube — el YouTube de 2008, de vuelta',
-    lead: 'Un proyecto de fans que recrea el aspecto de YouTube alrededor de 2008, usando vídeos reales de YouTube.',
-    w_h: 'Antes de entrar: tu bloqueador de anuncios puede mostrar un aviso',
-    w_b: '<p>RetroTube usa una <b>dirección gratuita</b> del servicio DuckDNS (<code>puellaefan.duckdns.org</code>). Algunos bloqueadores, como <b>AdGuard</b>, bloquean <b>todos</b> los sitios con direcciones de este tipo sin mirar el contenido — porque las direcciones gratuitas a veces las usan estafadores.</p>' +
-         '<p>Si ves <b>"Acceso bloqueado"</b>, es solo por la dirección, no por el sitio. Puedes pulsar <b>"Continuar de todos modos"</b> o añadir una excepción para <code>puellaefan.duckdns.org</code> en tu bloqueador.</p>',
-    a_h: 'Qué hace RetroTube (y qué no)',
+    dlg_title: 'RetroTube — Aviso', start: 'inicio', i_pc: 'Mi PC', i_bin: 'Papelera de reciclaje',
+    title: 'Tu bloqueador de anuncios puede mostrar un aviso',
+    w_b: '<p>RetroTube es un proyecto de fans que recrea el YouTube de 2008 usando vídeos reales de YouTube. Usa una <b>dirección gratuita</b> de DuckDNS (<code>puellaefan.duckdns.org</code>).</p>' +
+         '<p>Algunos bloqueadores, como <b>AdGuard</b>, bloquean <b>todos</b> los sitios con direcciones de este tipo sin mirar el contenido — porque las direcciones gratuitas a veces las usan estafadores. Si ves <b>"Acceso bloqueado"</b>, es solo por la dirección: pulsa <b>"Continuar de todos modos"</b> o añade una excepción para <code>puellaefan.duckdns.org</code>.</p>',
     a_b: '<ul><li>Muestra búsquedas, canales y comentarios del <b>YouTube real</b>, con aspecto de 2008.</li>' +
          '<li>Los vídeos se reproducen en el <b>reproductor oficial de YouTube</b> — no se descarga ni aloja nada en el sitio, y las visitas cuentan para los creadores.</li>' +
          '<li><b>Sin</b> anuncios, sin inicio de sesión, sin cuentas, sin descargas, sin rastreadores.</li>' +
          '<li>Tus favoritos se guardan <b>solo en tu navegador</b>. Todos los detalles en la página <b>Acerca de</b> del sitio.</li></ul>',
-    enter: 'Entrar a RetroTube →',
+    enter: 'Entrar a RetroTube', details: 'Detalles >>', less: '<< Detalles',
     remember: 'Ir directo a RetroTube la próxima vez',
     again: 'Esto se guarda solo en tu navegador. Para ver este aviso otra vez: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
-    foot: 'Proyecto de fans no oficial · no afiliado a YouTube ni a Google.<br>YouTube y el logotipo de YouTube son marcas de Google.'
+    foot: 'Proyecto de fans no oficial · no afiliado a YouTube, Google ni Microsoft. Radio: The Mix Radio — "Best Hits From Generation 2K".',
+    mute: 'Silenciar radio', unmute: 'Reproducir radio'
   }
 };
+function $(id){ return document.getElementById(id); }
+function lsGet(k){ try { return localStorage.getItem(k); } catch(e){ return null; } }
+function lsSet(k, v){ try { if(v == null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch(e){} }
+
+/* ---------- language ---------- */
+var L = 'pt', detOpen = false;
 function pick(){ var l = (navigator.language || 'pt').slice(0, 2).toLowerCase(); return T[l] ? l : 'en'; }
 function apply(l){
-  var d = T[l]; document.documentElement.lang = l;
+  L = l; var d = T[l]; document.documentElement.lang = l;
   [].forEach.call(document.querySelectorAll('[data-t]'), function(el){ el.innerHTML = d[el.getAttribute('data-t')]; });
   [].forEach.call(document.querySelectorAll('.langs a'), function(a){ a.className = a.getAttribute('data-l') === l ? 'on' : ''; });
-  document.title = d.title;
+  $('det').textContent = detOpen ? d.less : d.details;
+  document.title = d.dlg_title;
+  setVolIcon(); tick();
 }
 [].forEach.call(document.querySelectorAll('.langs a'), function(a){ a.onclick = function(e){ e.preventDefault(); apply(a.getAttribute('data-l')); }; });
-var go = document.getElementById('go');
-go.href = SITE;
-go.onclick = function(){   // remember the choice (or forget it, if unticked); the link then navigates normally
-  try { if(document.getElementById('remember').checked) localStorage.setItem('rt:entered', '1'); else localStorage.removeItem('rt:entered'); } catch(e){}
+
+/* ---------- the dialog ---------- */
+$('det').onclick = function(){ detOpen = !detOpen; $('details').hidden = !detOpen; $('det').textContent = detOpen ? T[L].less : T[L].details; };
+$('go').onclick = function(){
+  if($('remember').checked) lsSet('rt:entered', '1'); else lsSet('rt:entered', null);
+  location.href = SITE;
 };
+
+/* ---------- error sound: erro.mp3 / erro.wav from the repo, synthesized ding until one exists ---------- */
+var errAudio = null, lastDing = 0, actx = null;
+(function load(list){
+  if(!list.length) return;
+  var a = new Audio(); a.preload = 'auto';
+  a.oncanplaythrough = function(){ errAudio = a; a.oncanplaythrough = null; };
+  a.onerror = function(){ load(list.slice(1)); };
+  a.src = list[0];
+})(['erro.mp3', 'erro.wav']);
+function synth(){
+  try {
+    actx = actx || new (window.AudioContext || window.webkitAudioContext)();
+    var t0 = actx.currentTime;
+    [[880, 0], [660, 0.09]].forEach(function(n){
+      var o = actx.createOscillator(), g = actx.createGain(); o.type = 'triangle'; o.frequency.value = n[0];
+      g.gain.setValueAtTime(0.0001, t0 + n[1]); g.gain.exponentialRampToValueAtTime(0.25, t0 + n[1] + 0.01); g.gain.exponentialRampToValueAtTime(0.0001, t0 + n[1] + 0.35);
+      o.connect(g); g.connect(actx.destination); o.start(t0 + n[1]); o.stop(t0 + n[1] + 0.4);
+    });
+  } catch(e){}
+}
+function ding(){
+  var now = Date.now(); if(now - lastDing < 180) return; lastDing = now;
+  if(errAudio){ var a = errAudio.cloneNode(); a.volume = 0.8; a.play().catch(synth); } else synth();
+  /* like XP: the modal dialog's title bar flashes when you click outside it */
+  var d = $('dlg'), n = 0;
+  (function blink(){ d.classList.toggle('flash'); if(++n < 6) setTimeout(blink, 70); else d.classList.remove('flash'); })();
+}
+
+/* ---------- radio: browsers only allow sound after the first click, so it starts then ---------- */
+var radio = $('radio'), started = false;
+radio.volume = 0.35;
+radio.muted = lsGet('rt:radio-mute') === '1';
+function startRadio(){
+  if(started || radio.muted) return;
+  started = true;
+  radio.play().catch(function(){ started = false; });
+}
+function setVolIcon(){
+  $('waves').style.display = radio.muted ? 'none' : ''; $('mutex').style.display = radio.muted ? '' : 'none';
+  $('vol').title = radio.muted ? T[L].unmute : T[L].mute;
+}
+$('vol').onclick = function(e){
+  e.stopPropagation();
+  radio.muted = !radio.muted; lsSet('rt:radio-mute', radio.muted ? '1' : null);
+  if(!radio.muted){ if(!started) startRadio(); else if(radio.paused) radio.play().catch(function(){}); }
+  setVolIcon();
+};
+function nowPlaying(){
+  fetch(NOWPLAYING).then(function(r){ return r.json(); }).then(function(j){
+    var s = j && j.now_playing && j.now_playing.song; if(!s) return;
+    $('np').textContent = '♫ ' + (s.artist ? s.artist + ' – ' : '') + s.title;
+    $('wmp').title = 'Windows Media Player — ' + $('np').textContent;
+  }).catch(function(){});
+}
+nowPlaying(); setInterval(nowPlaying, 30000);
+
+/* ---------- every click outside the dialog is "not allowed" (except the tray) ---------- */
+document.addEventListener('pointerdown', function(e){
+  startRadio();
+  var t = e.target;
+  if(t.closest('.tray')) return;
+  if(t.closest('#dlg') && !t.closest('.nope')) return;
+  if(t.closest('#t-dlg')) return;
+  var ic = t.closest('.icon');
+  [].forEach.call(document.querySelectorAll('.icon.sel'), function(i){ i.classList.remove('sel'); });
+  if(ic) ic.classList.add('sel');
+  ding();
+}, true);
+[].forEach.call(document.querySelectorAll('.nope'), function(b){ b.addEventListener('click', function(e){ e.preventDefault(); }); });
+
+/* ---------- clock ---------- */
+function tick(){ $('clock').textContent = new Date().toLocaleTimeString(L === 'en' ? 'en-US' : L, { hour: '2-digit', minute: '2-digit' }); }
+tick(); setInterval(tick, 10000);
+
 apply(pick());
 </script>
 </body>

@@ -100,6 +100,7 @@
   .wmp-ctl i.big{width:32px;height:32px;background:radial-gradient(circle at 35% 30%,#b8f0a0,#46a82e 60%,#256b17);}
   .wmp-ctl svg{width:11px;height:11px;} .wmp-ctl i.big svg{width:14px;height:14px;}
   .wmp-ctl i{cursor:default;} .wmp-ctl i.off{opacity:.45;}
+  .title-bar-controls button.dis{filter:grayscale(1) brightness(1.15);opacity:.55;cursor:default;}
   /* not enough room beside the dialog: WMP opens in the bottom-right corner, overlapping it like real windows */
   @media (max-width:1180px){ #wmpwin{top:auto;bottom:14px;right:14px;} }
 
@@ -123,7 +124,7 @@
   <div class="window" id="wmpwin" aria-hidden="true">
     <div class="title-bar">
       <div class="title-bar-text"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#f5a623" stroke="#b36b00"/><path d="M6 4.5v7l5.5-3.5z" fill="#fff"/></svg>Windows Media Player</div>
-      <div class="title-bar-controls"><button aria-label="Minimize"></button><button aria-label="Maximize"></button><button aria-label="Close"></button></div>
+      <div class="title-bar-controls"><button aria-label="Minimize"></button><button aria-label="Maximize" class="dis" aria-disabled="true" tabindex="-1"></button><button aria-label="Close" class="dis" aria-disabled="true" tabindex="-1"></button></div>
     </div>
     <div class="wmp">
       <div class="wmp-tabs"><span class="on" data-t="w_now"></span><span data-t="w_lib"></span><span data-t="w_radio"></span></div>
@@ -142,7 +143,7 @@
   <div class="window" id="dlg" role="dialog" aria-labelledby="dlgtitle">
     <div class="title-bar">
       <div class="title-bar-text" id="dlgtitle"><img src="favicon.ico" alt=""><span data-t="dlg_title"></span></div>
-      <div class="title-bar-controls"><button aria-label="Help" class="nope"></button><button aria-label="Close" class="nope"></button></div>
+      <div class="title-bar-controls"><button aria-label="Help" class="dis" aria-disabled="true" tabindex="-1"></button><button aria-label="Close" class="dis" aria-disabled="true" tabindex="-1"></button></div>
     </div>
     <div class="window-body">
       <div class="msg">
@@ -333,6 +334,7 @@ document.addEventListener('pointerdown', function(e){
   var t = e.target;
   if(!t.closest('#wmp-pp, #wmp-stop, #vol')) startRadio();   // those buttons decide for themselves
   if(t.closest('.tray')) return;
+  if(t.closest('.dis')) return;                                 // greyed-out title-bar buttons: nothing happens, like XP
   if(t.closest('#t-dlg')){ focusWin(dlg); return; }
   if(t.closest('#wmp')){
     if(wmpWin.classList.contains('min')) restoreWmp();
@@ -341,8 +343,7 @@ document.addEventListener('pointerdown', function(e){
     return;
   }
   if(t.closest('#wmpwin')){
-    if(t.closest('[aria-label="Minimize"], [aria-label="Close"]')){ minimizeWmp(); return; }
-    if(t.closest('[aria-label="Maximize"]')){ ding(); return; }
+    if(t.closest('[aria-label="Minimize"]')){ minimizeWmp(); return; }
     focusWin(wmpWin); return;
   }
   if(t.closest('#dlg') && !t.closest('.nope')){ focusWin(dlg); return; }

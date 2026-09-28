@@ -43,7 +43,18 @@
   #dlg{position:absolute;left:50%;top:46%;transform:translate(-50%,-50%);width:470px;max-width:94vw;user-select:text;}
   #dlg .title-bar-text{display:flex;align-items:center;gap:5px;}
   #dlg .title-bar-text img{width:14px;height:14px;}
-  #dlg.flash .title-bar{filter:saturate(.25) brightness(1.25);}
+  .window.flash .title-bar{filter:saturate(.25) brightness(1.25);}
+  .closed{display:none !important;}
+
+  /* XP notification balloon above the tray */
+  #balloon{position:fixed;right:10px;bottom:40px;width:270px;max-width:calc(100vw - 20px);background:#ffffe1;border:1px solid #000;border-radius:8px;
+    padding:8px 26px 9px 10px;box-shadow:2px 2px 4px rgba(0,0,0,.35);font:11px Tahoma,Arial,sans-serif;color:#000;z-index:20;}
+  #balloon::after{content:'';position:absolute;right:40px;bottom:-12px;border-style:solid;border-width:12px 12px 0 0;border-color:#000 transparent transparent transparent;}
+  #balloon::before{content:'';position:absolute;right:41px;bottom:-10px;border-style:solid;border-width:10px 10px 0 0;border-color:#ffffe1 transparent transparent transparent;z-index:1;}
+  #balloon .bt{display:flex;align-items:center;gap:6px;font-weight:bold;margin-bottom:5px;} #balloon .bt svg{width:16px;height:16px;flex:none;}
+  #balloon p{margin:0;line-height:1.4;}
+  #bclose{all:unset;position:absolute;right:6px;top:5px;width:15px;height:15px;line-height:14px;text-align:center;font-size:10px;border:1px solid #9a9a9a;border-radius:3px;cursor:default;color:#333;background:#fff;}
+  #bclose:hover{border-color:#c33;color:#c33;}
   .msg{display:flex;gap:12px;align-items:flex-start;padding:4px 2px 0;}
   .msg svg{flex:none;width:34px;height:34px;}
   .msg h1{font-size:13px;margin:0 0 6px;font-weight:bold;}
@@ -107,7 +118,6 @@
   @media (max-width:1180px){ #wmpwin{top:auto;bottom:14px;right:14px;} }
 
   @media (max-width:640px){
-    .icons{display:none;}
     #dlg{top:44%;}
     .task{flex-basis:44px;} .task .t{display:none;}
     #wmpwin{right:auto;left:50%;transform:translateX(-50%);bottom:8px;width:min(340px,94vw);}
@@ -118,15 +128,16 @@
 <body>
 <div id="desk">
   <div class="icons">
-    <div class="icon" tabindex="-1"><svg class="img" viewBox="0 0 32 32"><rect x="3" y="4" width="26" height="18" rx="2" fill="#dfe6ef" stroke="#5a6b80"/><rect x="5.5" y="6.5" width="21" height="13" fill="#3a8ee6"/><path d="M6 19.5l7-6 5 4 8.5-8V19.5z" fill="#6fbf3a"/><rect x="12" y="22" width="8" height="3" fill="#b9c2cd"/><rect x="8" y="25" width="16" height="3" rx="1" fill="#dfe6ef" stroke="#5a6b80"/></svg><span data-t="i_pc"></span></div>
-    <div class="icon" tabindex="-1"><svg class="img" viewBox="0 0 32 32"><path d="M8 9h16l-1.6 19H9.6z" fill="#cfe3f7" stroke="#4c6f96"/><rect x="6" y="6" width="20" height="3" rx="1" fill="#e8f1fb" stroke="#4c6f96"/><path d="M12 12v13M16 12v13M20 12v13" stroke="#7ea3c9" stroke-width="1.2"/><path d="M13 6V4.5h6V6" fill="none" stroke="#4c6f96"/></svg><span data-t="i_bin"></span></div>
-    <div class="icon" tabindex="-1"><img class="img" src="favicon.ico" alt=""><span>RetroTube</span></div>
+    <div class="icon" tabindex="-1" data-open="none"><svg class="img" viewBox="0 0 32 32"><rect x="3" y="4" width="26" height="18" rx="2" fill="#dfe6ef" stroke="#5a6b80"/><rect x="5.5" y="6.5" width="21" height="13" fill="#3a8ee6"/><path d="M6 19.5l7-6 5 4 8.5-8V19.5z" fill="#6fbf3a"/><rect x="12" y="22" width="8" height="3" fill="#b9c2cd"/><rect x="8" y="25" width="16" height="3" rx="1" fill="#dfe6ef" stroke="#5a6b80"/></svg><span data-t="i_pc"></span></div>
+    <div class="icon" tabindex="-1" data-open="none"><svg class="img" viewBox="0 0 32 32"><path d="M8 9h16l-1.6 19H9.6z" fill="#cfe3f7" stroke="#4c6f96"/><rect x="6" y="6" width="20" height="3" rx="1" fill="#e8f1fb" stroke="#4c6f96"/><path d="M12 12v13M16 12v13M20 12v13" stroke="#7ea3c9" stroke-width="1.2"/><path d="M13 6V4.5h6V6" fill="none" stroke="#4c6f96"/></svg><span data-t="i_bin"></span></div>
+    <div class="icon" tabindex="-1" data-open="rt"><img class="img" src="favicon.ico" alt=""><span>RetroTube</span></div>
+    <div class="icon" tabindex="-1" data-open="wmp"><svg class="img" viewBox="0 0 32 32"><circle cx="16" cy="16" r="13.5" fill="#f5a623" stroke="#b36b00" stroke-width="1.5"/><circle cx="16" cy="16" r="10" fill="#ffc34d"/><path d="M12.5 9.5v13L23 16z" fill="#fff" stroke="#c77800" stroke-width=".8"/></svg><span>Windows Media Player</span></div>
   </div>
 
-  <div class="window" id="wmpwin" aria-hidden="true">
+  <div class="window closed" id="wmpwin">
     <div class="title-bar">
       <div class="title-bar-text"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#f5a623" stroke="#b36b00"/><path d="M6 4.5v7l5.5-3.5z" fill="#fff"/></svg>Windows Media Player</div>
-      <div class="title-bar-controls"><button aria-label="Minimize"></button><button aria-label="Maximize" class="dis" aria-disabled="true" tabindex="-1"></button><button aria-label="Close" class="dis" aria-disabled="true" tabindex="-1"></button></div>
+      <div class="title-bar-controls"><button aria-label="Minimize"></button><button aria-label="Maximize" class="dis" aria-disabled="true" tabindex="-1"></button><button aria-label="Close"></button></div>
     </div>
     <div class="wmp">
       <div class="wmp-tabs"><span class="on" data-t="w_now"></span><span data-t="w_lib"></span><span data-t="w_radio"></span></div>
@@ -142,10 +153,10 @@
     </div>
   </div>
 
-  <div class="window" id="dlg" role="dialog" aria-labelledby="dlgtitle">
+  <div class="window closed" id="dlg" role="dialog" aria-labelledby="dlgtitle">
     <div class="title-bar">
       <div class="title-bar-text" id="dlgtitle"><img src="favicon.ico" alt=""><span data-t="dlg_title"></span></div>
-      <div class="title-bar-controls"><button aria-label="Help" class="dis" aria-disabled="true" tabindex="-1"></button><button aria-label="Close" class="dis" aria-disabled="true" tabindex="-1"></button></div>
+      <div class="title-bar-controls"><button aria-label="Minimize"></button><button aria-label="Help" class="dis" aria-disabled="true" tabindex="-1"></button><button aria-label="Close"></button></div>
     </div>
     <div class="window-body">
       <div class="msg">
@@ -165,14 +176,20 @@
 <div id="taskbar">
   <button id="start" class="nope"><span class="flag"><i></i><i></i><i></i><i></i></span><span data-t="start"></span></button>
   <div class="tasks">
-    <button class="task on" id="t-dlg"><img src="favicon.ico" alt=""><span class="t" data-t="dlg_title"></span></button>
-    <button class="task" id="wmp"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#f5a623" stroke="#b36b00"/><path d="M6 4.5v7l5.5-3.5z" fill="#fff"/></svg><span class="t" id="np">Windows Media Player</span></button>
+    <button class="task closed" id="t-dlg"><img src="favicon.ico" alt=""><span class="t" data-t="dlg_title"></span></button>
+    <button class="task closed" id="wmp"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#f5a623" stroke="#b36b00"/><path d="M6 4.5v7l5.5-3.5z" fill="#fff"/></svg><span class="t" id="np">Windows Media Player</span></button>
   </div>
   <div class="tray">
     <span class="langs"><a href="#" data-l="pt">PT</a> <a href="#" data-l="en">EN</a> <a href="#" data-l="es">ES</a></span>
     <button id="vol" title=""><svg viewBox="0 0 16 16"><path d="M2 6h3l4-3v10l-4-3H2z" fill="#fff"/><path id="waves" d="M11 5.5a3.5 3.5 0 010 5M12.8 3.8a6 6 0 010 8.4" fill="none" stroke="#fff" stroke-width="1.3"/><path id="mutex" d="M11 5.5l4 5M15 5.5l-4 5" stroke="#ff5a5a" stroke-width="1.6" style="display:none"/></svg></button>
     <span id="clock"></span>
   </div>
+</div>
+
+<div id="balloon" class="closed" role="status">
+  <button id="bclose" aria-label="Close">&#10005;</button>
+  <div class="bt"><svg viewBox="0 0 16 16" aria-hidden="true"><circle cx="8" cy="8" r="7" fill="#2f6fd6" stroke="#1b4a9a"/><rect x="7.1" y="6.6" width="1.8" height="5.4" fill="#fff"/><circle cx="8" cy="4.6" r="1.1" fill="#fff"/></svg><span data-t="b_title"></span></div>
+  <p id="btext"></p>
 </div>
 
 <audio id="radio" preload="none" src="https://jupiter.themixradio.ca/listen/station15/radio.mp3"></audio>
@@ -195,7 +212,7 @@ var T = {
     again: 'Isso fica salvo só no seu navegador. Para ver este aviso de novo: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Projeto de fã não oficial · não afiliado ao YouTube, ao Google nem à Microsoft. Rádio: The Mix Radio — "Best Hits From Generation 2K".',
     mute: 'Silenciar rádio', unmute: 'Tocar rádio',
-    w_now: 'Em execução', w_lib: 'Biblioteca', w_radio: 'Rádio', w_ready: 'Pronto — clique em qualquer lugar para tocar', w_off: 'Rádio silenciado', w_paused: 'Pausado', viz: ['Alquimia : Aleatório', 'Barras e ondas : Espectro', 'Ambiente : Redemoinho']
+    w_now: 'Em execução', w_lib: 'Biblioteca', w_radio: 'Rádio', w_ready: 'Conectando…', b_title: 'Bem-vindo ao RetroTube', b_text: 'Clique duas vezes em <b>RetroTube</b> para entrar no site, ou em <b>Windows Media Player</b> para ouvir hits dos anos 2000.', b_text_touch: 'Toque em <b>RetroTube</b> para entrar no site, ou em <b>Windows Media Player</b> para ouvir hits dos anos 2000.', w_off: 'Rádio silenciado', w_paused: 'Pausado', viz: ['Alquimia : Aleatório', 'Barras e ondas : Espectro', 'Ambiente : Redemoinho']
   },
   en: {
     dlg_title: 'RetroTube — Notice', start: 'start', i_pc: 'My Computer', i_bin: 'Recycle Bin',
@@ -211,7 +228,7 @@ var T = {
     again: 'This is saved only in your browser. To see this notice again: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Unofficial fan project · not affiliated with YouTube, Google or Microsoft. Radio: The Mix Radio — "Best Hits From Generation 2K".',
     mute: 'Mute radio', unmute: 'Play radio',
-    w_now: 'Now Playing', w_lib: 'Library', w_radio: 'Radio Guide', w_ready: 'Ready — click anywhere to play', w_off: 'Radio muted', w_paused: 'Paused', viz: ['Alchemy : Random', 'Bars and Waves : Bars', 'Ambience : Swirl']
+    w_now: 'Now Playing', w_lib: 'Library', w_radio: 'Radio Guide', w_ready: 'Connecting…', b_title: 'Welcome to RetroTube', b_text: 'Double-click <b>RetroTube</b> to enter the site, or <b>Windows Media Player</b> to listen to 2000s hits.', b_text_touch: 'Tap <b>RetroTube</b> to enter the site, or <b>Windows Media Player</b> to listen to 2000s hits.', w_off: 'Radio muted', w_paused: 'Paused', viz: ['Alchemy : Random', 'Bars and Waves : Bars', 'Ambience : Swirl']
   },
   es: {
     dlg_title: 'RetroTube — Aviso', start: 'inicio', i_pc: 'Mi PC', i_bin: 'Papelera de reciclaje',
@@ -227,7 +244,7 @@ var T = {
     again: 'Esto se guarda solo en tu navegador. Para ver este aviso otra vez: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Proyecto de fans no oficial · no afiliado a YouTube, Google ni Microsoft. Radio: The Mix Radio — "Best Hits From Generation 2K".',
     mute: 'Silenciar radio', unmute: 'Reproducir radio',
-    w_now: 'Reproduciendo', w_lib: 'Biblioteca', w_radio: 'Radio', w_ready: 'Listo — haz clic en cualquier lugar para escuchar', w_off: 'Radio silenciada', w_paused: 'En pausa', viz: ['Alquimia : Aleatorio', 'Barras y ondas : Barras', 'Ambiente : Remolino']
+    w_now: 'Reproduciendo', w_lib: 'Biblioteca', w_radio: 'Radio', w_ready: 'Conectando…', b_title: 'Bienvenido a RetroTube', b_text: 'Haz doble clic en <b>RetroTube</b> para entrar al sitio, o en <b>Windows Media Player</b> para escuchar éxitos de los 2000.', b_text_touch: 'Toca <b>RetroTube</b> para entrar al sitio, o <b>Windows Media Player</b> para escuchar éxitos de los 2000.', w_off: 'Radio silenciada', w_paused: 'En pausa', viz: ['Alquimia : Aleatorio', 'Barras y ondas : Barras', 'Ambiente : Remolino']
   }
 };
 function $(id){ return document.getElementById(id); }
@@ -242,7 +259,8 @@ function apply(l){
   [].forEach.call(document.querySelectorAll('[data-t]'), function(el){ el.innerHTML = d[el.getAttribute('data-t')]; });
   [].forEach.call(document.querySelectorAll('.langs a'), function(a){ a.className = a.getAttribute('data-l') === l ? 'on' : ''; });
   $('det').textContent = detOpen ? d.less : d.details;
-  document.title = d.dlg_title;
+  document.title = 'RetroTube';
+  if(!$('balloon').classList.contains('closed')) balloonText();
   setVolIcon(); tick();
 }
 [].forEach.call(document.querySelectorAll('.langs a'), function(a){ a.onclick = function(e){ e.preventDefault(); apply(a.getAttribute('data-l')); }; });
@@ -277,20 +295,17 @@ function synth(){
 function ding(){
   var now = Date.now(); if(now - lastDing < 180) return; lastDing = now;
   if(errAudio){ var a = errAudio.cloneNode(); a.volume = 0.8; a.play().catch(synth); } else synth();
-  /* like XP: the modal dialog's title bar flashes when you click outside it */
-  var d = $('dlg'), n = 0;
+  /* like XP: the active window's title bar flashes */
+  var d = document.querySelector('.window.front:not(.closed):not(.min)'), n = 0; if(!d) return;
   (function blink(){ d.classList.toggle('flash'); if(++n < 6) setTimeout(blink, 70); else d.classList.remove('flash'); })();
 }
 
-/* ---------- radio: browsers only allow sound after the first click, so it starts then ---------- */
-var radio = $('radio'), started = false;
+/* ---------- radio: plays while Windows Media Player is open (opening it is a click, so browsers allow sound) ---------- */
+var radio = $('radio'), RADIO_SRC = radio.getAttribute('src');
 radio.volume = 0.35;
 radio.muted = lsGet('rt:radio-mute') === '1';
-function startRadio(){
-  if(started || radio.muted) return;
-  started = true;
-  radio.play().catch(function(){ started = false; });
-}
+function playRadio(){ if(!radio.getAttribute('src')) radio.src = RADIO_SRC; radio.play().catch(function(){}); }
+function stopRadio(){ radio.pause(); radio.removeAttribute('src'); radio.load(); }   // drop the live buffer
 function setVolIcon(){
   $('waves').style.display = radio.muted ? 'none' : ''; $('mutex').style.display = radio.muted ? '' : 'none';
   $('vol').title = radio.muted ? T[L].unmute : T[L].mute;
@@ -298,7 +313,6 @@ function setVolIcon(){
 $('vol').onclick = function(e){
   e.stopPropagation();
   radio.muted = !radio.muted; lsSet('rt:radio-mute', radio.muted ? '1' : null);
-  if(!radio.muted){ if(!started) startRadio(); else if(radio.paused) radio.play().catch(function(){}); }
   setVolIcon();
 };
 function nowPlaying(){
@@ -311,50 +325,75 @@ function nowPlaying(){
 }
 nowPlaying(); setInterval(nowPlaying, 30000);
 
-/* ---------- two windows, XP-style: click to focus, taskbar button minimizes/restores WMP ---------- */
-var dlg = $('dlg'), wmpWin = $('wmpwin');
-function focusWin(w){
-  [dlg, wmpWin].forEach(function(x){ x.classList.toggle('front', x === w); x.classList.toggle('back', x !== w); });
-  $('t-dlg').classList.toggle('on', w === dlg);
-  $('wmp').classList.toggle('on', w === wmpWin && !wmpWin.classList.contains('min'));
+/* ---------- windows: opened from desktop icons, focus on click, minimize/restore from the taskbar, close ---------- */
+var dlg = $('dlg'), wmpWin = $('wmpwin'), TASK = { dlg: $('t-dlg'), wmpwin: $('wmp') };
+function isOpen(w){ return !w.classList.contains('closed'); }
+function isShown(w){ return isOpen(w) && !w.classList.contains('min'); }
+function focusWin(w){   // w = window to bring to front, or null (none active)
+  [dlg, wmpWin].forEach(function(x){
+    var f = x === w; x.classList.toggle('front', f); x.classList.toggle('back', !f);
+    TASK[x.id].classList.toggle('on', f && isShown(x));
+  });
 }
-function minimizeWmp(){ wmpWin.classList.add('min'); focusWin(dlg); }
-function restoreWmp(){ wmpWin.classList.remove('min'); focusWin(wmpWin); }
-/* room beside the dialog -> WMP starts open (behind it); otherwise it starts minimized in the taskbar */
-if(innerWidth < 1180) wmpWin.classList.add('min');
-focusWin(dlg);
+function nextShown(except){ return [dlg, wmpWin].filter(function(x){ return x !== except && isShown(x); })[0] || null; }
+function openWin(w){
+  w.classList.remove('closed', 'min'); TASK[w.id].classList.remove('closed'); focusWin(w); hideBalloon();
+  if(w === wmpWin) playRadio();
+}
+function minimizeWin(w){ w.classList.add('min'); focusWin(nextShown(w)); }
+function closeWin(w){
+  w.classList.add('closed'); TASK[w.id].classList.add('closed'); focusWin(nextShown(w));
+  if(w === wmpWin) stopRadio();
+}
+function taskClick(w){
+  if(w.classList.contains('min')){ w.classList.remove('min'); focusWin(w); }
+  else if(w.classList.contains('front')) minimizeWin(w);
+  else focusWin(w);
+}
 
-/* WMP's own buttons work — it's a different "program" from the modal dialog */
+/* WMP transport: play/pause and stop really control the radio */
 $('wmp-pp').onclick = function(){
   if(radio.muted){ radio.muted = false; lsSet('rt:radio-mute', null); setVolIcon(); }
-  if(!started) startRadio(); else if(radio.paused) radio.play().catch(function(){}); else radio.pause();
+  if(!radio.getAttribute('src') || radio.paused) playRadio(); else radio.pause();
 };
 $('wmp-stop').onclick = function(){ radio.pause(); };
 
-/* ---------- clicks: WMP and the dialog get focus; everything else is blocked by the modal dialog ---------- */
+/* desktop icons: click selects, double-click opens (a single tap on touch screens) */
+function openIcon(ic){
+  var k = ic.getAttribute('data-open');
+  if(k === 'rt') openWin(dlg); else if(k === 'wmp') openWin(wmpWin); else ding();   // My Computer / Recycle Bin: "not allowed"
+}
+[].forEach.call(document.querySelectorAll('.icon'), function(ic){
+  ic.addEventListener('dblclick', function(){ openIcon(ic); });
+  ic.addEventListener('pointerup', function(e){ if(e.pointerType && e.pointerType !== 'mouse') openIcon(ic); });
+});
+
+/* ---------- clicks ---------- */
 document.addEventListener('pointerdown', function(e){
   var t = e.target;
-  if(!t.closest('#wmp-pp, #wmp-stop, #vol')) startRadio();   // those buttons decide for themselves
-  if(t.closest('.tray')) return;
+  if(t.closest('.tray') || t.closest('#balloon')) return;
   if(t.closest('.dis')) return;                                 // greyed-out title-bar buttons: nothing happens, like XP
-  if(t.closest('#t-dlg')){ focusWin(dlg); return; }
-  if(t.closest('#wmp')){
-    if(wmpWin.classList.contains('min')) restoreWmp();
-    else if(wmpWin.classList.contains('front')) minimizeWmp();
-    else focusWin(wmpWin);
-    return;
+  var tb = t.closest('.task'); if(tb){ taskClick(tb === TASK.dlg ? dlg : wmpWin); return; }
+  var w = t.closest('.window');
+  if(w){
+    if(t.closest('[aria-label="Minimize"]')){ minimizeWin(w); return; }
+    if(t.closest('[aria-label="Close"]')){ closeWin(w); return; }
+    focusWin(w); return;
   }
-  if(t.closest('#wmpwin')){
-    if(t.closest('[aria-label="Minimize"]')){ minimizeWmp(); return; }
-    focusWin(wmpWin); return;
-  }
-  if(t.closest('#dlg') && !t.closest('.nope')){ focusWin(dlg); return; }
+  if(t.closest('#start')){ ding(); return; }
   var ic = t.closest('.icon');
   [].forEach.call(document.querySelectorAll('.icon.sel'), function(i){ i.classList.remove('sel'); });
   if(ic) ic.classList.add('sel');
-  ding();
 }, true);
-[].forEach.call(document.querySelectorAll('.nope'), function(b){ b.addEventListener('click', function(e){ e.preventDefault(); }); });
+$('start').addEventListener('click', function(e){ e.preventDefault(); });
+
+/* ---------- XP balloon tip for first-time visitors ---------- */
+var coarse = window.matchMedia && matchMedia('(pointer: coarse)').matches;
+function balloonText(){ $('btext').innerHTML = coarse ? T[L].b_text_touch : T[L].b_text; }
+function hideBalloon(){ $('balloon').classList.add('closed'); }
+$('bclose').onclick = hideBalloon;
+setTimeout(function(){ if(!isOpen(dlg) && !isOpen(wmpWin)){ balloonText(); $('balloon').classList.remove('closed'); } }, 1200);
+focusWin(null);
 
 /* ---------- WMP visualizer ----------
    The stream sends no CORS headers, so the browser won't let us read the actual audio; these presets are
@@ -406,12 +445,12 @@ function status(txt){ if(txt !== lastStatus){ lastStatus = txt; $('wmp-song').te
 function frame(ms){
   requestAnimationFrame(frame);
   if(document.hidden || cv.offsetParent === null) return;             // hidden tab or small screen: skip drawing
-  var live = started && !radio.paused && !radio.muted && radio.readyState >= 3;
+  var live = !radio.paused && !radio.muted && radio.readyState >= 3;
   $('wmp-seek').className = live ? 'wmp-seek live' : 'wmp-seek';
   $('wmp-play').style.display = live ? 'none' : ''; $('wmp-pause').style.display = live ? '' : 'none';
   $('wmp-viz').textContent = live ? T[L].viz[vizIdx] : '';
   if(!live){
-    status(radio.muted ? T[L].w_off : started ? T[L].w_paused : T[L].w_ready);
+    status(radio.muted ? T[L].w_off : radio.paused ? T[L].w_paused : T[L].w_ready);
     cx.fillStyle = 'rgba(0,0,0,0.2)'; cx.fillRect(0, 0, W, H);
     return;
   }

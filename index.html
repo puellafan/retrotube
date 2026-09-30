@@ -3,9 +3,9 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>RetroTube</title>
+<title>windows</title>
 <meta name="description" content="RetroTube: an unofficial fan project that recreates the 2008 YouTube look over the real YouTube.">
-<link rel="icon" href="favicon.ico">
+<link rel="icon" type="image/png" href="windows.png">
 <script>
 /* Returning visitors who ticked "go straight in" skip this page (browser-only flag; ?aviso shows it anyway). */
 (function(){
@@ -445,7 +445,7 @@ function apply(l){
   [].forEach.call(document.querySelectorAll('[data-t]'), function(el){ el.innerHTML = d[el.getAttribute('data-t')]; });
   [].forEach.call(document.querySelectorAll('.langs a'), function(a){ a.className = a.getAttribute('data-l') === l ? 'on' : ''; });
   $('det').textContent = detOpen ? d.less : d.details;
-  document.title = 'RetroTube';
+  document.title = 'windows';
   if(!$('balloon').classList.contains('closed')) balloonText();
   setVolIcon(); tick(); spI18n();
 }
@@ -927,7 +927,13 @@ $('viz').onclick = nextViz;
 
 /* desktop icons: click selects, double-click opens (a single tap on touch screens) */
 var OPENS = { rt: dlg, wmp: wmpWin, gif: ieWin, jpg: pvWin, sp: spWin };
-function openIcon(ic){ var w = OPENS[ic.getAttribute('data-open')]; if(w) openWin(w); else ding(); }
+/* the RetroTube icon pops its notice with the notify.mp3 chime */
+var notifyAudio = new Audio('notify.mp3'); notifyAudio.preload = 'auto';
+function openIcon(ic){
+  var k = ic.getAttribute('data-open'), w = OPENS[k];
+  if(k === 'rt'){ var a = notifyAudio.cloneNode(); a.volume = 0.8; a.play().catch(function(){}); }
+  if(w) openWin(w); else ding();
+}
 [].forEach.call(document.querySelectorAll('.icon'), function(ic){
   ic.addEventListener('dblclick', function(){ openIcon(ic); });
   ic.addEventListener('pointerup', function(e){ if(e.pointerType && e.pointerType !== 'mouse') openIcon(ic); });

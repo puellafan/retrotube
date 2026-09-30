@@ -133,6 +133,41 @@
     background:radial-gradient(circle at 35% 30%,#ffffff,#dbe6f5 55%,#b7c9e3);border:1px solid #8fa6c8;}
   .pv-bar i:hover{border-color:#3d6ea8;} .pv-bar i.pv-del{color:#c62b1b;}
   .pv-sep{width:1px;height:20px;background:#c9c6b5;margin:0 3px;}
+  /* ---------- Spider Solitaire (our own card drawings; the patience rules themselves are public domain) ---------- */
+  #spwin{z-index:2;position:absolute;left:50%;top:12px;transform:translateX(-50%);width:min(800px,96vw);} #spwin.front{z-index:5;}
+  #spwin .title-bar-text{display:flex;align-items:center;gap:5px;} #spwin .title-bar-text svg{width:14px;height:14px;flex:none;}
+  #spwin.min{display:none;}
+  .sp-menu{position:relative;display:flex;gap:2px;padding:2px 2px 3px;background:#ece9d8;}
+  .sp-menu > span{padding:1px 6px;cursor:default;} .sp-menu > span:hover,.sp-menu > span.on{background:#316ac5;color:#fff;}
+  .sp-drop{position:absolute;left:2px;top:100%;z-index:3000;min-width:250px;background:#fff;border:1px solid #aca899;box-shadow:2px 2px 3px rgba(0,0,0,.35);padding:2px;}
+  .sp-drop div{position:relative;display:flex;justify-content:space-between;gap:24px;padding:3px 10px 3px 22px;cursor:default;white-space:nowrap;}
+  .sp-drop div:hover{background:#316ac5;color:#fff;}
+  .sp-drop div.on::before{content:'';position:absolute;left:9px;top:50%;width:5px;height:5px;margin-top:-3px;border-radius:50%;background:currentColor;}
+  .sp-drop kbd{font:inherit;} .sp-drop hr{border:0;border-top:1px solid #aca899;margin:3px 1px;}
+  #sp-board{position:relative;height:clamp(260px,calc(100vh - 118px),560px);overflow:hidden;touch-action:none;
+    background:radial-gradient(ellipse at 50% 35%,#27a547 0%,#11813a 55%,#0a6a2c 100%);border:1px solid #06401a;}
+  #sp-board.nt .card{transition:none;}
+  .card{position:absolute;box-sizing:border-box;width:var(--cw);height:var(--ch);background:#fff;border:1px solid #2b2b2b;border-radius:calc(var(--cw) * .09);color:#111;
+    font:bold calc(var(--cw) * .22)/1.02 Arial,Helvetica,sans-serif;transition:left .2s ease-out,top .2s ease-out;cursor:default;box-shadow:0 1px 1px rgba(0,0,0,.25);}
+  .card.red{color:#d10f1f;}
+  .card .c{position:absolute;left:7%;top:5%;text-align:center;min-width:1.1em;}
+  .card .c.b{left:auto;top:auto;right:7%;bottom:5%;transform:rotate(180deg);}
+  .card .p{position:absolute;left:0;right:0;top:50%;transform:translateY(-50%);text-align:center;font-size:calc(var(--cw) * .5);line-height:1;}
+  .card.face .p{left:26%;right:26%;top:18%;bottom:18%;transform:none;display:flex;align-items:center;justify-content:center;border:1px solid currentColor;border-radius:3px;
+    font:bold calc(var(--cw) * .34) Georgia,serif;background:#fdf3d0;}
+  .card.down{background:repeating-linear-gradient(45deg,rgba(255,255,255,.16) 0 2px,transparent 2px 6px),repeating-linear-gradient(-45deg,rgba(255,255,255,.16) 0 2px,transparent 2px 6px),linear-gradient(135deg,#3f7ad6,#1b3f8f);
+    box-shadow:inset 0 0 0 2px #fff,0 1px 1px rgba(0,0,0,.25);}
+  .card.down > *{display:none;}
+  .card.drag{transition:none;box-shadow:3px 4px 6px rgba(0,0,0,.4);}
+  .card.hint{filter:invert(1);}
+  .sp-slot{position:absolute;box-sizing:border-box;width:var(--cw);height:var(--ch);border:1px solid rgba(0,0,0,.35);border-radius:calc(var(--cw) * .09);background:rgba(0,0,0,.08);}
+  .sp-slot.hint{background:rgba(255,255,255,.55);}
+  #sp-score{position:absolute;left:50%;bottom:8px;transform:translateX(-50%);z-index:150;padding:6px 16px;background:#0b6b23;border:1px solid #000;color:#fff;
+    text-align:center;font:11px/1.5 Tahoma,Arial,sans-serif;white-space:nowrap;cursor:default;}
+  #sp-fx{position:absolute;left:0;top:0;width:100%;height:100%;pointer-events:none;z-index:900;}
+  .sp-box{position:absolute;left:50%;top:40%;transform:translate(-50%,-50%);z-index:2000;width:min(300px,86%);background:#ece9d8;border:1px solid #0831d9;border-radius:8px 8px 0 0;box-shadow:2px 3px 8px rgba(0,0,0,.45);}
+  .sp-box p{margin:6px 4px 10px;line-height:1.45;} .sp-box .btns{justify-content:center;margin-top:4px;}
+  @media (prefers-reduced-motion:reduce){ .card{transition:none;} }
   #wmpwin.min{display:none;}
   #wmpwin .title-bar-text{display:flex;align-items:center;gap:5px;} #wmpwin .title-bar-text svg{width:14px;height:14px;}
   .wmp{background:linear-gradient(#1e3a6e,#0f1f3f);padding:6px;border:1px solid #0a1630;color:#cfe0ff;}
@@ -162,6 +197,8 @@
     #iewin,#pvwin{left:3vw;top:10px;width:94vw;}
     .ie-tools span[data-t],.ie-menu span:nth-child(n+4){display:none;}
     #start{padding-right:12px;font-size:15px;}
+    #spwin{left:1vw;top:6px;width:98vw;transform:none;}
+    #sp-score{padding:3px 8px;bottom:4px;}
   }
 </style>
 </head>
@@ -173,6 +210,40 @@
     <div class="icon" tabindex="-1" data-open="jpg"><svg class="img" viewBox="0 0 32 32"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#7a8aa0"/><path d="M20 2v6h6" fill="#e3e9f2" stroke="#7a8aa0"/><rect x="9" y="11" width="14" height="12" fill="#8fc6f2"/><circle cx="19" cy="14.5" r="1.8" fill="#fff6b0"/><path d="M9 23l4.5-6 3 3.5 2.5-2.5 4 5z" fill="#4c8f33"/><text x="16" y="28.6" font-family="Tahoma,Arial" font-size="5.6" font-weight="bold" text-anchor="middle" fill="#6a3d9a">JPG</text></svg><span>stmonica.jpg</span></div>
     <div class="icon" tabindex="-1" data-open="rt"><img class="img" src="favicon.ico" alt=""><span>RetroTube</span></div>
     <div class="icon" tabindex="-1" data-open="wmp"><svg class="img" viewBox="0 0 32 32"><circle cx="16" cy="16" r="13.5" fill="#f5a623" stroke="#b36b00" stroke-width="1.5"/><circle cx="16" cy="16" r="10" fill="#ffc34d"/><path d="M12.5 9.5v13L23 16z" fill="#fff" stroke="#c77800" stroke-width=".8"/></svg><span>Windows Media Player</span></div>
+    <div class="icon" tabindex="-1" data-open="sp"><svg class="img" viewBox="0 0 32 32"><rect x="3" y="6" width="15" height="21" rx="2" fill="#2f63c4" stroke="#fff" transform="rotate(-12 10 16)"/><rect x="11" y="4" width="17" height="24" rx="2" fill="#fff" stroke="#333"/><text x="12.6" y="10" font-family="Arial" font-size="5.5" font-weight="bold" fill="#111">K</text><path d="M17.5 15.5L14.5 13 13.8 11M17.3 17L13.8 16.5 13 15M17.3 18.8L13.8 20 13 22M17.6 20.3L15 23 14.5 25M21.5 15.5L24.5 13 25.2 11M21.7 17L25.2 16.5 26 15M21.7 18.8L25.2 20 26 22M21.4 20.3L24 23 24.5 25" stroke="#111" stroke-width="1" fill="none"/><ellipse cx="19.5" cy="18.5" rx="2.4" ry="3" fill="#111"/><circle cx="19.5" cy="14.6" r="1.5" fill="#111"/></svg><span data-t="sp_title"></span></div>
+  </div>
+
+  <!-- Spider Solitaire: drag runs of cards (or click one to auto-move it), click the deck to deal -->
+  <div class="window closed" id="spwin">
+    <div class="title-bar">
+      <div class="title-bar-text"><svg viewBox="0 0 16 16"><rect x="2.5" y="1.5" width="11" height="13" rx="1.5" fill="#fff" stroke="#333"/><path d="M6.4 7.5L4.5 6 4 4.5M6.3 9L4 9 3.6 8M6.4 10.4L4.5 11.8 4.2 13M9.6 7.5L11.5 6 12 4.5M9.7 9L12 9 12.4 8M9.6 10.4L11.5 11.8 11.8 13" stroke="#111" stroke-width=".8" fill="none"/><ellipse cx="8" cy="9" rx="1.8" ry="2.2" fill="#111"/><circle cx="8" cy="6" r="1.1" fill="#111"/></svg><span data-t="sp_title"></span></div>
+      <div class="title-bar-controls"><button aria-label="Minimize"></button><button aria-label="Maximize" class="dis" aria-disabled="true" tabindex="-1"></button><button aria-label="Close"></button></div>
+    </div>
+    <div class="sp-menu">
+      <span id="sp-gm" data-t="sp_game"></span><span class="nope" data-t="sp_help"></span>
+      <div class="sp-drop closed" id="sp-drop">
+        <div data-a="new"><span data-t="sp_new"></span><kbd>F2</kbd></div>
+        <div data-a="restart"><span data-t="sp_restart"></span></div>
+        <hr>
+        <div data-a="undo"><span data-t="sp_undo"></span><kbd>Ctrl+Z</kbd></div>
+        <div data-a="deal"><span data-t="sp_deal"></span><kbd>D</kbd></div>
+        <div data-a="hint"><span data-t="sp_hint"></span><kbd>M</kbd></div>
+        <hr>
+        <div data-a="d1" class="sp-lvl"><span data-t="sp_d1"></span></div>
+        <div data-a="d2" class="sp-lvl"><span data-t="sp_d2"></span></div>
+        <div data-a="d4" class="sp-lvl"><span data-t="sp_d4"></span></div>
+        <hr>
+        <div data-a="exit"><span data-t="sp_exit"></span></div>
+      </div>
+    </div>
+    <div id="sp-board">
+      <canvas id="sp-fx"></canvas>
+      <div id="sp-score"></div>
+      <div id="sp-msg" class="sp-box closed">
+        <div class="title-bar"><div class="title-bar-text" data-t="sp_title"></div></div>
+        <div class="window-body"><p id="sp-msg-t"></p><section class="btns" id="sp-msg-b"></section></div>
+      </div>
+    </div>
   </div>
 
   <div class="window closed" id="wmpwin">
@@ -265,6 +336,7 @@
     <button class="task closed" id="t-dlg"><img src="favicon.ico" alt=""><span class="t" data-t="dlg_title"></span></button>
     <button class="task closed" id="t-ie"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#1e76d8"/><text x="8" y="11.8" font-family="Georgia,serif" font-size="11" font-style="italic" font-weight="bold" text-anchor="middle" fill="#fff">e</text></svg><span class="t" data-t="ie_title"></span></button>
     <button class="task closed" id="t-pv"><svg viewBox="0 0 16 16"><rect x="1.5" y="3" width="13" height="10" fill="#8fc6f2" stroke="#3d6ea8"/><path d="M1.5 13l4-5 3 3 2-2 4 4z" fill="#4c8f33"/></svg><span class="t" data-t="pv_title"></span></button>
+    <button class="task closed" id="t-sp"><svg viewBox="0 0 16 16"><rect x="2.5" y="1.5" width="11" height="13" rx="1.5" fill="#fff" stroke="#333"/><path d="M6.4 7.5L4.5 6 4 4.5M6.3 9L4 9 3.6 8M6.4 10.4L4.5 11.8 4.2 13M9.6 7.5L11.5 6 12 4.5M9.7 9L12 9 12.4 8M9.6 10.4L11.5 11.8 11.8 13" stroke="#111" stroke-width=".8" fill="none"/><ellipse cx="8" cy="9" rx="1.8" ry="2.2" fill="#111"/><circle cx="8" cy="6" r="1.1" fill="#111"/></svg><span class="t" data-t="sp_title"></span></button>
     <button class="task closed" id="wmp"><svg viewBox="0 0 16 16"><circle cx="8" cy="8" r="7" fill="#f5a623" stroke="#b36b00"/><path d="M6 4.5v7l5.5-3.5z" fill="#fff"/></svg><span class="t" id="np">Windows Media Player</span></button>
   </div>
   <div class="tray">
@@ -304,7 +376,10 @@ var T = {
     again: 'Isso fica salvo só no seu navegador. Para ver este aviso de novo: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Projeto de fã não oficial · não afiliado ao YouTube, ao Google nem à Microsoft. Rádios de terceiros: The Mix Radio, 1.FM, Mix FM São Paulo e estações da Zeno.fm.',
     mute: 'Silenciar rádio', unmute: 'Tocar rádio',
-    w_now: 'Em execução', w_lib: 'Biblioteca', w_radio: 'Rádio', w_ready: 'Conectando…', w_tune: 'Sintonizando: %s…', w_skip: 'Estação fora do ar — pulando para a próxima…', w_dead: 'Nenhuma estação respondeu. Tente de novo mais tarde.', b_title: 'Bem-vindo ao RetroTube', b_text: 'Clique duas vezes em <b>RetroTube</b> para entrar no site, ou em <b>Windows Media Player</b> para ouvir hits dos anos 2000.', b_text_touch: 'Toque em <b>RetroTube</b> para entrar no site, ou em <b>Windows Media Player</b> para ouvir hits dos anos 2000.', w_off: 'Rádio silenciado', w_paused: 'Pausado', viz: ['Alquimia : Aleatório', 'Barras e ondas : Espectro', 'Ambiente : Redemoinho']
+    w_now: 'Em execução', w_lib: 'Biblioteca', w_radio: 'Rádio', w_ready: 'Conectando…', w_tune: 'Sintonizando: %s…', w_skip: 'Estação fora do ar — pulando para a próxima…', w_dead: 'Nenhuma estação respondeu. Tente de novo mais tarde.', b_title: 'Bem-vindo ao RetroTube', b_text: 'Clique duas vezes em <b>RetroTube</b> para entrar no site, em <b>Windows Media Player</b> para ouvir hits dos anos 2000, ou em <b>Paciência Spider</b> para jogar.', b_text_touch: 'Toque em <b>RetroTube</b> para entrar no site, em <b>Windows Media Player</b> para ouvir hits dos anos 2000, ou em <b>Paciência Spider</b> para jogar.', w_off: 'Rádio silenciado', w_paused: 'Pausado', viz: ['Alquimia : Aleatório', 'Barras e ondas : Espectro', 'Ambiente : Redemoinho'],
+    sp_title: 'Paciência Spider', sp_game: 'Jogo', sp_help: 'Ajuda', sp_new: 'Novo jogo', sp_restart: 'Reiniciar este jogo', sp_undo: 'Desfazer', sp_deal: 'Distribuir nova fileira', sp_hint: 'Mostrar um movimento disponível',
+    sp_d1: 'Iniciante: um naipe', sp_d2: 'Intermediário: dois naipes', sp_d4: 'Avançado: quatro naipes', sp_exit: 'Sair', sp_score: 'Pontuação', sp_moves: 'Movimentos',
+    sp_empty: 'Não é possível distribuir uma nova fileira enquanto houver espaços vazios.', sp_nomove: 'Não há mais movimentos disponíveis.', sp_won: 'Parabéns, você venceu! Deseja jogar novamente?', sp_ok: 'OK', sp_yes: 'Sim', sp_no: 'Não'
   },
   en: {
     dlg_title: 'RetroTube — Notice', start: 'start',
@@ -325,7 +400,10 @@ var T = {
     again: 'This is saved only in your browser. To see this notice again: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Unofficial fan project · not affiliated with YouTube, Google or Microsoft. Third-party radio stations: The Mix Radio, 1.FM, Mix FM São Paulo and Zeno.fm stations.',
     mute: 'Mute radio', unmute: 'Play radio',
-    w_now: 'Now Playing', w_lib: 'Library', w_radio: 'Radio Guide', w_ready: 'Connecting…', w_tune: 'Tuning: %s…', w_skip: 'Station is off the air — skipping to the next…', w_dead: 'No station answered. Try again later.', b_title: 'Welcome to RetroTube', b_text: 'Double-click <b>RetroTube</b> to enter the site, or <b>Windows Media Player</b> to listen to 2000s hits.', b_text_touch: 'Tap <b>RetroTube</b> to enter the site, or <b>Windows Media Player</b> to listen to 2000s hits.', w_off: 'Radio muted', w_paused: 'Paused', viz: ['Alchemy : Random', 'Bars and Waves : Bars', 'Ambience : Swirl']
+    w_now: 'Now Playing', w_lib: 'Library', w_radio: 'Radio Guide', w_ready: 'Connecting…', w_tune: 'Tuning: %s…', w_skip: 'Station is off the air — skipping to the next…', w_dead: 'No station answered. Try again later.', b_title: 'Welcome to RetroTube', b_text: 'Double-click <b>RetroTube</b> to enter the site, <b>Windows Media Player</b> to listen to 2000s hits, or <b>Spider Solitaire</b> to play.', b_text_touch: 'Tap <b>RetroTube</b> to enter the site, <b>Windows Media Player</b> to listen to 2000s hits, or <b>Spider Solitaire</b> to play.', w_off: 'Radio muted', w_paused: 'Paused', viz: ['Alchemy : Random', 'Bars and Waves : Bars', 'Ambience : Swirl'],
+    sp_title: 'Spider Solitaire', sp_game: 'Game', sp_help: 'Help', sp_new: 'New Game', sp_restart: 'Restart This Game', sp_undo: 'Undo', sp_deal: 'Deal New Row', sp_hint: 'Show An Available Move',
+    sp_d1: 'Beginner: One Suit', sp_d2: 'Intermediate: Two Suits', sp_d4: 'Advanced: Four Suits', sp_exit: 'Exit', sp_score: 'Score', sp_moves: 'Moves',
+    sp_empty: 'You are not allowed to deal a new row while there are any empty slots.', sp_nomove: 'There are no more moves available.', sp_won: 'Congratulations, you won! Do you want to play again?', sp_ok: 'OK', sp_yes: 'Yes', sp_no: 'No'
   },
   es: {
     dlg_title: 'RetroTube — Aviso', start: 'inicio',
@@ -346,7 +424,10 @@ var T = {
     again: 'Esto se guarda solo en tu navegador. Para ver este aviso otra vez: <a href="?aviso">puellafan.github.io/retrotube/?aviso</a>',
     foot: 'Proyecto de fans no oficial · no afiliado a YouTube, Google ni Microsoft. Radios de terceros: The Mix Radio, 1.FM, Mix FM São Paulo y emisoras de Zeno.fm.',
     mute: 'Silenciar radio', unmute: 'Reproducir radio',
-    w_now: 'Reproduciendo', w_lib: 'Biblioteca', w_radio: 'Radio', w_ready: 'Conectando…', w_tune: 'Sintonizando: %s…', w_skip: 'Emisora fuera del aire — pasando a la siguiente…', w_dead: 'Ninguna emisora respondió. Inténtalo más tarde.', b_title: 'Bienvenido a RetroTube', b_text: 'Haz doble clic en <b>RetroTube</b> para entrar al sitio, o en <b>Windows Media Player</b> para escuchar éxitos de los 2000.', b_text_touch: 'Toca <b>RetroTube</b> para entrar al sitio, o <b>Windows Media Player</b> para escuchar éxitos de los 2000.', w_off: 'Radio silenciada', w_paused: 'En pausa', viz: ['Alquimia : Aleatorio', 'Barras y ondas : Barras', 'Ambiente : Remolino']
+    w_now: 'Reproduciendo', w_lib: 'Biblioteca', w_radio: 'Radio', w_ready: 'Conectando…', w_tune: 'Sintonizando: %s…', w_skip: 'Emisora fuera del aire — pasando a la siguiente…', w_dead: 'Ninguna emisora respondió. Inténtalo más tarde.', b_title: 'Bienvenido a RetroTube', b_text: 'Haz doble clic en <b>RetroTube</b> para entrar al sitio, en <b>Windows Media Player</b> para escuchar éxitos de los 2000, o en <b>Solitario Spider</b> para jugar.', b_text_touch: 'Toca <b>RetroTube</b> para entrar al sitio, <b>Windows Media Player</b> para escuchar éxitos de los 2000, o <b>Solitario Spider</b> para jugar.', w_off: 'Radio silenciada', w_paused: 'En pausa', viz: ['Alquimia : Aleatorio', 'Barras y ondas : Barras', 'Ambiente : Remolino'],
+    sp_title: 'Solitario Spider', sp_game: 'Juego', sp_help: 'Ayuda', sp_new: 'Juego nuevo', sp_restart: 'Reiniciar este juego', sp_undo: 'Deshacer', sp_deal: 'Repartir nueva fila', sp_hint: 'Mostrar un movimiento disponible',
+    sp_d1: 'Principiante: un palo', sp_d2: 'Intermedio: dos palos', sp_d4: 'Avanzado: cuatro palos', sp_exit: 'Salir', sp_score: 'Puntuación', sp_moves: 'Movimientos',
+    sp_empty: 'No se puede repartir una nueva fila mientras haya espacios vacíos.', sp_nomove: 'No hay más movimientos disponibles.', sp_won: '¡Felicidades, ganaste! ¿Quieres jugar otra vez?', sp_ok: 'Aceptar', sp_yes: 'Sí', sp_no: 'No'
   }
 };
 function $(id){ return document.getElementById(id); }
@@ -363,7 +444,7 @@ function apply(l){
   $('det').textContent = detOpen ? d.less : d.details;
   document.title = 'RetroTube';
   if(!$('balloon').classList.contains('closed')) balloonText();
-  setVolIcon(); tick();
+  setVolIcon(); tick(); spI18n();
 }
 [].forEach.call(document.querySelectorAll('.langs a'), function(a){ a.onclick = function(e){ e.preventDefault(); apply(a.getAttribute('data-l')); }; });
 
@@ -485,10 +566,283 @@ function startNowPlaying(){
   }
 }
 
+/* ---------- Spider Solitaire ----------
+   104 cards (8 full suits), 10 columns, 5 deals of 10 in the stock. Move a card, or a run of same-suit descending cards,
+   onto a card one rank higher (any suit) or an empty column; a K..A run of one suit is removed. XP scoring: 500, -1 per move, +100 per run. */
+var spWin = $('spwin'), spBoard = $('sp-board');
+var SUITS = ['♠', '♥', '♣', '♦'], RANKS = ['', 'A', '2', '3', '4', '5', '6', '7', '8', '9', '10', 'J', 'Q', 'K'];
+var sp = { cards: [], cols: [], stock: [], done: [], hist: [], order: null, score: 500, moves: 0, won: false, hintI: 0, suits: +(lsGet('rt:spider-suits') || 1) };
+if([1, 2, 4].indexOf(sp.suits) < 0) sp.suits = 1;
+var G = { w: 0, h: 0, gap: 6, cw: 60, ch: 84, x0: 0 }, drag = null, spSlots = [];
+for(var i = 0; i < 10; i++){ var sl = document.createElement('div'); sl.className = 'sp-slot'; spBoard.appendChild(sl); spSlots.push(sl); }
+
+function spNew(order){
+  spMsg(null); spFx(false);
+  if(!order){
+    order = []; for(var i = 0; i < 104; i++) order.push(i);
+    for(i = order.length - 1; i > 0; i--){ var j = Math.floor(Math.random() * (i + 1)), x = order[i]; order[i] = order[j]; order[j] = x; }
+  }
+  sp.order = order.slice();
+  [].forEach.call(spBoard.querySelectorAll('.card'), function(el){ el.remove(); });
+  sp.cards = [];
+  for(i = 0; i < 104; i++){
+    var set = Math.floor(i / 13), s = sp.suits === 1 ? 0 : set % sp.suits;      // 2 suits = spades + hearts, like XP
+    sp.cards.push(makeCard(i, s, i % 13 + 1));
+  }
+  var deck = order.map(function(n){ return sp.cards[n]; });
+  sp.cols = []; for(i = 0; i < 10; i++) sp.cols.push([]);
+  for(i = 0; i < 54; i++) sp.cols[i % 10].push(deck[i]);                        // 6 cards in the first four columns, 5 in the rest
+  sp.cols.forEach(function(col){ col[col.length - 1].up = true; });
+  sp.stock = deck.slice(54); sp.done = []; sp.hist = [];
+  sp.score = 500; sp.moves = 0; sp.won = false; sp.hintI = 0;
+  spStatus();
+  if(!spMeasure()) return;
+  var p = stockPos(4, 5);                                                       // every card flies out of the deck
+  sp.cards.forEach(function(k){ k.el.style.left = p.x + 'px'; k.el.style.top = p.y + 'px'; });
+  spBoard.offsetWidth;
+  var dealt = deck.slice(0, 54);
+  spLayout(function(k){ var n = dealt.indexOf(k); return n > 0 ? n * 14 : 0; });
+}
+function makeCard(id, s, r){
+  var el = document.createElement('div'), R = RANKS[r], S = SUITS[s];
+  el.className = 'card down' + (s % 2 ? ' red' : '') + (r > 10 ? ' face' : '');
+  el.innerHTML = '<span class="c">' + R + '<br>' + S + '</span><span class="p">' + (r > 10 ? R : S) + '</span><span class="c b">' + R + '<br>' + S + '</span>';
+  el.setAttribute('data-id', id);
+  spBoard.appendChild(el);
+  return { id: id, s: s, r: r, up: false, el: el };
+}
+
+/* ---- layout: card size follows the board, columns squeeze when they get tall ---- */
+function spMeasure(){
+  var w = spBoard.clientWidth, h = spBoard.clientHeight; if(!w || !h) return false;
+  var gap = Math.max(3, Math.round(w * 0.009)), cw = Math.floor((w - gap * 11) / 10), ch = Math.round(cw * 1.4);
+  if(ch > h * 0.24){ ch = Math.round(h * 0.24); cw = Math.round(ch / 1.4); }
+  G = { w: w, h: h, gap: gap, cw: cw, ch: ch, x0: Math.round((w - cw * 10 - gap * 9) / 2) };
+  spBoard.style.setProperty('--cw', cw + 'px'); spBoard.style.setProperty('--ch', ch + 'px');
+  return true;
+}
+function colX(c){ return G.x0 + c * (G.cw + G.gap); }
+function stockPos(g, k){ return { x: G.w - G.gap - G.cw - (k - 1 - g) * Math.round(G.cw * 0.22), y: G.h - G.gap - G.ch }; }
+function place(k, x, y, z, delay){
+  var s = k.el.style; s.left = Math.round(x) + 'px'; s.top = Math.round(y) + 'px'; s.zIndex = z; s.transitionDelay = delay ? delay + 'ms' : '';
+  k.el.classList.toggle('down', !k.up);
+}
+function spLayout(stagger){
+  if(!spMeasure()) return;
+  var lim = G.h - G.ch - G.gap * 3;                                             // columns stop above the deck / score row
+  sp.cols.forEach(function(col, c){
+    var dn = G.ch * 0.1, up = G.ch * 0.27, sum = 0;
+    for(var i = 0; i < col.length - 1; i++) sum += col[i].up ? up : dn;
+    var f = sum ? Math.max(0.12, Math.min(1, (lim - G.gap - G.ch) / sum)) : 1, y = G.gap;
+    col.forEach(function(k, i){ place(k, colX(c), y, i + 1, stagger && stagger(k)); y += (k.up ? up : dn) * f; });
+    spSlots[c].style.left = colX(c) + 'px'; spSlots[c].style.top = G.gap + 'px';
+  });
+  var groups = sp.stock.length / 10;
+  sp.stock.forEach(function(k, i){ var g = Math.floor(i / 10), p = stockPos(g, groups); k.up = false; place(k, p.x, p.y, 300 + g * 10 + i % 10); });
+  sp.done.forEach(function(run, j){ run.forEach(function(k, i){ place(k, G.gap + j * Math.round(G.cw * 0.3), G.h - G.gap - G.ch, 200 + j * 20 + 13 - i); }); });
+}
+function spRelayout(){
+  if(drag || !isShown(spWin) || (spBoard.clientWidth === G.w && spBoard.clientHeight === G.h)) return;
+  spBoard.classList.add('nt'); spLayout(); spBoard.offsetWidth; spBoard.classList.remove('nt');
+}
+if(window.ResizeObserver) new ResizeObserver(spRelayout).observe(spBoard); else window.addEventListener('resize', spRelayout);
+function spStatus(){ $('sp-score').innerHTML = T[L].sp_score + ': ' + sp.score + '<br>' + T[L].sp_moves + ': ' + sp.moves; }
+function spI18n(){
+  spStatus();
+  [].forEach.call(document.querySelectorAll('.sp-lvl'), function(d){ d.classList.toggle('on', d.getAttribute('data-a') === 'd' + sp.suits); });
+}
+
+/* ---- rules ---- */
+function findCard(k){
+  for(var c = 0; c < 10; c++){ var i = sp.cols[c].indexOf(k); if(i >= 0) return { where: 'col', c: c, i: i }; }
+  return { where: sp.stock.indexOf(k) >= 0 ? 'stock' : 'done' };
+}
+function movable(col, i){                                                       // cards i..top form one same-suit descending run
+  if(!col[i] || !col[i].up) return false;
+  for(var j = i + 1; j < col.length; j++) if(col[j].s !== col[i].s || col[j].r !== col[j - 1].r - 1) return false;
+  return true;
+}
+function canDrop(k, c){ var col = sp.cols[c], top = col[col.length - 1]; return !top || top.r === k.r + 1; }
+function snap(){
+  var ids = function(a){ return a.map(function(k){ return [k.id, k.up]; }); };
+  sp.hist.push({ cols: sp.cols.map(ids), stock: ids(sp.stock), done: sp.done.map(ids), score: sp.score, moves: sp.moves });
+  if(sp.hist.length > 300) sp.hist.shift();
+}
+function spUndo(){
+  var h = sp.won ? null : sp.hist.pop(); if(!h){ ding(); return; }
+  var back = function(a){ return a.map(function(p){ var k = sp.cards[p[0]]; k.up = p[1]; return k; }); };
+  sp.cols = h.cols.map(back); sp.stock = back(h.stock); sp.done = h.done.map(back);
+  sp.score = h.score - 1; sp.moves = h.moves + 1; sp.hintI = 0;              // undoing counts as a move, as on XP
+  spLayout(); spStatus();
+}
+function spMove(from, i, to){
+  snap();
+  sp.cols[to] = sp.cols[to].concat(sp.cols[from].splice(i));
+  sp.score--; sp.moves++;
+  afterChange([from, to]);
+}
+function spDeal(){
+  if(sp.won || !sp.stock.length) return;
+  for(var c = 0; c < 10; c++) if(!sp.cols[c].length){ ding(); spMsg(T[L].sp_empty); return; }
+  snap();
+  var row = sp.stock.splice(sp.stock.length - 10, 10);
+  row.forEach(function(k, c){ k.up = true; sp.cols[c].push(k); });
+  sp.score--; sp.moves++;
+  afterChange([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], function(k){ var n = row.indexOf(k); return n > 0 ? n * 45 : 0; });
+}
+function afterChange(cols, stagger){
+  cols.forEach(function(c){ flipTop(c); checkRun(c); });
+  sp.hintI = 0; spLayout(stagger); spStatus();
+  if(sp.done.length === 8) spWon();
+}
+function flipTop(c){ var col = sp.cols[c], t = col[col.length - 1]; if(t) t.up = true; }
+function checkRun(c){
+  var col = sp.cols[c], i = col.length - 13;
+  if(i < 0 || col[i].r !== 13 || !movable(col, i)) return;
+  sp.done.push(col.splice(i)); sp.score += 100; flipTop(c);
+}
+function movesFor(c, i){                                                        // destinations for the run at cols[c][i], best first
+  var k = sp.cols[c][i], out = [];
+  for(var d = 0; d < 10; d++){
+    if(d === c || !canDrop(k, d)) continue;
+    var top = sp.cols[d][sp.cols[d].length - 1];
+    if(!top && i === 0) continue;                                               // a whole column into an empty one: pointless
+    out.push({ d: d, rank: !top ? 0 : top.s === k.s ? 2 : 1 });
+  }
+  return out.sort(function(a, b){ return b.rank - a.rank || a.d - b.d; });
+}
+function autoMove(c, i){ var m = movesFor(c, i); if(m.length) spMove(c, i, m[0].d); }
+function allHints(){
+  var out = [];
+  sp.cols.forEach(function(col, c){
+    for(var i = col.length - 1; i >= 0 && movable(col, i); i--){
+      var k = col[i], below = col[i - 1];
+      movesFor(c, i).forEach(function(m){
+        if(below && below.up && below.r === k.r + 1 && (below.s === k.s || m.rank < 2)) return;   // already sitting somewhere as good
+        out.push({ c: c, i: i, d: m.d, w: m.rank * 10 + (below && !below.up ? 5 : 0) });
+      });
+    }
+  });
+  return out.sort(function(a, b){ return b.w - a.w; });
+}
+function flash(list, slot){
+  list.forEach(function(k){ k.el.classList.add('hint'); }); if(slot != null) spSlots[slot].classList.add('hint');
+  setTimeout(function(){ list.forEach(function(k){ k.el.classList.remove('hint'); }); if(slot != null) spSlots[slot].classList.remove('hint'); }, 480);
+}
+function spHint(){                                                              // XP style: the cards to move, then where they go, flash inverted
+  if(sp.won) return;
+  var hs = allHints();
+  if(!hs.length){
+    if(sp.stock.length){ flash(sp.stock.slice(-10)); return; }
+    ding(); spMsg(T[L].sp_nomove); return;
+  }
+  var h = hs[sp.hintI++ % hs.length], dst = sp.cols[h.d];
+  flash(sp.cols[h.c].slice(h.i));
+  setTimeout(function(){ flash(dst.length ? [dst[dst.length - 1]] : [], dst.length ? null : h.d); }, 520);
+}
+function spWon(){
+  sp.won = true; spFx(true);
+  setTimeout(function(){ if(sp.won) spMsg(T[L].sp_won, [[T[L].sp_yes, function(){ spNew(); }], [T[L].sp_no]]); }, 1600);
+}
+function spMsg(text, btns){                                                     // small XP message box over the table
+  var box = $('sp-msg'); if(text == null){ box.classList.add('closed'); return; }
+  $('sp-msg-t').textContent = text;
+  var b = $('sp-msg-b'); b.innerHTML = '';
+  (btns || [[T[L].sp_ok]]).forEach(function(x){
+    var el = document.createElement('button'); el.textContent = x[0];
+    el.onclick = function(){ box.classList.add('closed'); if(x[1]) x[1](); };
+    b.appendChild(el);
+  });
+  box.classList.remove('closed');
+}
+/* fireworks when you win (skipped with reduced motion) */
+var fxRaf = 0;
+function spFx(on){
+  var cv2 = $('sp-fx'), g = cv2.getContext('2d');
+  cancelAnimationFrame(fxRaf); g.clearRect(0, 0, cv2.width, cv2.height);
+  if(!on || calm) return;
+  cv2.width = G.w; cv2.height = G.h;
+  var ps = [], t0 = performance.now(), next = 0;
+  (function f(now){
+    if(now - t0 > 7000){ g.clearRect(0, 0, cv2.width, cv2.height); return; }
+    fxRaf = requestAnimationFrame(f);
+    if(now > next){
+      next = now + 300 + Math.random() * 350;
+      var x = G.w * (0.15 + 0.7 * Math.random()), y = G.h * (0.12 + 0.4 * Math.random()), hue = Math.random() * 360;
+      for(var i = 0; i < 70; i++){ var a = Math.random() * 6.283, v = 1 + Math.random() * 3.2; ps.push({ x: x, y: y, vx: Math.cos(a) * v, vy: Math.sin(a) * v, l: 1, h: hue + Math.random() * 40 }); }
+    }
+    g.globalCompositeOperation = 'destination-out'; g.fillStyle = 'rgba(0,0,0,.2)'; g.fillRect(0, 0, cv2.width, cv2.height);
+    g.globalCompositeOperation = 'lighter';
+    ps = ps.filter(function(p){ return p.l > 0; });
+    ps.forEach(function(p){ p.x += p.vx; p.y += p.vy; p.vy += 0.04; p.vx *= 0.985; p.l -= 0.012; g.fillStyle = 'hsla(' + p.h + ',100%,60%,' + p.l + ')'; g.fillRect(p.x, p.y, 2.4, 2.4); });
+    g.globalCompositeOperation = 'source-over';
+  })(t0);
+}
+
+/* ---- mouse / touch: drag a run onto another column; a plain click moves it to the best spot; the deck deals ---- */
+spBoard.addEventListener('pointerdown', function(e){
+  if(e.button > 0 || sp.won || !$('sp-msg').classList.contains('closed')) return;
+  var el = e.target.closest('.card'); if(!el) return;
+  var at = findCard(sp.cards[+el.getAttribute('data-id')]);
+  if(at.where === 'stock'){ spDeal(); return; }
+  if(at.where !== 'col' || !movable(sp.cols[at.c], at.i)) return;
+  e.preventDefault();
+  var run = sp.cols[at.c].slice(at.i);
+  drag = { c: at.c, i: at.i, run: run, x: e.clientX, y: e.clientY, on: false, id: e.pointerId,
+           start: run.map(function(k){ return [parseFloat(k.el.style.left), parseFloat(k.el.style.top)]; }) };
+  try { spBoard.setPointerCapture(e.pointerId); } catch(err){}
+});
+spBoard.addEventListener('pointermove', function(e){
+  if(!drag || e.pointerId !== drag.id) return;
+  var dx = e.clientX - drag.x, dy = e.clientY - drag.y;
+  if(!drag.on){
+    if(dx * dx + dy * dy < 25) return;
+    drag.on = true; drag.run.forEach(function(k, n){ k.el.classList.add('drag'); k.el.style.transitionDelay = ''; k.el.style.zIndex = 1000 + n; });
+  }
+  drag.run.forEach(function(k, n){ k.el.style.left = (drag.start[n][0] + dx) + 'px'; k.el.style.top = (drag.start[n][1] + dy) + 'px'; });
+});
+function endDrag(e, cancel){
+  if(!drag || e.pointerId !== drag.id) return;
+  var d = drag; drag = null;
+  d.run.forEach(function(k){ k.el.classList.remove('drag'); });
+  if(!d.on){ if(!cancel) autoMove(d.c, d.i); return; }
+  if(!cancel){
+    var mid = d.start[0][0] + (e.clientX - d.x) + G.cw / 2, best = -1, bd = 1e9;
+    for(var c = 0; c < 10; c++){ var dist = Math.abs(colX(c) + G.cw / 2 - mid); if(c !== d.c && dist < bd){ bd = dist; best = c; } }
+    if(best >= 0 && bd < G.cw && canDrop(d.run[0], best)){ spMove(d.c, d.i, best); return; }
+  }
+  spLayout();                                                                   // not a legal drop: the cards slide back
+}
+spBoard.addEventListener('pointerup', function(e){ endDrag(e, false); });
+spBoard.addEventListener('pointercancel', function(e){ endDrag(e, true); });
+$('sp-score').addEventListener('click', spHint);                               // clicking the score box shows a move, like XP
+
+/* ---- menu and keyboard ---- */
+function spMenuClose(){ $('sp-drop').classList.add('closed'); $('sp-gm').classList.remove('on'); }
+$('sp-gm').onclick = function(){ var d = $('sp-drop'); d.classList.toggle('closed'); $('sp-gm').classList.toggle('on', !d.classList.contains('closed')); };
+document.addEventListener('pointerdown', function(e){ if(!e.target.closest('.sp-menu')) spMenuClose(); });
+[].forEach.call(document.querySelectorAll('#sp-drop [data-a]'), function(it){
+  it.onclick = function(){
+    var a = it.getAttribute('data-a'); spMenuClose();
+    if(a === 'new') spNew(); else if(a === 'restart') spNew(sp.order); else if(a === 'undo') spUndo();
+    else if(a === 'deal') spDeal(); else if(a === 'hint') spHint(); else if(a === 'exit') closeWin(spWin);
+    else { sp.suits = +a.slice(1); lsSet('rt:spider-suits', String(sp.suits)); spI18n(); spNew(); }   // changing difficulty starts a new game
+  };
+});
+document.addEventListener('keydown', function(e){
+  if(!isShown(spWin) || !spWin.classList.contains('front')) return;
+  var k = e.key;
+  if(k === 'F2'){ e.preventDefault(); spNew(); }
+  else if((e.ctrlKey || e.metaKey) && (k === 'z' || k === 'Z')){ e.preventDefault(); spUndo(); }
+  else if(e.ctrlKey || e.metaKey || e.altKey) return;
+  else if(k === 'd' || k === 'D') spDeal();
+  else if(k === 'm' || k === 'M') spHint();
+});
+
 /* ---------- windows: opened from desktop icons, focus on click, minimize/restore from the taskbar, close ---------- */
 var dlg = $('dlg'), wmpWin = $('wmpwin'), ieWin = $('iewin'), pvWin = $('pvwin');
-var WINS = [dlg, wmpWin, ieWin, pvWin];
-var TASK = { dlg: $('t-dlg'), wmpwin: $('wmp'), iewin: $('t-ie'), pvwin: $('t-pv') };
+var WINS = [dlg, wmpWin, ieWin, pvWin, spWin];
+var TASK = { dlg: $('t-dlg'), wmpwin: $('wmp'), iewin: $('t-ie'), pvwin: $('t-pv'), spwin: $('t-sp') };
 function winForTask(b){ for(var id in TASK){ if(TASK[id] === b) return $(id); } return null; }
 function isOpen(w){ return !w.classList.contains('closed'); }
 function isShown(w){ return isOpen(w) && !w.classList.contains('min'); }
@@ -505,6 +859,7 @@ function openWin(w){
   if(w === wmpWin && !wasOpen) tune(st < 0 ? 0 : st);          // starts on Generation 2K, then remembers the last station
   if(w === ieWin) loadImg($('ie-img'), $('ie-err'));
   if(w === pvWin){ loadImg($('pv-img'), $('pv-err')); pvReset(); }
+  if(w === spWin && !wasOpen) spNew();                          // like XP: opening the program deals a fresh game
 }
 /* images load only when their window first opens; if the file is missing, show the program's own error */
 function loadImg(img, err){
@@ -527,6 +882,7 @@ function minimizeWin(w){ w.classList.add('min'); focusWin(nextShown(w)); }
 function closeWin(w){
   w.classList.add('closed'); TASK[w.id].classList.add('closed'); focusWin(nextShown(w));
   if(w === wmpWin) stopRadio();
+  if(w === spWin){ spFx(false); spMsg(null); sp.won = false; }
 }
 function taskClick(w){
   if(w.classList.contains('min')){ w.classList.remove('min'); focusWin(w); }
@@ -547,7 +903,7 @@ $('wmp-next').onclick = function(){ fails = 0; nextViz(); tune(st + 1); };
 $('viz').onclick = nextViz;
 
 /* desktop icons: click selects, double-click opens (a single tap on touch screens) */
-var OPENS = { rt: dlg, wmp: wmpWin, gif: ieWin, jpg: pvWin };
+var OPENS = { rt: dlg, wmp: wmpWin, gif: ieWin, jpg: pvWin, sp: spWin };
 function openIcon(ic){ var w = OPENS[ic.getAttribute('data-open')]; if(w) openWin(w); else ding(); }
 [].forEach.call(document.querySelectorAll('.icon'), function(ic){
   ic.addEventListener('dblclick', function(){ openIcon(ic); });
@@ -580,7 +936,7 @@ var coarse = window.matchMedia && matchMedia('(pointer: coarse)').matches;
 function balloonText(){ $('btext').innerHTML = coarse ? T[L].b_text_touch : T[L].b_text; }
 function hideBalloon(){ $('balloon').classList.add('closed'); }
 $('bclose').onclick = hideBalloon;
-setTimeout(function(){ if(!isOpen(dlg) && !isOpen(wmpWin)){ balloonText(); $('balloon').classList.remove('closed'); } }, 1200);
+setTimeout(function(){ if(!WINS.some(isOpen)){ balloonText(); $('balloon').classList.remove('closed'); } }, 1200);
 focusWin(null);
 
 /* ---------- WMP visualizer ----------

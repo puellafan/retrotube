@@ -363,8 +363,8 @@ var T = {
   pt: {
     dlg_title: 'RetroTube — Aviso', start: 'iniciar',
     ie_title: 'yipee.gif - Microsoft Internet Explorer', ie_menu: '<span>Arquivo</span><span>Editar</span><span>Exibir</span><span>Favoritos</span><span>Ferramentas</span><span>Ajuda</span>',
-    ie_back: 'Voltar', ie_search: 'Pesquisar', ie_favs: 'Favoritos', ie_addr: 'Endereço', ie_go: 'Ir', ie_done: 'Concluído', ie_zone: 'Meu computador',
-    ie_path: 'C:\\Documents and Settings\\Usuário\\Área de trabalho\\yipee.gif',
+    ie_back: 'Voltar', ie_search: 'Pesquisar', ie_favs: 'Favoritos', ie_addr: 'Endereço', ie_go: 'Ir', ie_done: 'Concluído', ie_zone: 'Internet',
+    ie_path: 'https://raw.githubusercontent.com/puellafan/retrotube/refs/heads/main/yipee.gif',
     ie_err: '<h2>Não é possível exibir a página</h2><p>O arquivo <b>yipee.gif</b> não foi encontrado. Ele pode ter sido movido, renomeado ou excluído.</p><hr><p>Tente o seguinte:</p><ul><li>Se você digitou o endereço da página, verifique se ele está escrito corretamente.</li><li>Clique no botão <b>Atualizar</b> ou tente novamente mais tarde.</li></ul>',
     pv_title: 'stmonica.jpg - Visualizador de imagens e fax do Windows', pv_none: 'Nenhuma visualização disponível',
     title: 'Seu bloqueador de anúncios pode mostrar um aviso',
@@ -387,8 +387,8 @@ var T = {
   en: {
     dlg_title: 'RetroTube — Notice', start: 'start',
     ie_title: 'yipee.gif - Microsoft Internet Explorer', ie_menu: '<span>File</span><span>Edit</span><span>View</span><span>Favorites</span><span>Tools</span><span>Help</span>',
-    ie_back: 'Back', ie_search: 'Search', ie_favs: 'Favorites', ie_addr: 'Address', ie_go: 'Go', ie_done: 'Done', ie_zone: 'My Computer',
-    ie_path: 'C:\\Documents and Settings\\User\\Desktop\\yipee.gif',
+    ie_back: 'Back', ie_search: 'Search', ie_favs: 'Favorites', ie_addr: 'Address', ie_go: 'Go', ie_done: 'Done', ie_zone: 'Internet',
+    ie_path: 'https://raw.githubusercontent.com/puellafan/retrotube/refs/heads/main/yipee.gif',
     ie_err: '<h2>The page cannot be displayed</h2><p>The file <b>yipee.gif</b> could not be found. It may have been moved, renamed or deleted.</p><hr><p>Please try the following:</p><ul><li>If you typed the page address, make sure that it is spelled correctly.</li><li>Click the <b>Refresh</b> button, or try again later.</li></ul>',
     pv_title: 'stmonica.jpg - Windows Picture and Fax Viewer', pv_none: 'No preview available',
     title: 'Your ad blocker may show a warning',
@@ -411,8 +411,8 @@ var T = {
   es: {
     dlg_title: 'RetroTube — Aviso', start: 'inicio',
     ie_title: 'yipee.gif - Microsoft Internet Explorer', ie_menu: '<span>Archivo</span><span>Edición</span><span>Ver</span><span>Favoritos</span><span>Herramientas</span><span>Ayuda</span>',
-    ie_back: 'Atrás', ie_search: 'Búsqueda', ie_favs: 'Favoritos', ie_addr: 'Dirección', ie_go: 'Ir', ie_done: 'Listo', ie_zone: 'Mi PC',
-    ie_path: 'C:\\Documents and Settings\\Usuario\\Escritorio\\yipee.gif',
+    ie_back: 'Atrás', ie_search: 'Búsqueda', ie_favs: 'Favoritos', ie_addr: 'Dirección', ie_go: 'Ir', ie_done: 'Listo', ie_zone: 'Internet',
+    ie_path: 'https://raw.githubusercontent.com/puellafan/retrotube/refs/heads/main/yipee.gif',
     ie_err: '<h2>No se puede mostrar la página</h2><p>No se encontró el archivo <b>yipee.gif</b>. Puede que se haya movido, cambiado de nombre o eliminado.</p><hr><p>Intente lo siguiente:</p><ul><li>Si escribió la dirección de la página, compruebe que sea correcta.</li><li>Haga clic en el botón <b>Actualizar</b> o inténtelo más tarde.</li></ul>',
     pv_title: 'stmonica.jpg - Visor de imágenes y fax de Windows', pv_none: 'No hay vista previa disponible',
     title: 'Tu bloqueador de anuncios puede mostrar un aviso',
@@ -652,7 +652,7 @@ function spRelayout(){
 }
 if(window.ResizeObserver) new ResizeObserver(spRelayout).observe(spBoard); else window.addEventListener('resize', spRelayout);
 function spStatus(){ $('sp-score').innerHTML = T[L].sp_score + ': ' + sp.score + '<br>' + T[L].sp_moves + ': ' + sp.moves; }
-/* sounds: spider-draw/error/hint/win.mp3 from the repo; a missing file just stays silent. Game > Sound turns them off (rt:spider-sound). */
+/* sounds: spider-draw/card/error/hint/win.mp3 from the repo; a missing file just stays silent. Game > Sound turns them off (rt:spider-sound). */
 var SFX = {}, spSound = lsGet('rt:spider-sound') !== '0';
 function sfxLoad(name){
   if(SFX[name] !== undefined) return SFX[name];
@@ -719,6 +719,7 @@ function checkRun(c){
   var col = sp.cols[c], i = col.length - 13;
   if(i < 0 || col[i].r !== 13 || !movable(col, i)) return;
   sp.done.push(col.splice(i)); sp.score += 100; flipTop(c);
+  if(sp.done.length < 8) sfx('draw');                                          // the run is tucked away (the last one gets the fanfare instead)
 }
 function movesFor(c, i){                                                        // destinations for the run at cols[c][i], best first
   var k = sp.cols[c][i], out = [];
@@ -809,6 +810,7 @@ spBoard.addEventListener('pointerdown', function(e){
   if(at.where !== 'col' || !movable(sp.cols[at.c], at.i)) return;
   e.preventDefault();
   var run = sp.cols[at.c].slice(at.i);
+  sfx('card');
   drag = { c: at.c, i: at.i, run: run, x: e.clientX, y: e.clientY, on: false, id: e.pointerId,
            start: run.map(function(k){ return [parseFloat(k.el.style.left), parseFloat(k.el.style.top)]; }) };
   try { spBoard.setPointerCapture(e.pointerId); } catch(err){}
@@ -882,7 +884,7 @@ function openWin(w){
   if(w === wmpWin && !wasOpen) tune(st < 0 ? 0 : st);          // starts on Generation 2K, then remembers the last station
   if(w === ieWin) loadImg($('ie-img'), $('ie-err'));
   if(w === pvWin){ loadImg($('pv-img'), $('pv-err')); pvReset(); }
-  if(w === spWin && !wasOpen){ ['draw', 'error', 'hint', 'win'].forEach(sfxLoad); spNew(); }                          // like XP: opening the program deals a fresh game
+  if(w === spWin && !wasOpen){ ['draw', 'card', 'error', 'hint', 'win'].forEach(sfxLoad); spNew(); }                          // like XP: opening the program deals a fresh game
 }
 /* images load only when their window first opens; if the file is missing, show the program's own error */
 function loadImg(img, err){

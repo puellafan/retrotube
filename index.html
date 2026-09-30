@@ -143,6 +143,7 @@
   .sp-drop div{position:relative;display:flex;justify-content:space-between;gap:24px;padding:3px 10px 3px 22px;cursor:default;white-space:nowrap;}
   .sp-drop div:hover{background:#316ac5;color:#fff;}
   .sp-drop div.on::before{content:'';position:absolute;left:9px;top:50%;width:5px;height:5px;margin-top:-3px;border-radius:50%;background:currentColor;}
+  .sp-drop div.sp-chk.on::before{content:'\2713';width:auto;height:auto;margin-top:-.6em;border-radius:0;background:none;left:7px;font-weight:bold;}
   .sp-drop kbd{font:inherit;} .sp-drop hr{border:0;border-top:1px solid #aca899;margin:3px 1px;}
   #sp-board{position:relative;height:clamp(260px,calc(100vh - 118px),560px);overflow:hidden;touch-action:none;
     background:radial-gradient(ellipse at 50% 35%,#27a547 0%,#11813a 55%,#0a6a2c 100%);border:1px solid #06401a;}
@@ -232,6 +233,8 @@
         <div data-a="d1" class="sp-lvl"><span data-t="sp_d1"></span></div>
         <div data-a="d2" class="sp-lvl"><span data-t="sp_d2"></span></div>
         <div data-a="d4" class="sp-lvl"><span data-t="sp_d4"></span></div>
+        <hr>
+        <div data-a="sound" id="sp-snd" class="sp-chk"><span data-t="sp_sound"></span></div>
         <hr>
         <div data-a="exit"><span data-t="sp_exit"></span></div>
       </div>
@@ -379,7 +382,7 @@ var T = {
     w_now: 'Em execução', w_lib: 'Biblioteca', w_radio: 'Rádio', w_ready: 'Conectando…', w_tune: 'Sintonizando: %s…', w_skip: 'Estação fora do ar — pulando para a próxima…', w_dead: 'Nenhuma estação respondeu. Tente de novo mais tarde.', b_title: 'Bem-vindo ao RetroTube', b_text: 'Clique duas vezes em <b>RetroTube</b> para entrar no site, em <b>Windows Media Player</b> para ouvir hits dos anos 2000, ou em <b>Paciência Spider</b> para jogar.', b_text_touch: 'Toque em <b>RetroTube</b> para entrar no site, em <b>Windows Media Player</b> para ouvir hits dos anos 2000, ou em <b>Paciência Spider</b> para jogar.', w_off: 'Rádio silenciado', w_paused: 'Pausado', viz: ['Alquimia : Aleatório', 'Barras e ondas : Espectro', 'Ambiente : Redemoinho'],
     sp_title: 'Paciência Spider', sp_game: 'Jogo', sp_help: 'Ajuda', sp_new: 'Novo jogo', sp_restart: 'Reiniciar este jogo', sp_undo: 'Desfazer', sp_deal: 'Distribuir nova fileira', sp_hint: 'Mostrar um movimento disponível',
     sp_d1: 'Iniciante: um naipe', sp_d2: 'Intermediário: dois naipes', sp_d4: 'Avançado: quatro naipes', sp_exit: 'Sair', sp_score: 'Pontuação', sp_moves: 'Movimentos',
-    sp_empty: 'Não é possível distribuir uma nova fileira enquanto houver espaços vazios.', sp_nomove: 'Não há mais movimentos disponíveis.', sp_won: 'Parabéns, você venceu! Deseja jogar novamente?', sp_ok: 'OK', sp_yes: 'Sim', sp_no: 'Não'
+    sp_empty: 'Não é possível distribuir uma nova fileira enquanto houver espaços vazios.', sp_nomove: 'Não há mais movimentos disponíveis.', sp_won: 'Parabéns, você venceu! Deseja jogar novamente?', sp_ok: 'OK', sp_yes: 'Sim', sp_no: 'Não', sp_sound: 'Som'
   },
   en: {
     dlg_title: 'RetroTube — Notice', start: 'start',
@@ -403,7 +406,7 @@ var T = {
     w_now: 'Now Playing', w_lib: 'Library', w_radio: 'Radio Guide', w_ready: 'Connecting…', w_tune: 'Tuning: %s…', w_skip: 'Station is off the air — skipping to the next…', w_dead: 'No station answered. Try again later.', b_title: 'Welcome to RetroTube', b_text: 'Double-click <b>RetroTube</b> to enter the site, <b>Windows Media Player</b> to listen to 2000s hits, or <b>Spider Solitaire</b> to play.', b_text_touch: 'Tap <b>RetroTube</b> to enter the site, <b>Windows Media Player</b> to listen to 2000s hits, or <b>Spider Solitaire</b> to play.', w_off: 'Radio muted', w_paused: 'Paused', viz: ['Alchemy : Random', 'Bars and Waves : Bars', 'Ambience : Swirl'],
     sp_title: 'Spider Solitaire', sp_game: 'Game', sp_help: 'Help', sp_new: 'New Game', sp_restart: 'Restart This Game', sp_undo: 'Undo', sp_deal: 'Deal New Row', sp_hint: 'Show An Available Move',
     sp_d1: 'Beginner: One Suit', sp_d2: 'Intermediate: Two Suits', sp_d4: 'Advanced: Four Suits', sp_exit: 'Exit', sp_score: 'Score', sp_moves: 'Moves',
-    sp_empty: 'You are not allowed to deal a new row while there are any empty slots.', sp_nomove: 'There are no more moves available.', sp_won: 'Congratulations, you won! Do you want to play again?', sp_ok: 'OK', sp_yes: 'Yes', sp_no: 'No'
+    sp_empty: 'You are not allowed to deal a new row while there are any empty slots.', sp_nomove: 'There are no more moves available.', sp_won: 'Congratulations, you won! Do you want to play again?', sp_ok: 'OK', sp_yes: 'Yes', sp_no: 'No', sp_sound: 'Sound'
   },
   es: {
     dlg_title: 'RetroTube — Aviso', start: 'inicio',
@@ -427,7 +430,7 @@ var T = {
     w_now: 'Reproduciendo', w_lib: 'Biblioteca', w_radio: 'Radio', w_ready: 'Conectando…', w_tune: 'Sintonizando: %s…', w_skip: 'Emisora fuera del aire — pasando a la siguiente…', w_dead: 'Ninguna emisora respondió. Inténtalo más tarde.', b_title: 'Bienvenido a RetroTube', b_text: 'Haz doble clic en <b>RetroTube</b> para entrar al sitio, en <b>Windows Media Player</b> para escuchar éxitos de los 2000, o en <b>Solitario Spider</b> para jugar.', b_text_touch: 'Toca <b>RetroTube</b> para entrar al sitio, <b>Windows Media Player</b> para escuchar éxitos de los 2000, o <b>Solitario Spider</b> para jugar.', w_off: 'Radio silenciada', w_paused: 'En pausa', viz: ['Alquimia : Aleatorio', 'Barras y ondas : Barras', 'Ambiente : Remolino'],
     sp_title: 'Solitario Spider', sp_game: 'Juego', sp_help: 'Ayuda', sp_new: 'Juego nuevo', sp_restart: 'Reiniciar este juego', sp_undo: 'Deshacer', sp_deal: 'Repartir nueva fila', sp_hint: 'Mostrar un movimiento disponible',
     sp_d1: 'Principiante: un palo', sp_d2: 'Intermedio: dos palos', sp_d4: 'Avanzado: cuatro palos', sp_exit: 'Salir', sp_score: 'Puntuación', sp_moves: 'Movimientos',
-    sp_empty: 'No se puede repartir una nueva fila mientras haya espacios vacíos.', sp_nomove: 'No hay más movimientos disponibles.', sp_won: '¡Felicidades, ganaste! ¿Quieres jugar otra vez?', sp_ok: 'Aceptar', sp_yes: 'Sí', sp_no: 'No'
+    sp_empty: 'No se puede repartir una nueva fila mientras haya espacios vacíos.', sp_nomove: 'No hay más movimientos disponibles.', sp_won: '¡Felicidades, ganaste! ¿Quieres jugar otra vez?', sp_ok: 'Aceptar', sp_yes: 'Sí', sp_no: 'No', sp_sound: 'Sonido'
   }
 };
 function $(id){ return document.getElementById(id); }
@@ -602,6 +605,7 @@ function spNew(order){
   spBoard.offsetWidth;
   var dealt = deck.slice(0, 54);
   spLayout(function(k){ var n = dealt.indexOf(k); return n > 0 ? n * 14 : 0; });
+  sfx('draw');
 }
 function makeCard(id, s, r){
   var el = document.createElement('div'), R = RANKS[r], S = SUITS[s];
@@ -648,8 +652,21 @@ function spRelayout(){
 }
 if(window.ResizeObserver) new ResizeObserver(spRelayout).observe(spBoard); else window.addEventListener('resize', spRelayout);
 function spStatus(){ $('sp-score').innerHTML = T[L].sp_score + ': ' + sp.score + '<br>' + T[L].sp_moves + ': ' + sp.moves; }
+/* sounds: spider-draw/error/hint/win.mp3 from the repo; a missing file just stays silent. Game > Sound turns them off (rt:spider-sound). */
+var SFX = {}, spSound = lsGet('rt:spider-sound') !== '0';
+function sfxLoad(name){
+  if(SFX[name] !== undefined) return SFX[name];
+  var a = new Audio(); a.preload = 'auto'; a.onerror = function(){ SFX[name] = null; }; a.src = 'spider-' + name + '.mp3';
+  return (SFX[name] = a);
+}
+function sfx(name){
+  if(!spSound) return;
+  var a = sfxLoad(name); if(!a || a.error) return;
+  var c = a.cloneNode(); c.volume = 0.8; c.play().catch(function(){});
+}
 function spI18n(){
   spStatus();
+  $('sp-snd').classList.toggle('on', spSound);
   [].forEach.call(document.querySelectorAll('.sp-lvl'), function(d){ d.classList.toggle('on', d.getAttribute('data-a') === 'd' + sp.suits); });
 }
 
@@ -690,6 +707,7 @@ function spDeal(){
   row.forEach(function(k, c){ k.up = true; sp.cols[c].push(k); });
   sp.score--; sp.moves++;
   afterChange([0, 1, 2, 3, 4, 5, 6, 7, 8, 9], function(k){ var n = row.indexOf(k); return n > 0 ? n * 45 : 0; });
+  sfx('draw');
 }
 function afterChange(cols, stagger){
   cols.forEach(function(c){ flipTop(c); checkRun(c); });
@@ -712,7 +730,7 @@ function movesFor(c, i){                                                        
   }
   return out.sort(function(a, b){ return b.rank - a.rank || a.d - b.d; });
 }
-function autoMove(c, i){ var m = movesFor(c, i); if(m.length) spMove(c, i, m[0].d); }
+function autoMove(c, i){ var m = movesFor(c, i); if(m.length) spMove(c, i, m[0].d); else sfx('error'); }
 function allHints(){
   var out = [];
   sp.cols.forEach(function(col, c){
@@ -734,15 +752,16 @@ function spHint(){                                                              
   if(sp.won) return;
   var hs = allHints();
   if(!hs.length){
-    if(sp.stock.length){ flash(sp.stock.slice(-10)); return; }
+    if(sp.stock.length){ sfx('hint'); flash(sp.stock.slice(-10)); return; }
     ding(); spMsg(T[L].sp_nomove); return;
   }
+  sfx('hint');
   var h = hs[sp.hintI++ % hs.length], dst = sp.cols[h.d];
   flash(sp.cols[h.c].slice(h.i));
   setTimeout(function(){ flash(dst.length ? [dst[dst.length - 1]] : [], dst.length ? null : h.d); }, 520);
 }
 function spWon(){
-  sp.won = true; spFx(true);
+  sp.won = true; spFx(true); sfx('win');
   setTimeout(function(){ if(sp.won) spMsg(T[L].sp_won, [[T[L].sp_yes, function(){ spNew(); }], [T[L].sp_no]]); }, 1600);
 }
 function spMsg(text, btns){                                                     // small XP message box over the table
@@ -813,6 +832,7 @@ function endDrag(e, cancel){
     for(var c = 0; c < 10; c++){ var dist = Math.abs(colX(c) + G.cw / 2 - mid); if(c !== d.c && dist < bd){ bd = dist; best = c; } }
     if(best >= 0 && bd < G.cw && canDrop(d.run[0], best)){ spMove(d.c, d.i, best); return; }
   }
+  if(!cancel) sfx('error');
   spLayout();                                                                   // not a legal drop: the cards slide back
 }
 spBoard.addEventListener('pointerup', function(e){ endDrag(e, false); });
@@ -828,6 +848,7 @@ document.addEventListener('pointerdown', function(e){ if(!e.target.closest('.sp-
     var a = it.getAttribute('data-a'); spMenuClose();
     if(a === 'new') spNew(); else if(a === 'restart') spNew(sp.order); else if(a === 'undo') spUndo();
     else if(a === 'deal') spDeal(); else if(a === 'hint') spHint(); else if(a === 'exit') closeWin(spWin);
+    else if(a === 'sound'){ spSound = !spSound; lsSet('rt:spider-sound', spSound ? null : '0'); spI18n(); }
     else { sp.suits = +a.slice(1); lsSet('rt:spider-suits', String(sp.suits)); spI18n(); spNew(); }   // changing difficulty starts a new game
   };
 });
@@ -861,7 +882,7 @@ function openWin(w){
   if(w === wmpWin && !wasOpen) tune(st < 0 ? 0 : st);          // starts on Generation 2K, then remembers the last station
   if(w === ieWin) loadImg($('ie-img'), $('ie-err'));
   if(w === pvWin){ loadImg($('pv-img'), $('pv-err')); pvReset(); }
-  if(w === spWin && !wasOpen) spNew();                          // like XP: opening the program deals a fresh game
+  if(w === spWin && !wasOpen){ ['draw', 'error', 'hint', 'win'].forEach(sfxLoad); spNew(); }                          // like XP: opening the program deals a fresh game
 }
 /* images load only when their window first opens; if the file is missing, show the program's own error */
 function loadImg(img, err){

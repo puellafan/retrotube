@@ -625,7 +625,8 @@ function colX(c){ return G.x0 + c * (G.cw + G.gap); }
 function stockPos(g, k){ return { x: G.w - G.gap - G.cw - (k - 1 - g) * Math.round(G.cw * 0.22), y: G.h - G.gap - G.ch }; }
 function place(k, x, y, z, delay){
   var s = k.el.style; s.left = Math.round(x) + 'px'; s.top = Math.round(y) + 'px'; s.zIndex = z; s.transitionDelay = delay ? delay + 'ms' : '';
-  k.el.classList.toggle('down', !k.up);
+  if(delay) setTimeout(function(){ k.el.classList.toggle('down', !k.up); }, delay);   // stay face-down until its turn to fly
+  else k.el.classList.toggle('down', !k.up);
 }
 function spLayout(stagger){
   if(!spMeasure()) return;

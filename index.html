@@ -201,6 +201,11 @@
     #spwin{left:1vw;top:6px;width:98vw;transform:none;}
     #sp-score{padding:3px 8px;bottom:4px;}
   }
+  #memory-clip{display:none;width:100%;max-height:55vh;background:#000}
+  #wmpwin.clip-mode #memory-clip{display:block}
+  #wmpwin.clip-mode #viz,#wmpwin.clip-mode .wmp-tabs,#wmpwin.clip-mode .wmp-info,
+  #wmpwin.clip-mode .wmp-seek,#wmpwin.clip-mode .wmp-ctl,#wmpwin.clip-mode #wmp-station{display:none}
+  .icon[data-open="mp4"] .img{font-size:26px}
 </style>
 </head>
 <body>
@@ -210,7 +215,7 @@
     <div class="icon" tabindex="-1" data-open="gif"><svg class="img" viewBox="0 0 32 32"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#7a8aa0"/><path d="M20 2v6h6" fill="#e3e9f2" stroke="#7a8aa0"/><rect x="9" y="11" width="14" height="10" fill="#fde28a"/><circle cx="13" cy="15" r="2.3" fill="#ff6b3d"/><path d="M9 21l5-4 3 2 3-3 3 5z" fill="#3aa845"/><text x="16" y="28.2" font-family="Tahoma,Arial" font-size="5.6" font-weight="bold" text-anchor="middle" fill="#1d4fa8">GIF</text><circle cx="25" cy="25" r="5.2" fill="#1e76d8" stroke="#fff" stroke-width=".8"/><text x="25" y="27.6" font-family="Georgia,serif" font-size="7.5" font-style="italic" font-weight="bold" text-anchor="middle" fill="#fff">e</text></svg><span>yipee.gif</span></div>
     <div class="icon" tabindex="-1" data-open="jpg"><svg class="img" viewBox="0 0 32 32"><path d="M6 2h14l6 6v22H6z" fill="#fff" stroke="#7a8aa0"/><path d="M20 2v6h6" fill="#e3e9f2" stroke="#7a8aa0"/><rect x="9" y="11" width="14" height="12" fill="#8fc6f2"/><circle cx="19" cy="14.5" r="1.8" fill="#fff6b0"/><path d="M9 23l4.5-6 3 3.5 2.5-2.5 4 5z" fill="#4c8f33"/><text x="16" y="28.6" font-family="Tahoma,Arial" font-size="5.6" font-weight="bold" text-anchor="middle" fill="#6a3d9a">JPG</text></svg><span>stmonica.jpg</span></div>
     <div class="icon" tabindex="-1" data-open="rt"><img class="img" src="favicon.ico" alt=""><span>RetroTube</span></div>
-    <div class="icon" tabindex="-1" data-open="wmp"><svg class="img" viewBox="0 0 32 32"><circle cx="16" cy="16" r="13.5" fill="#f5a623" stroke="#b36b00" stroke-width="1.5"/><circle cx="16" cy="16" r="10" fill="#ffc34d"/><path d="M12.5 9.5v13L23 16z" fill="#fff" stroke="#c77800" stroke-width=".8"/></svg><span>Windows Media Player</span></div>
+    <div class="icon" tabindex="-1" data-open="mp4"><span class="img" aria-hidden="true">🎞️</span><span>remember1.mp4</span></div><div class="icon" tabindex="-1" data-open="wmp"><svg class="img" viewBox="0 0 32 32"><circle cx="16" cy="16" r="13.5" fill="#f5a623" stroke="#b36b00" stroke-width="1.5"/><circle cx="16" cy="16" r="10" fill="#ffc34d"/><path d="M12.5 9.5v13L23 16z" fill="#fff" stroke="#c77800" stroke-width=".8"/></svg><span>Windows Media Player</span></div>
     <div class="icon" tabindex="-1" data-open="sp"><svg class="img" viewBox="0 0 32 32"><rect x="3" y="6" width="15" height="21" rx="2" fill="#2f63c4" stroke="#fff" transform="rotate(-12 10 16)"/><rect x="11" y="4" width="17" height="24" rx="2" fill="#fff" stroke="#333"/><text x="12.6" y="10" font-family="Arial" font-size="5.5" font-weight="bold" fill="#111">K</text><path d="M17.5 15.5L14.5 13 13.8 11M17.3 17L13.8 16.5 13 15M17.3 18.8L13.8 20 13 22M17.6 20.3L15 23 14.5 25M21.5 15.5L24.5 13 25.2 11M21.7 17L25.2 16.5 26 15M21.7 18.8L25.2 20 26 22M21.4 20.3L24 23 24.5 25" stroke="#111" stroke-width="1" fill="none"/><ellipse cx="19.5" cy="18.5" rx="2.4" ry="3" fill="#111"/><circle cx="19.5" cy="14.6" r="1.5" fill="#111"/></svg><span data-t="sp_title"></span></div>
   </div>
 
@@ -257,7 +262,7 @@
     <div class="wmp">
       <div class="wmp-tabs"><span class="on" data-t="w_now"></span><span data-t="w_lib"></span><span data-t="w_radio"></span></div>
       <div class="wmp-station" id="wmp-station">📻 —</div>
-      <canvas id="viz" width="326" height="190"></canvas>
+      <video id="memory-clip" controls playsinline preload="none" aria-label="remember1.mp4"></video><canvas id="viz" width="326" height="190"></canvas>
       <div class="wmp-info"><span id="wmp-song"></span><span id="wmp-viz"></span></div>
       <div class="wmp-seek" id="wmp-seek"><div></div></div>
       <div class="wmp-ctl">
@@ -904,7 +909,31 @@ $('pv-zout').onclick = function(){ pvZoom = Math.max(0.25, pvZoom / 1.25); pvApp
 $('pv-rcw').onclick = function(){ pvRot += 90; pvApply(); };
 $('pv-rccw').onclick = function(){ pvRot -= 90; pvApply(); };
 function minimizeWin(w){ w.classList.add('min'); focusWin(nextShown(w)); }
+var memoryClip = $('memory-clip'), restoreRadioWindow = false, resumeRadio = false;
+function openMemoryClip(){
+  if(!wmpWin.classList.contains('clip-mode')){
+    restoreRadioWindow = isOpen(wmpWin);
+    resumeRadio = restoreRadioWindow && !radio.paused;
+    radio.pause();
+    wmpWin.classList.add('clip-mode');
+    memoryClip.src = 'remember1.mp4';
+  }
+  wmpWin.classList.remove('closed', 'min');
+  TASK[wmpWin.id].classList.remove('closed');
+  focusWin(wmpWin);
+  hideBalloon();
+  memoryClip.play().catch(function(){});
+}
+function leaveMemoryClip(){
+  memoryClip.pause();
+  memoryClip.removeAttribute('src');
+  memoryClip.load();
+  wmpWin.classList.remove('clip-mode');
+  if(resumeRadio) playRadio();
+  return restoreRadioWindow;
+}
 function closeWin(w){
+  if(w === wmpWin && w.classList.contains('clip-mode') && leaveMemoryClip()) return;
   w.classList.add('closed'); TASK[w.id].classList.add('closed'); focusWin(nextShown(w));
   if(w === wmpWin) stopRadio();
   if(w === spWin){ spFx(false); spMsg(null); sp.won = false; }
@@ -933,6 +962,10 @@ var OPENS = { rt: dlg, wmp: wmpWin, gif: ieWin, jpg: pvWin, sp: spWin };
 var notifyAudio = new Audio('notify.mp3'); notifyAudio.preload = 'auto';
 function openIcon(ic){
   var k = ic.getAttribute('data-open'), w = OPENS[k];
+  if(k === 'mp4') return openMemoryClip();
+  if(k === 'wmp' && wmpWin.classList.contains('clip-mode')){
+    if(!leaveMemoryClip()) tune(st < 0 ? 0 : st);
+  }
   if(k === 'rt'){ var a = notifyAudio.cloneNode(); a.volume = 0.8; a.play().catch(function(){}); }
   if(w) openWin(w); else ding();
 }

@@ -201,6 +201,7 @@
     #spwin{left:1vw;top:6px;width:98vw;transform:none;}
     #sp-score{padding:3px 8px;bottom:4px;}
   }
+  #wmpwin.clip-mode{width:min(560px,calc(100vw - 36px))}
   #memory-clip{display:none;width:100%;max-height:55vh;background:#000}
   #wmpwin.clip-mode #memory-clip{display:block}
   #wmpwin.clip-mode #viz,#wmpwin.clip-mode .wmp-tabs,#wmpwin.clip-mode .wmp-info,
@@ -916,6 +917,7 @@ function openMemoryClip(){
     resumeRadio = restoreRadioWindow && !radio.paused;
     radio.pause();
     wmpWin.classList.add('clip-mode');
+    memoryClip.volume = 0.10;
     memoryClip.src = 'remember1.mp4';
   }
   wmpWin.classList.remove('closed', 'min');
